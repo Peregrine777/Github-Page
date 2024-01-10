@@ -43,12 +43,6 @@ loader.load(
   '/models/house.obj', // Adjust the path to your .obj file
   function (object) {
     model1.add(object);  
-  },
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-  },
-  function (error) {
-    console.log('An error happened');
   }
 );
 
@@ -61,12 +55,6 @@ loader.load(
   '/models/house.obj', // Adjust the path to your .obj file
   function (object) {
     scene2.add(object);
-  },
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-  },
-  function (error) {
-    console.log('An error happened');
   }
 );
 
