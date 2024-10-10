@@ -8,6 +8,9 @@
     import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
     import { GUI } from 'dat.gui';
 
+    import { camera_track } from './cameraTrack.js';
+    import { SmoothPath } from './smoothPath.js';
+
     import * as CANNON from 'cannon-es';
 
     //create the scene
@@ -31,8 +34,7 @@
     //camera
     let cameraVals = {FOV: 55};
     let camera = new THREE.PerspectiveCamera(cameraVals.FOV,ratio,0.1,5000);
-    camera.position.set(-30, 20, 0);
-    camera.lookAt(0,0,1);
+    camera.position.set(-20, 5, -20);
     renderer.setSize(window.innerWidth,window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     
@@ -45,12 +47,20 @@
     renderer.toneMapping = THREE.AgXToneMapping;
     renderer.toneMappingExposure = 1
 
+    /////////////////
+    // Scene Setup //
+    /////////////////
 
-  /////////////
-  // Objects //
-  ////////////
+    let sunDirection = new THREE.Vector3(1, 0.5, 1);
+    let sceneVals = {size: 20, sunHelper: false};
+    let landVals = {octaves: 8, persistence: 0.5, lacunarity: 2, scale: 1,
+    height: 100, falloff: 0.1, speed: 0.0005, noiseType: "Perlin", noise: "fbm",
+    iterations: 3, resolution: 511, enableFog: true, enableShadows: true, heightMap: new THREE.Texture()};
 
-    const landGeometry = new THREE.PlaneGeometry( 100, 100, 100, 100 );
+    /////////////
+    // Objects //
+    ////////////
+    const landGeometry = new THREE.PlaneGeometry( 1000, 1000, 100, 100 );
     const landMaterial = new THREE.MeshPhysicalMaterial (
       {color: new THREE.Color(0.4,0.7,0.4),
         side: THREE.DoubleSide,
@@ -79,16 +89,70 @@
           sun.lookAt(0,0,1);
     
           scene.add(sun);
+
+  /////////////////////
+  // Camera Functions // 
+  /////////////////////
+
+  // add the new control and link to the current camera to transform its position
+  let controls = new OrbitControls( camera, renderer.domElement );
+
+  // Define the points for camera movement
+  let matrix = new THREE.Matrix4();
+  const pointTargets = [
+    {pos: new THREE.Vector3(-10, 0, -20), lookAt: new THREE.Vector3(0, 0, 100)},
+    {pos: new THREE.Vector3(-10, 0, -18), lookAt: new THREE.Vector3(0, 0, 100)},
+    {pos: new THREE.Vector3(-8, 10, -5),  lookAt: new THREE.Vector3(0, 0, 100)},
+    {pos: new THREE.Vector3(0, 10, 10),  lookAt: new THREE.Vector3(0, 0, 100)}
+  ]
+
+  // Correct standalone function declaration
+  function getLookRotation(position, lookAtTarget) {
+    matrix.lookAt(position, lookAtTarget, new THREE.Vector3(0, 1, 0)); // 'up' vector usually (0, 1, 0)
+    return new THREE.Quaternion().setFromRotationMatrix(matrix);
+  }
+
+  // Example usage with pointTargets array
+  pointTargets.forEach(target => {
+    const quaternion = getLookRotation(target.pos, target.lookAt);
+    console.log(quaternion); // This will log the quaternion for the lookAt orientation
+  });
+
+  const points = [
+    {time: 0, data: {pos: pointTargets[0].pos, rot: getLookRotation(pointTargets[0].pos, pointTargets[0].lookAt)}, posEasing: TWEEN.Easing.Quadratic.In, rotEasing: TWEEN.Easing.Quadratic.In},
+    {time: 4, data: {pos: pointTargets[1].pos, rot: getLookRotation(pointTargets[1].pos, pointTargets[1].lookAt)}, posEasing: TWEEN.Easing.Linear.None, rotEasing: TWEEN.Easing.Quadratic.InOut},
+    {time: 8, data: {pos: pointTargets[2].pos, rot: getLookRotation(pointTargets[2].pos, pointTargets[2].lookAt)}, posEasing: TWEEN.Easing.Linear.None, rotEasing: TWEEN.Easing.Quadratic.InOut},
+    {time: 12, data: {pos: pointTargets[3].pos, rot: getLookRotation(pointTargets[3].pos, pointTargets[3].lookAt)}, posEasing: TWEEN.Easing.Quadratic.Out, rotEasing: TWEEN.Easing.Quadratic.Out}
+  ];
+
+  //Create a SmoothPath instance with the positions
+  const smoothPath = new SmoothPath(points);
+  //Add the smoothed line to the scene
+  const smoothedLine = smoothPath.getLineGeometry();
+  const originalLine = smoothPath.createLineGeometry(points.map(point => point.data.pos), new THREE.Color(0xff0000));
+
+  scene.add(smoothedLine);
+  scene.add(originalLine);
+
+  //Initialize CameraTrack
+  const cameraTrack = new camera_track.CameraTrack({
+    camera: camera,
+    points: points,
+    duration: 10, // 10 seconds for a full track
+  });
           
   /////////////////////
   // SceneFunctions //
   /////////////////////
 
+  // Animation loop
+  const clock = new THREE.Clock();
   //final update loop
   let MyUpdateLoop = (t) =>
   {
     TWEEN.update(t);
-
+    const deltaTime = clock.getDelta();
+    //cameraTrack.Update(deltaTime);
     composer.render();
     requestAnimationFrame(MyUpdateLoop);
 

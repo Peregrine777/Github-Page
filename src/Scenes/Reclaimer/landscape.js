@@ -46,7 +46,12 @@ export class Landscape {
     this.sun = sunDirection;
 
     this.sceneProperties = reclaimerProperties;
-    this.scene = reclaimerProperties.scene;
+    if (reclaimerProperties.scene != null){
+      this.scene = reclaimerProperties.scene;
+    }
+    else {
+      this.scene = new THREE.Scene();
+    }
     this.renderer = reclaimerProperties.renderer;
 
     this.material;

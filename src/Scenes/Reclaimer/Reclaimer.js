@@ -28,7 +28,6 @@
     let gui = new GUI();
 
 
-
     //create the webgl renderer
     let renderCanvas = document.getElementById("render");
     let renderer = new THREE.WebGLRenderer({ antialias: true, canvas: renderCanvas } );
