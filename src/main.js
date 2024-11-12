@@ -11,8 +11,12 @@
     import { camera_track } from './cameraTrack.js';
     import { SmoothPath } from './smoothPath.js';
 
+    //Scenes
+    import { sc_Reclaimer } from './Scenes/Reclaimer/Reclaimer.js';
+
     import * as CANNON from 'cannon-es';
 
+    document.getElementById("button").addEventListener("click", switchScene, false); 
     //create the scene
     let scene = new THREE.Scene( );
     // list of scenes 
@@ -27,6 +31,7 @@
     //create the webgl renderer
     let renderCanvas = document.getElementById("render");
     let renderer = new THREE.WebGLRenderer({ antialias: true, canvas: renderCanvas } );
+    document.body.appendChild(renderer.domElement);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   
@@ -47,6 +52,11 @@
     renderer.toneMapping = THREE.AgXToneMapping;
     renderer.toneMappingExposure = 1
 
+    function updateComposerScene(activeScene){
+      renderPass.scene = activeScene;
+      ssaoPass.scene = activeScene;
+    }
+
     /////////////////
     // Scene Setup //
     /////////////////
@@ -56,6 +66,18 @@
     let landVals = {octaves: 8, persistence: 0.5, lacunarity: 2, scale: 1,
     height: 100, falloff: 0.1, speed: 0.0005, noiseType: "Perlin", noise: "fbm",
     iterations: 3, resolution: 511, enableFog: true, enableShadows: true, heightMap: new THREE.Texture()};
+
+    function switchScene(){
+      // create a reclaimer scene and add it to the scenes list
+      let reclaimerScene = new sc_Reclaimer({
+        camera: camera,
+        renderer: renderer
+      });
+      scenes.push(reclaimerScene.getScene());
+      activeScene = reclaimerScene.getScene();
+      updateComposerScene(activeScene);
+    }
+
 
     /////////////
     // Objects //
@@ -76,19 +98,19 @@
 
     scene.add(land);
 
-          //ambient Lighting
-          let skyColour = new THREE.Color(0.5,0.72,1.0)
-          const ambientLight = new THREE.AmbientLight(skyColour, 0.5);
-          scene.add(ambientLight);
-    
-          //Sun
-          let sunColour = new THREE.Color(1.0,0.98,0.8)
-          const sun = new THREE.SpotLight(sunColour,1);
-          sun.castShadow = true;
-          sun.position.set(30,15,30);
-          sun.lookAt(0,0,1);
-    
-          scene.add(sun);
+    //ambient Lighting
+    let skyColour = new THREE.Color(0.5,0.72,1.0)
+    const ambientLight = new THREE.AmbientLight(skyColour, 0.5);
+    scene.add(ambientLight);
+
+    //Sun
+    let sunColour = new THREE.Color(1.0,0.98,0.8)
+    const sun = new THREE.SpotLight(sunColour,1);
+    sun.castShadow = true;
+    sun.position.set(30,15,30);
+    sun.lookAt(0,0,1);
+
+    scene.add(sun);
 
   /////////////////////
   // Camera Functions // 
@@ -150,6 +172,8 @@
   //final update loop
   let MyUpdateLoop = (t) =>
   {
+    
+    controls.update();
     TWEEN.update(t);
     const deltaTime = clock.getDelta();
     //cameraTrack.Update(deltaTime);
@@ -160,7 +184,7 @@
   
   requestAnimationFrame(MyUpdateLoop);
   
-  //this function is called when the window is resized
+  //Resizing the window
   let MyResize = function ( )
   {
     let width = window.innerWidth;

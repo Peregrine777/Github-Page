@@ -218,6 +218,7 @@ export class Landscape {
     landMaterial.uniforms.hmMax.value = minMax.max;
     landMaterial.uniforms.hmMin.value = minMax.min;
 
+    //Create the heightmap texture for the central chunk
     if (ring == 2){
       this.makeChunkTexture(heightMap, minMax.min, minMax.max); 
     }
