@@ -6,6 +6,10 @@ let _seed = 1234567;
 const DEG2RAD = Math.PI / 180;
 const RAD2DEG = 180 / Math.PI;
 
+/**
+ * Creates a unique identifier.
+ * @returns {string}
+ */
 // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
 function generateUUID() {
 
@@ -23,21 +27,38 @@ function generateUUID() {
 
 }
 
+/**
+ * Clamps the value to the range [ min, max ].
+ * @param {number} value 
+ * @param {number} min 
+ * @param {number} max 
+ * @returns {number} 
+ */
 function clamp( value, min, max ) {
-
 	return Math.max( min, Math.min( max, value ) );
-
 }
 
-// compute euclidean modulo of m % n
-// https://en.wikipedia.org/wiki/Modulo_operation
+/**  compute euclidean modulo of m % n
+ *https://en.wikipedia.org/wiki/Modulo_operation
+ * @param {number} n
+ * @param {number} m
+ * @returns {number}
+*/
 function euclideanModulo( n, m ) {
 
 	return ( ( n % m ) + m ) % m;
 
 }
 
-// Linear mapping from range <a1, a2> to range <b1, b2>
+/** Linear mapping from range <a1, a2> to range <b1, b2>
+ * https://en.wikipedia.org/wiki/Linear_interpolation
+ * @param {number} x
+ * @param {number} a1
+ * @param {number} a2
+ * @param {number} b1
+ * @param {number} b2
+ * @returns {number}
+ */
 function mapLinear( x, a1, a2, b1, b2 ) {
 
 	return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );

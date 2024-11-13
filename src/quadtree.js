@@ -1,106 +1,69 @@
 import * as THREE from 'three';
 
 
+/**
+ * Creates a quadtree data structure.
+ * @description A quadtree is a tree data structure in which each internal node has exactly four children, for spatial partitioning.
+ * @param {Object} params Parameters for the quadtree.
+ * @param {Number} params.size The size of the quadtree.
+ * @param {Number} params.min_node_size The minimum size of a node in the quadtree.
+ * @param {Number} params.cell_resolution The resolution of the quadtree cells.
+ * @param {THREE.Matrix4} params.localToWorld The local-to-world matrix for the quadtree.
+ * @example
+ * const quadtree = new QuadTree({
+ *  size: 100,
+ *  min_node_size: 1,
+ *  cell_resolution: 16,
+ *  localToWorld: new THREE.Matrix4()
+ * });
+ * @returns {QuadTree}
+ */
 export const quadtree = (function() {
-
-  class CubeQuadTree {
+  /**
+   * Creates a flat quadtree data structure. 
+   * @description A flat quadtree is a quadtree that is flat on a plane (e.g., a 2D plane).
+   */
+  class FlatQuadTree {
     constructor(params) {
       this._params = params;
-      this._sides = [];
-
-      const r = params.radius;
-      let m;
-
-      const transforms = [];
-
-      // +Y
-      m = new THREE.Matrix4();
-      m.makeRotationX(-Math.PI / 2);
-      m.premultiply(new THREE.Matrix4().makeTranslation(0, r, 0));
-      transforms.push(m);
-
-      // -Y
-      m = new THREE.Matrix4();
-      m.makeRotationX(Math.PI / 2);
-      m.premultiply(new THREE.Matrix4().makeTranslation(0, -r, 0));
-      transforms.push(m);
-
-      // +X
-      m = new THREE.Matrix4();
-      m.makeRotationY(Math.PI / 2);
-      m.premultiply(new THREE.Matrix4().makeTranslation(r, 0, 0));
-      transforms.push(m);
-
-      // -X
-      m = new THREE.Matrix4();
-      m.makeRotationY(-Math.PI / 2);
-      m.premultiply(new THREE.Matrix4().makeTranslation(-r, 0, 0));
-      transforms.push(m);
-
-      // +Z
-      m = new THREE.Matrix4();
-      m.premultiply(new THREE.Matrix4().makeTranslation(0, 0, r));
-      transforms.push(m);
-      
-      // -Z
-      m = new THREE.Matrix4();
-      m.makeRotationY(Math.PI);
-      m.premultiply(new THREE.Matrix4().makeTranslation(0, 0, -r));
-      transforms.push(m);
-
-      for (let t of transforms) {
-        this._sides.push({
-          transform: t.clone(),
-          worldToLocal: t.clone().getInverse(t),
-          quadtree: new QuadTree({
-            size: r,
-            min_node_size: params.min_node_size,
-            localToWorld: t
-          }),
-        });
-      }
-   }
+      this._quadtree = new QuadTree({
+        size: params.size,
+        min_node_size: params.min_node_size,
+        cell_resolution: params.cell_resolution,
+        localToWorld: new THREE.Matrix4(), // Identity matrix for flat plane
+      });
+    }
 
     GetChildren() {
-      const children = [];
-
-      for (let s of this._sides) {
-        const side = {
-          transform: s.transform,
-          children: s.quadtree.GetChildren(),
-        }
-        children.push(side);
-      }
-      return children;
+      return this._quadtree.GetChildren();
     }
 
     Insert(pos) {
-      for (let s of this._sides) {
-        s.quadtree.Insert(pos);
-      }
+      this._quadtree.Insert(pos);
     }
   }
 
+  /**
+   * Creates a quadtree data structure.
+   * @description A quadtree is a tree data structure in which each internal node has exactly four children, for spatial partitioning.
+  */
   class QuadTree {
     constructor(params) {
       const s = params.size;
       const b = new THREE.Box3(
-        new THREE.Vector3(-s, -s, 0),
-        new THREE.Vector3(s, s, 0));
+        new THREE.Vector3(-s / 2, 0, -s / 2),
+        new THREE.Vector3(s / 2, 0, s / 2)
+      );
       this._root = {
         bounds: b,
         children: [],
         center: b.getCenter(new THREE.Vector3()),
-        sphereCenter: b.getCenter(new THREE.Vector3()),
         size: b.getSize(new THREE.Vector3()),
+        depth: 0,  // Root node starts at depth 0
         root: true,
       };
 
       this._params = params;
-      this._root.sphereCenter = this._root.center.clone();
-      this._root.sphereCenter.applyMatrix4(this._params.localToWorld);
-      this._root.sphereCenter.normalize();
-      this._root.sphereCenter.multiplyScalar(this._params.size);
     }
 
     GetChildren() {
@@ -110,7 +73,7 @@ export const quadtree = (function() {
     }
 
     _GetChildren(node, target) {
-      if (node.children.length == 0) {
+      if (node.children.length === 0) {
         target.push(node);
         return;
       }
@@ -118,7 +81,7 @@ export const quadtree = (function() {
       for (let c of node.children) {
         this._GetChildren(c, target);
       }
-  }
+    }
 
     Insert(pos) {
       this._Insert(this._root, pos);
@@ -128,7 +91,7 @@ export const quadtree = (function() {
       const distToChild = this._DistanceToChild(child, pos);
 
       if (distToChild < child.size.x * 1.0 && child.size.x > this._params.min_node_size) {
-        child.children = this._CreateChildren(child);
+        child.children = this._CreateChildren(child, child.depth + 1);
 
         for (let c of child.children) {
           this._Insert(c, pos);
@@ -137,51 +100,41 @@ export const quadtree = (function() {
     }
 
     _DistanceToChild(child, pos) {
-      return child.sphereCenter.distanceTo(pos);
+      return child.center.distanceTo(new THREE.Vector3(pos.x, pos.y, pos.z));
     }
 
-    _CreateChildren(child) {
+    _CreateChildren(child, depth) {
       const midpoint = child.bounds.getCenter(new THREE.Vector3());
-
-      // Bottom left
-      const b1 = new THREE.Box3(child.bounds.min, midpoint);
-
-      // Bottom right
+  
+      const b1 = new THREE.Box3(
+        new THREE.Vector3(child.bounds.min.x, 0, child.bounds.min.z),
+        new THREE.Vector3(midpoint.x, 0, midpoint.z)
+      );
       const b2 = new THREE.Box3(
-        new THREE.Vector3(midpoint.x, child.bounds.min.y, 0),
-        new THREE.Vector3(child.bounds.max.x, midpoint.y, 0));
-
-      // Top left
+        new THREE.Vector3(midpoint.x, 0, child.bounds.min.z),
+        new THREE.Vector3(child.bounds.max.x, 0, midpoint.z)
+      );
       const b3 = new THREE.Box3(
-        new THREE.Vector3(child.bounds.min.x, midpoint.y, 0),
-        new THREE.Vector3(midpoint.x, child.bounds.max.y, 0));
-
-      // Top right
-      const b4 = new THREE.Box3(midpoint, child.bounds.max);
-
-      const children = [b1, b2, b3, b4].map(
-          b => {
-            return {
-              bounds: b,
-              children: [],
-              center: b.getCenter(new THREE.Vector3()),
-              size: b.getSize(new THREE.Vector3())
-            };
-          });
-
-      for (let c of children) {
-        c.sphereCenter = c.center.clone();
-        c.sphereCenter.applyMatrix4(this._params.localToWorld);
-        c.sphereCenter.normalize()
-        c.sphereCenter.multiplyScalar(this._params.size);
-      }
-
-      return children;
+        new THREE.Vector3(child.bounds.min.x, 0, midpoint.z),
+        new THREE.Vector3(midpoint.x, 0, child.bounds.max.z)
+      );
+      const b4 = new THREE.Box3(
+        new THREE.Vector3(midpoint.x, 0, midpoint.z),
+        new THREE.Vector3(child.bounds.max.x, 0, child.bounds.max.z)
+      );
+  
+      return [b1, b2, b3, b4].map(b => ({
+        bounds: b,
+        children: [],
+        center: b.getCenter(new THREE.Vector3()),
+        size: b.getSize(new THREE.Vector3()),
+        depth: depth, // Assign depth to each child node
+      }));
     }
   }
 
   return {
+    FlatQuadTree: FlatQuadTree,  // Add this as an option for flat plane quadtree
     QuadTree: QuadTree,
-    CubeQuadTree: CubeQuadTree,
   }
 })();

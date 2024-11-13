@@ -24,7 +24,6 @@ import * as CANNON from 'cannon-es';
 export class sc_Reclaimer extends SceneBase {
   constructor(params) {
     super(params);
-    this.scene = params.scene || new THREE.Scene();
     this.ratio = window.innerWidth/window.innerHeight;
     this.frame = 0;
     this.reclaimFrame = 0;
@@ -312,16 +311,9 @@ export class sc_Reclaimer extends SceneBase {
     }
 
   }
-  
-  ///////////////////////
-  // DEBUG AND TESTING //
-  //////////////////////
 
 
-
-
-
-  update = function(t)
+  update(t)
   {
     reclaimerProperties.frame += 0.01;
     if (isReclaiming == true){
@@ -337,13 +329,11 @@ export class sc_Reclaimer extends SceneBase {
     }
     
     //cannonDebugger.update();
-    environment.update();
+    this.environment.update();
 
     // console.log(camera.position);
 
   };
-  
-  
 
 }
 

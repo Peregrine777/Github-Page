@@ -3,86 +3,108 @@ import * as TWEEN from '@tweenjs/tween.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { SceneBase } from '../sceneBase.js';
+import { quadtree } from '../../quadtree.js';
 
 
-class IntroScene extends SceneBase {
-  constructor() {
-    super();
-    
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
+export class sc_IntroScene extends SceneBase {
+  constructor(params) {
+      super(params);
 
-    /////////////////
-    // Scene Setup //
-    /////////////////
-    let sceneVals = {size: 20, sunHelper: false};
-    let landVals = {octaves: 8, persistence: 0.5, lacunarity: 2, scale: 1,
-    height: 100, falloff: 0.1, speed: 0.0005, noiseType: "Perlin", noise: "fbm",
-    iterations: 3, resolution: 511, enableFog: true, enableShadows: true, heightMap: new THREE.Texture()};
+      // Flat quadtree parameters
+      const FLAT_PLANE_SIZE = 1000; // Set the plane size
+      const MIN_CELL_SIZE = 1;     // Minimum quadtree cell size
+      // For each child, we will create with x segments
+      const CELL_RESOLUTION = 16;   
 
-    /////////////
-    // Objects //
-    /////////////
-    const landGeometry = new THREE.PlaneGeometry( 1000, 1000, 100, 100 );
-    const landMaterial = new THREE.MeshPhysicalMaterial (
-      {color: new THREE.Color(0.4,0.7,0.4),
-        side: THREE.DoubleSide,
-        roughness: 1.0,
-        wireframe: true,
-        clearcoat: 0.05} );
-    const land = new THREE.Mesh(landGeometry, landMaterial );
-    land.rotation.x = -Math.PI/2;
-    land.castShadow = true;
-    land.receiveShadow = true;
+      // Initialize FlatQuadTree
+      this.quadTree = new quadtree.FlatQuadTree({
+          size: FLAT_PLANE_SIZE,
+          min_node_size: MIN_CELL_SIZE,
+          cell_resolution: CELL_RESOLUTION
+      });
 
-    const axesHelper = new THREE.AxesHelper( 5 ); scene.add( axesHelper );
-
-    this.scene.add(land);
-
-    //////////////
-    // Lighting //
-    //////////////
-
-    //ambient Lighting
-    let skyColour = new THREE.Color(0.5,0.72,1.0)
-    const ambientLight = new THREE.AmbientLight(skyColour, 0.5);
-    this.scene.add(ambientLight);
-
-    //Sun
-    let sunColour = new THREE.Color(1.0,0.98,0.8)
-    const sun = new THREE.SpotLight(sunColour,1);
-    sun.castShadow = true;
-    sun.position.set(30,15,30);
-    sun.lookAt(0,0,1);
-
-    this.scene.add(sun);
-
-    //////////////////////
-    // Camera Functions //
-    //////////////////////
-
-    this.controls = new OrbitControls( this.camera, renderer.domElement );
+      // Dictionary to track existing terrain chunks
+      this.terrainChunks = {};
+      
+      // Initial rendering based on the camera position
+      this.updateQuadtreeTiles();
   }
 
+  updateQuadtreeTiles() {
+    // Insert the current camera position into the quadtree
+    this.quadTree.Insert(this.camera.position);
 
+    // Get updated children based on camera position
+    const children = this.quadTree.GetChildren();
+    const newTerrainChunks = {}; // Temporary storage for new state
+    const center = new THREE.Vector3();
+    const dimensions = new THREE.Vector3();
 
-  // Override the update method to animate the cube
+    // Render each node in the quadtree
+    for (let node of children) {
+      // Get node center and dimensions
+      node.bounds.getCenter(center);
+      node.bounds.getSize(dimensions);
+
+      const size = dimensions.x; // Width of the square cell
+      const color = new THREE.Color(0x999999); // Default color
+      const resolution = this.quadTree._params.cell_resolution;
+
+      // Generate a unique key based on position and depth
+      const key = `${center.x}_${center.z}_${node.depth}`;
+
+      if (this.terrainChunks[key]) {
+          // If the tile already exists, keep it unchanged
+          newTerrainChunks[key] = this.terrainChunks[key];
+          delete this.terrainChunks[key]; // Remove from the old dictionary to mark as retained
+      } else {
+          // Create a new tile for this position
+          const geometry = new THREE.PlaneGeometry(size, size, resolution, resolution);
+          const material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide });
+          material.wireframe = true; // Enable wireframe mode for visualization
+          const mesh = new THREE.Mesh(geometry, material);
+
+          // Position and rotate the mesh
+          mesh.position.set(center.x, center.y, center.z);
+          mesh.rotation.x = -Math.PI / 2;
+
+          // Add the new mesh to the scene and new terrain chunks
+          this.scene.add(mesh);
+          newTerrainChunks[key] = { mesh, size, color };
+      }
+    }
+    // Any remaining items in this.terrainChunks are tiles that were not in the new state and need to be removed
+    for (const key in this.terrainChunks) {
+        this.scene.remove(this.terrainChunks[key].mesh); // Remove old tile
+    }
+
+    // Replace the old terrainChunks with the updated one
+    this.terrainChunks = newTerrainChunks;
+  }
+
   update(deltaTime) {
-    this.controls.update();
+      super.update(deltaTime);
+
+      // Check if the camera has moved significantly since the last update
+      const cameraPosition = this.camera.position;
+      if (this.needsUpdate(cameraPosition)) {
+          this.updateQuadtreeTiles();
+      }
   }
-}
 
-class SphereScene extends SceneBase {
-  constructor() {
-    super();
-    const geometry = new THREE.SphereGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    this.sphere = new THREE.Mesh(geometry, material);
-    this.scene.add(this.sphere);
+  needsUpdate(cameraPosition) {
+      // Implement logic to decide if a quadtree update is needed based on camera position
+      if (!this.lastCameraPosition) {
+          this.lastCameraPosition = new THREE.Vector3().copy(cameraPosition);
+          return true;
+      }
 
-    let cameraVals = {FOV: 55};
+      const distanceMoved = this.lastCameraPosition.distanceTo(cameraPosition);
+      if (distanceMoved > 1) { // Adjust threshold as needed
+          this.lastCameraPosition.copy(cameraPosition);
+          return true;
+      }
 
+      return false;
   }
 }
