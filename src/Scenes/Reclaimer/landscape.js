@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
-import { randFloat, randInt, smoothstep } from './MathUtils.js';
-import { LandShader } from '../../Shaders/LandscapeMaterial.js';
+import { randFloat, randInt, smoothstep } from '../../Utils/MathUtils.js';
+import { ReclaimerLandShader } from '../../Shaders/LandscapeMaterial.js';
 
 export class Landscape {
   size = 0.0;
@@ -185,9 +185,9 @@ export class Landscape {
     //Land
     let landGeom = new THREE.PlaneGeometry(this.size, this.size, this.maxResolution/ring, this.maxResolution/ring);
     let landMaterial = new THREE.ShaderMaterial({ side: THREE.DoubleSide});
-    landMaterial.uniforms = LandShader.uniforms
-    landMaterial.vertexShader = LandShader.vertexShader;
-    landMaterial.fragmentShader = LandShader.fragmentShader;
+    landMaterial.uniforms = ReclaimerLandShader.uniforms
+    landMaterial.vertexShader = ReclaimerLandShader.vertexShader;
+    landMaterial.fragmentShader = ReclaimerLandShader.fragmentShader;
     landMaterial.uniforms.lightDirection.value = this.sun;
     landMaterial.uniforms.gradientMap.value = this.gradientMap;
     landMaterial.uniforms.size.value = this.size;

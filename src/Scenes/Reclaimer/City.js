@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { randFloat, randInt, smoothstep } from './MathUtils.js';
+import { randFloat, randInt, smoothstep } from '../../Utils/MathUtils.js';
 import { Building } from './Building.js';
 
 export class City extends THREE.Object3D {
