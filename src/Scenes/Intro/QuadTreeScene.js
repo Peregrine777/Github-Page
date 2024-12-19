@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SceneBase } from '../sceneBase.js';
-import { quadtree } from '../../quadtree.js';
+import { quadtree } from '../../Terrain/quadtree.js';
 
 export class QuadTreeScene extends SceneBase {
     constructor(params) {

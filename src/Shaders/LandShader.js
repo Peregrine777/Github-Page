@@ -70,7 +70,6 @@ export const LandShader = {
     in vec3 vReflect;
     in vec3 viewZ;
     
-
     float rand (vec2 st) {
         return fract(sin(dot(st.xy,
                                 vec2(12.9898,78.233)))
@@ -106,9 +105,6 @@ export const LandShader = {
         }
         return vec4(color, dist);
     }
-
-
-
 
     void main() {
 

@@ -10,7 +10,7 @@ import { randFloat, randInt, smoothstep } from './MathUtils.js';
    * @param {number} offsetY - the y offset for the noise
    * @param {{ min: number, max: number }} heightRange - the range of heights for the noise
    * @param {ImprovedNoise} n - the noise function to use
-   * @param {{ octaves: number, persistence: number, lacunarity: number, noiseZ: number }} noiseParams - the parameters for the noise
+   * @param {{ amplitude: number, octaves: number, frequency: number, persistence: number, lacunarity: number, exponentiation: number, noiseZ: number }} noiseParams - the parameters for the noise
    * @param {number} size - the size of the object
    * @returns {Array<number>} - the heightmap
    */
@@ -49,7 +49,7 @@ export function FBM(object, offsetX = 0, offsetY = 0, heightRange, n, noiseParam
         }
 
       // Get FBM value based on vertex position within the tile
-      let h = fbmPerCell(x, y, octaves, persistence, lacunarity, noiseZ, n);
+      let h = fbmPerCell(x, y, noiseParams, n);
 
       // Update height range
       if (h > maxH) maxH = h;
@@ -58,7 +58,7 @@ export function FBM(object, offsetX = 0, offsetY = 0, heightRange, n, noiseParam
       heightMap[i] = h;
 
       // Set new height for each vertex individually
-      positionAttribute.setZ(i, h * (heightRange.max - heightRange.min));
+      positionAttribute.setZ(i, z + h * (heightRange.max - heightRange.min));
     }
 
     heightRange.max = maxH;
@@ -66,7 +66,7 @@ export function FBM(object, offsetX = 0, offsetY = 0, heightRange, n, noiseParam
 
     geometry.computeVertexNormals();
     positionAttribute.needsUpdate = true;
-    
+
     return heightMap;
 }
 
@@ -80,21 +80,20 @@ export function FBM(object, offsetX = 0, offsetY = 0, heightRange, n, noiseParam
  * @param {ImprovedNoise} n
  * @returns {number} - the noise value for this x/y coordinate
  */
-function fbmPerCell(x, y, octaves, persistence, lacunarity, noiseZ, n){
+function fbmPerCell(x, y, noiseParams, n){
     let total = 0.0;
-    let frequency = 2.00;
-    let amplitude = 1.00;
+    let frequency = 2.0;
+    let amplitude = noiseParams.amplitude;
     let maxValue = 0.00;  // Used for normalizing result to 0.0 - 1.0
-    for(let i=0;i<octaves;i++) {
-        total += n.noise(x * frequency, y * frequency, noiseZ) * amplitude;
+    for(let i=0;i<noiseParams.octaves;i++) {
+        total += n.noise(x * frequency, y * frequency, noiseParams.noiseZ) * amplitude;
         
         maxValue += amplitude;
         
-        amplitude *= persistence;
-        frequency *= lacunarity;
+        amplitude *= noiseParams.persistence;
+        frequency *= noiseParams.lacunarity;
     }
-
-    return total/maxValue;
+    return Math.pow(total, noiseParams.exponentiation)/maxValue;
 }
 
 function blendFBM(h, u, v, size){

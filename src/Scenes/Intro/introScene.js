@@ -5,7 +5,7 @@ import { FBM } from '../../Utils/FBM.js';
 import { randFloat, randInt, smoothstep } from '../../Utils/MathUtils.js';
 
 import { SceneBase } from '../sceneBase.js';
-import { quadtree } from '../../quadtree.js';
+import { quadtree } from '../../Terrain/quadtree.js';
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
 
 import { LandShader } from '../../Shaders/LandShader.js';
@@ -58,7 +58,11 @@ export class sc_IntroScene extends SceneBase {
 
     let coords = new THREE.Vector3(center.x, center.z, center.y);
 
-    FBM(mesh, coords.x, coords.y, { min: -100, max: 100 }, this.noise, { octaves: 16, persistence: 0.5, lacunarity:2, noiseZ: this.noiseZ }, this.FLAT_PLANE_SIZE);
+    FBM(mesh, coords.x, coords.y,
+         { min: -100, max: 100 },
+         this.noise,
+         { octaves: 16, frequency: 1.0, amplitude: 2, octaves: 16, persistence: 0.5, lacunarity:2, exponentiation: 2.0, noiseZ: this.noiseZ },
+         this.FLAT_PLANE_SIZE);
 
     // Add the new mesh to the scene and new terrain chunks
     this.scene.add(mesh);
