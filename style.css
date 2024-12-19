@@ -2,65 +2,138 @@ body {
     font-family: Monospace;
     background-color: #000;
     color: #fff;
-    margin: 0px;
+    margin: 0;
     overflow: hidden;
 }
+
 #info {
     position: absolute;
     top: 10px;
     width: 100%;
     text-align: center;
 }
-#button{
+
+#button {
     position: absolute;
     top: 60px;
-    width: 100%;
+    width: 10%;
     text-align: center;
+    z-index: 10;
 }
-#render{
-    position: inline-block;
-    top: 0px;
-    width: 100%;
+
+.element:active,
+
+.element:hover span {
+  background: none;
+}
+
+@media (min-width: 768px) {
+  .button-64 {
+    font-size: 24px;
+    min-width: 196px;
+  }
+}
+
+.element {
+    width: 1000px;
+    height: 120px;
+    font-size: 100px;
+    font-family: Helvetica, sans-serif;
     text-align: center;
+    line-height: normal;
+    cursor: default;
+
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
 }
-#heightgrd{
-position: absolute;
-left:5px;
-top:90%;
-width: 25px;
-height: 50px;
-z-index: 1;
-visibility: visible;
+
+.element:hover {
+    background-color: rgba(54, 15, 15, 0.23);
+    box-shadow: 0px 0px 12px rgba(90, 41, 34, 0.822);
+    border: 3px solid rgba(255, 255, 255, 0.77);
 }
-#container{
+
+.element span {
+    background-color: rgb(5, 6, 45);
+    padding: 16px 24px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
+
+.element:hover {
+    background-color: rgba(54, 15, 15, 0.23);
+    box-shadow: 0px 0px 12px rgba(90, 41, 34, 0.822);
+    border: 3px solid rgba(255, 255, 255, 0.77);
+}
+
+#render {
+    position: absolute; /* Corrected to absolute */
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#heightgrd {
+    position: absolute;
+    left: 5px;
+    top: 90%; /* This could push the element too far on small screens */
+    width: 25px;
+    height: 50px;
+    z-index: 1;
+    visibility: visible;
+}
+
+#container {
     background-color: #000;
     position: absolute;
-    left:55px;
+    left: 55px;
     bottom: 10px;
     width: 100px;
     height: 100px;
     z-index: 1;
     visibility: visible;
-    opacity: 80%;
+    opacity: 0.8; /* Corrected opacity to 0.8 */
     transition: width 0.5s, height 0.5s, opacity 0.5s;
-    }
-    #container:hover{
-        opacity: 100%;
-        width:250px;
-        height: 250px;
+}
 
-    }
-    #contTitle{
-        background-color: #00386c;
-        position: absolute;
-        top: 0px;
-        width: 100%;
-        text-align: center;
-    }
-    #fragCanvas{
+#container:hover {
+    opacity: 1; /* Full opacity on hover */
+    width: 250px;
+    height: 250px;
+}
 
-        position: block;
-        top: 0px;
-        width: 100%;
-        text-align: center;
-    }
+#contTitle {
+    background-color: #00386c;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#fragCanvas {
+    position: absolute; /* Corrected position to absolute */
+    top: 0;
+    width: 100%;
+    text-align: center;
+}

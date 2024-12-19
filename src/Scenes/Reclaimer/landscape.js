@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
-import { randFloat, randInt, smoothstep } from './MathUtils.js';
-import { LandShader } from '../../Shaders/LandscapeMaterial.js';
+import { randFloat, randInt, smoothstep } from '../../Utils/MathUtils.js';
+import { ReclaimerLandShader } from '../../Shaders/LandscapeMaterial.js';
 
 export class Landscape {
   size = 0.0;
@@ -185,9 +185,9 @@ export class Landscape {
     //Land
     let landGeom = new THREE.PlaneGeometry(this.size, this.size, this.maxResolution/ring, this.maxResolution/ring);
     let landMaterial = new THREE.ShaderMaterial({ side: THREE.DoubleSide});
-    landMaterial.uniforms = LandShader.uniforms
-    landMaterial.vertexShader = LandShader.vertexShader;
-    landMaterial.fragmentShader = LandShader.fragmentShader;
+    landMaterial.uniforms = ReclaimerLandShader.uniforms
+    landMaterial.vertexShader = ReclaimerLandShader.vertexShader;
+    landMaterial.fragmentShader = ReclaimerLandShader.fragmentShader;
     landMaterial.uniforms.lightDirection.value = this.sun;
     landMaterial.uniforms.gradientMap.value = this.gradientMap;
     landMaterial.uniforms.size.value = this.size;
@@ -218,6 +218,7 @@ export class Landscape {
     landMaterial.uniforms.hmMax.value = minMax.max;
     landMaterial.uniforms.hmMin.value = minMax.min;
 
+    //Create the heightmap texture for the central chunk
     if (ring == 2){
       this.makeChunkTexture(heightMap, minMax.min, minMax.max); 
     }
@@ -233,10 +234,17 @@ export class Landscape {
 
   }
 
-
-  fbmNoise(object, offsetX = 0, offsetY = 0, range){
-    let maxH = range.max;
-    let minH = range.min;
+  /**
+   * 
+   * @param {THREE.Object3D} object - the object to apply the noise to
+   * @param {number} offsetX - the x offset for the noise
+   * @param {number} offsetY - the y offset for the noise
+   * @param {{ min: number, max: number }} heightRange - the range of heights for the noise
+   * @returns {Array<number>} - the heightmap
+   */
+  fbmNoise(object, offsetX = 0, offsetY = 0, heightRange){
+    let maxH = heightRange.max;
+    let minH = heightRange.min;
     let geometry = object.geometry
     let positionAttribute = geometry.attributes.position;
     let octaves = this.octaves;
@@ -284,8 +292,8 @@ export class Landscape {
       positionAttribute.setZ(i, z + h);
     }
 
-    range.max = maxH;
-    range.min = minH;
+    heightRange.max = maxH;
+    heightRange.min = minH;
 
     geometry.computeVertexNormals();
     positionAttribute.needsUpdate = true;
@@ -293,6 +301,14 @@ export class Landscape {
     return heightMap;
   }
 
+  /**
+   * Fractal Brownian Motion based noise, normalized to a value between 0 and 1
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} octaves
+   * @param {number} persistence
+   * @returns {number} - the noise value for this x/y coordinate
+   */
   fbm(x, y, octaves, persistence) {
     let total = 0.0;
     let frequency = 1.00;

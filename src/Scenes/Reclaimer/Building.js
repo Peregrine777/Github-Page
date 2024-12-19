@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { BuildingBlock } from './BuildingBlock.js';
-import { randInt } from './MathUtils.js';
+import { randInt } from '../../Utils/MathUtils.js';
 
 export class Building extends THREE.Object3D{
     constructor(parent, height, reclaimerProperties){

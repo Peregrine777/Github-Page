@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Vector3 } from "three";
 
-export const LandShader = {
+export const ReclaimerLandShader = {
 
 
     uniforms: {
@@ -187,7 +187,6 @@ export const LandShader = {
         vec2 fpos = fract(st);
 
         vec3 mosaicCol = step(0.02,vec3(random( ipos )) * (distCenter));
-        
 
         vec3 buildable = vec3(negHeight * distCenter * distCutoff, vertHeight * distCenter * negHeight * distCutoff, 0.0);
         float scaleFactor = 00001.0;
@@ -205,7 +204,6 @@ export const LandShader = {
         float roads = roadCol * step(0.05,( buildable.r));
 
         landColor = landColor * (1. - roads);
-
 
         //Ambient Lighting
         vec3 ambientColor = vec3(0.35, 0.35, 0.34) * 0.8;
@@ -261,10 +259,7 @@ export const LandShader = {
             }
         }
 
-
         vec3 debugShadow = (1.0 - inShadow) * vec3(0.3, 0.3, 0.3);
-
-
 
         //pseudo fresnel
         float fresnel =  dot(vNormal, vViewDirection);
