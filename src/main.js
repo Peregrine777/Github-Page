@@ -15,7 +15,6 @@ import { SmoothPath } from './smoothPath.js';
 //Scenes
 import { sc_IntroScene } from './Scenes/Intro/introScene.js'
 import { sc_Reclaimer } from './Scenes/Reclaimer/Reclaimer.js';
-import { QuadTreeScene } from './Scenes/Intro/QuadTreeScene.js';
 
 
 
@@ -160,7 +159,6 @@ const cameraTrack = new camera_track.CameraTrack({
 /////////////////////
 // SceneFunctions //
 /////////////////////
-createGUI();
 
 function createGUI() {
   let _guiParams = {
