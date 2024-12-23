@@ -8,7 +8,7 @@ import { LandShader } from '../Shaders/LandShader.js';
 import { GUI } from 'dat.gui';
 
 
-const _NUM_WORKERS = 7;
+const _NUM_WORKERS = 16;
 
 let _IDs = 0;
 
@@ -88,7 +88,7 @@ export class TerrainBuilder_threaded{
     
         // Flat quadtree parameters
         this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
-        this.MIN_CELL_SIZE = params.min_cell_size || 1;     // Minimum quadtree cell size
+        this.MIN_CELL_SIZE = params.min_cell_size || 8;     // Minimum quadtree cell size
         // For each child, we will create with x segments
         this.CELL_RESOLUTION = params.cell_resolution || 64;   
 
@@ -155,9 +155,12 @@ export class TerrainBuilder_threaded{
                 delete this.terrainChunks[key];
             } else {
                 promises.push(
-                    this.generateTile(center, size, color, resolution).then((mesh) => {
-                        this.scene.add(mesh);
+                    this.generateTile(center, size, resolution)
+                    .then((mesh) => {
                         newTerrainChunks[key] = mesh;
+                    })
+                    .catch((e) => {
+                        console.error(e);
                     })
                 );
             }
@@ -175,43 +178,45 @@ export class TerrainBuilder_threaded{
     }    
 
 
-    generateTile(center, size, color, resolution) {
+    async generateTile(center, size, resolution) {
       const params = {
           center: { x: center.x, y: center.y, z: center.z },
-          size,
-          color: color.getHex(),
-          resolution,
-          noiseParams: this.noise, // Pass any noise parameters needed
+          size: size,
+          planeSize: this.FLAT_PLANE_SIZE,
+          resolution: resolution,
+          noiseZ: this.noiseZ
       };
   
       return new Promise((resolve) => {
           this._workerPool.Enqueue(
-              { subject: 'generate_tile', params },
-              (result) => {
-                  const geometry = new THREE.PlaneGeometry(size, size, resolution, resolution);
-                  const material = new THREE.ShaderMaterial({
-                      uniforms: LandShader.uniforms,
-                      vertexShader: LandShader.vertexShader,
-                      fragmentShader: LandShader.fragmentShader,
-                      side: THREE.DoubleSide,
-                      wireframe: this.wireframe,
-                  });
-  
-                  material.uniforms.size.value = this.FLAT_PLANE_SIZE;
-                  material.uniforms.enableFog.value = true;
-  
-                  const mesh = new THREE.Mesh(geometry, material);
-                  mesh.position.set(center.x, center.y, center.z);
-                  mesh.rotation.x = -Math.PI / 2;
-  
-                  // Apply the positions array from the worker
-                  const positions = new Float32Array(result.positions); // Convert ArrayBuffer to Float32Array
-                  mesh.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            { subject: 'generate_tile', params: params },
+            (result) => {
+                const geometry = new THREE.PlaneGeometry(size, size, resolution, resolution);
+                let landMaterial = new THREE.ShaderMaterial({ side: THREE.DoubleSide});
+                landMaterial.uniforms = LandShader.uniforms
+                landMaterial.vertexShader = LandShader.vertexShader;
+                landMaterial.fragmentShader = LandShader.fragmentShader;
+                landMaterial.uniforms.size.value = this.FLAT_PLANE_SIZE;
+                landMaterial.uniforms.enableFog.value = true;
+                landMaterial.wireframe = this.wireframe;
 
-                  mesh.geometry.computeVertexNormals();
-  
-                  resolve(mesh);
-              }
+
+                const mesh = new THREE.Mesh(geometry, landMaterial);
+                mesh.position.set( params.center.x, params.center.y, params.center.z);
+                mesh.rotation.x = -Math.PI / 2;
+
+                // Apply the positions array from the worker
+                let meshPositions = mesh.geometry.attributes.position;
+                for (let i = 0; i < meshPositions.count; i++) {
+                    let height = result.positions.positions[i];
+                    meshPositions.setZ(i, height);
+                }
+
+                mesh.geometry.computeVertexNormals();
+                //meshPositions.needsUpdate = true;
+                this.scene.add(mesh);
+                resolve(mesh);
+            }
           );
       });
   }

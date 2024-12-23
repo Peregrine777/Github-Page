@@ -74,7 +74,7 @@ export class threadTest {
 
   async Run() {
     const workItems = [...Array(14)].map((_, i) => i);
-    const results = await Promise.all(workItems.map((i) => this._DoWork(i)));
+    const results = await Promise.all(workItems.map((i) => this._DoWork({subject: "Worker test", data: i})));
     console.log('Results:', results);
   }
 

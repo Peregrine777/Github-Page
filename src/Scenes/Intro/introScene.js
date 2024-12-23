@@ -16,7 +16,7 @@ export class sc_IntroScene extends SceneBase {
       super(params);
       
       this.updateTerrain = true;
-      this.terrain = new TerrainBuilder({
+      this.terrain = new TerrainBuilder_threaded({
         camera: this.camera,
         scene: this.scene,
         renderer: this.renderer
@@ -25,7 +25,7 @@ export class sc_IntroScene extends SceneBase {
 
       // run the threading test
       let test = new threadTest();
-        test.Run();
+      test.Run();
     }
 
     _initGUI(){
