@@ -121,18 +121,27 @@ export class TerrainBuilder{
 
         let coords = new THREE.Vector3(center.x, center.z, center.y);
 
-        FBM(mesh, coords.x, coords.y,
+        let positionAttribute = mesh.geometry.attributes.position;
+
+        // fbm returns an array of heightmap values
+        let heightmap = FBM(positionAttribute, coords.x, coords.y,
                 { min: -100, max: 100 },
                 this.noise,
                 { octaves: 16, frequency: 1.0, amplitude: 2, octaves: 16, persistence: 0.5, lacunarity:2, exponentiation: 2.0, noiseZ: this.noiseZ },
-                this.FLAT_PLANE_SIZE);
+                this.FLAT_PLANE_SIZE,
+                resolution);
+
+        for (let i = 0; i < positionAttribute.count; i++) {
+            positionAttribute.setZ(i, heightmap[i]);
+        }
+
+        geometry.computeVertexNormals();
+        positionAttribute.needsUpdate = true;
         
         // Add the new mesh to the scene and new terrain chunks
         this.scene.add(mesh);
         return mesh;
     }
-    
-    
     
     update() {
           // Check if the camera has moved significantly since the last update
