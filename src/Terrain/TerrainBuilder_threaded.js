@@ -8,7 +8,7 @@ import { LandShader } from '../Shaders/LandShader.js';
 import { GUI } from 'dat.gui';
 
 
-const _NUM_WORKERS = 16;
+const _NUM_WORKERS = 23;
 
 let _IDs = 0;
 
@@ -45,6 +45,7 @@ class WorkerThreadPool {
     this._free = [...this._workers];
     this._busy = {};
     this._queue = [];
+    this._queueMaxLength = this._workers.length * 4;
   }
 
   get length() {
@@ -55,10 +56,20 @@ class WorkerThreadPool {
     return this._queue.length > 0 || Object.keys(this._busy).length > 0;
   }
 
+
+  _CullQueue(){
+    // Remove any work items beyond max queue length
+    const [workItem, workResolve] = this._queue.pop();
+  }
+
   Enqueue(workItem, resolve) {
     this._queue.push([workItem, resolve]);
     this._PumpQueue();
+    if (this._queue.length > this._queueMaxLength) {
+      //this._CullQueue();
+    }
   }
+
 
   _PumpQueue() {
     while (this._free.length > 0 && this._queue.length > 0) {
@@ -85,10 +96,12 @@ export class TerrainBuilder_threaded{
 
         this._workerPool = new WorkerThreadPool(
           _NUM_WORKERS, 'src/Terrain/TerrainBuilder_threaded_worker.js');
+
+        this.updateInProgress = false;
     
         // Flat quadtree parameters
         this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
-        this.MIN_CELL_SIZE = params.min_cell_size || 8;     // Minimum quadtree cell size
+        this.MIN_CELL_SIZE = params.min_cell_size || 4;     // Minimum quadtree cell size
         // For each child, we will create with x segments
         this.CELL_RESOLUTION = params.cell_resolution || 64;   
 
@@ -131,54 +144,60 @@ export class TerrainBuilder_threaded{
     }
 
     async updateQuadtreeTiles() {
-        this.quadTree.Insert(this.camera.position);
-    
-        const children = this.quadTree.GetChildren();
-        const newTerrainChunks = {};
-        const center = new THREE.Vector3();
-        const dimensions = new THREE.Vector3();
-    
-        const promises = []; // Store all asynchronous tile generation promises
-    
-        for (let node of children) {
-            node.bounds.getCenter(center);
-            node.bounds.getSize(dimensions);
-    
-            const size = dimensions.x;
-            const color = new THREE.Color(0x999999);
-            const resolution = this.quadTree._params.cell_resolution;
-    
-            const key = `${center.x}_${center.z}_${node.depth}`;
-    
-            if (this.terrainChunks[key]) {
-                newTerrainChunks[key] = this.terrainChunks[key];
-                delete this.terrainChunks[key];
-            } else {
-                promises.push(
-                    this.generateTile(center, size, resolution)
-                    .then((mesh) => {
-                        newTerrainChunks[key] = mesh;
-                    })
-                    .catch((e) => {
-                        console.error(e);
-                    })
-                );
-            }
-        }
-    
-        // Wait for all tiles to finish generating
+
+      if (this.updateInProgress) {
+        return; // Skip if already running
+      }
+      this.updateInProgress = true;
+
+      this.quadTree.Insert(this.camera.position);
+  
+      const children = this.quadTree.GetChildren();
+      const newTerrainChunks = {};
+      const center = new THREE.Vector3();
+      const dimensions = new THREE.Vector3();
+  
+      const promises = []; // Store all asynchronous tile generation promises
+  
+      for (let node of children) {
+          const c = node.bounds.getCenter(center);
+          const s = node.bounds.getSize(dimensions);
+  
+          const size = dimensions.x;
+          const color = new THREE.Color(0x999999);
+          const resolution = this.quadTree._params.cell_resolution;
+  
+          const key = `${c.x}_${c.z}_${node.depth}`;
+  
+          if (this.terrainChunks[key]) {
+              newTerrainChunks[key] = this.terrainChunks[key];
+              delete this.terrainChunks[key];
+          } else {
+              promises.push(
+                  this.generateTile(center, size, resolution)
+                  .then((mesh) => {
+                      newTerrainChunks[key] = mesh;
+                  })
+                  .catch((e) => {
+                      console.error(e);
+                  })
+              );
+          }
+      }
+
+      try {
         await Promise.all(promises);
-    
-        // Remove old tiles
         for (const key in this.terrainChunks) {
             this.scene.remove(this.terrainChunks[key]);
         }
-    
         this.terrainChunks = newTerrainChunks;
+      } finally {
+          this.updateInProgress = false;
+      }
     }    
 
 
-    async generateTile(center, size, resolution) {
+    generateTile(center, size, resolution) {
       const params = {
           center: { x: center.x, y: center.y, z: center.z },
           size: size,
@@ -197,7 +216,8 @@ export class TerrainBuilder_threaded{
                 landMaterial.vertexShader = LandShader.vertexShader;
                 landMaterial.fragmentShader = LandShader.fragmentShader;
                 landMaterial.uniforms.size.value = this.FLAT_PLANE_SIZE;
-                landMaterial.uniforms.enableFog.value = true;
+                landMaterial.uniforms.enableFog.value = false;
+                landMaterial.uniforms.showNormals.value = false;
                 landMaterial.wireframe = this.wireframe;
 
 
@@ -206,14 +226,24 @@ export class TerrainBuilder_threaded{
                 mesh.rotation.x = -Math.PI / 2;
 
                 // Apply the positions array from the worker
-                let meshPositions = mesh.geometry.attributes.position;
+                let meshPositions = mesh.geometry.attributes.position; 
                 for (let i = 0; i < meshPositions.count; i++) {
                     let height = result.positions.positions[i];
                     meshPositions.setZ(i, height);
+
                 }
 
-                mesh.geometry.computeVertexNormals();
-                //meshPositions.needsUpdate = true;
+                let meshNormals = mesh.geometry.attributes.normal;
+                for (let i = 0; i < meshNormals.count; i++) {
+                  const nx = result.positions.normals[i * 3 + 0];
+                  const ny = result.positions.normals[i * 3 + 1];
+                  const nz = result.positions.normals[i * 3 + 2];
+                  meshNormals.setXYZ(i, -nx, nz, -ny);
+                }
+
+                meshNormals.needsUpdate = true;
+                meshPositions.needsUpdate = true;
+                //geometry.computeVertexNormals();
                 this.scene.add(mesh);
                 resolve(mesh);
             }

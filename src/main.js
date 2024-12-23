@@ -34,7 +34,7 @@ document.body.appendChild(renderer.domElement);
 //camera
 let ratio = window.innerWidth/window.innerHeight;
 let cameraParams = {FOV: 55};
-let camera = new THREE.PerspectiveCamera(cameraParams.FOV,ratio,0.1,5000);
+let camera = new THREE.PerspectiveCamera(cameraParams.FOV,ratio,0.1,10000);
 camera.position.set(-20, 5, -20);
 
 

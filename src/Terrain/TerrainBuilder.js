@@ -15,9 +15,9 @@ export class TerrainBuilder{
     
         // Flat quadtree parameters
         this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
-        this.MIN_CELL_SIZE = params.min_cell_size || 32;     // Minimum quadtree cell size
+        this.MIN_CELL_SIZE = params.min_cell_size || 16;     // Minimum quadtree cell size
         // For each child, we will create with x segments
-        this.CELL_RESOLUTION = params.cell_resolution || 32;   
+        this.CELL_RESOLUTION = params.cell_resolution || 16;   
 
         this.noise = new ImprovedNoise();
         this.noiseZ = randFloat(0, 1000); // Randomize the noise function
@@ -86,6 +86,7 @@ export class TerrainBuilder{
               let mesh = this.generateTile(center, size, color, resolution);
               // Create a new tile for this position
               newTerrainChunks[key] = mesh;
+              this.scene.add(newTerrainChunks[key]); // Add new tile to the scene
           }
         }
         // Any remaining items in this.terrainChunks are tiles that were not in the new state and need to be removed
@@ -136,7 +137,7 @@ export class TerrainBuilder{
         positionAttribute.needsUpdate = true;
         
         // Add the new mesh to the scene and new terrain chunks
-        this.scene.add(mesh);
+        
         return mesh;
     }
     
