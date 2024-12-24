@@ -159,13 +159,23 @@ export const LandShader = {
             return;
         }
 
-        float fog = viewZ.z/5000.;
+        float fog = viewZ.z/3000.;
+        float altitude = vPosition.y;
+
+        float fogDensity = smoothstep(0.0, 100.0, altitude); 
+
+        float mist = viewZ.z/1000.;
+        float misDensity = smoothstep(0.0, 30.0, altitude);
+
+        float fogAmount = abs(fog * (1.0-fogDensity));
+        float mistAmount = abs(mist * (1.0-misDensity));
+        float totalFog = clamp(fogAmount + mistAmount, 0., 1.);
         
         vec3 c = mix(finalLighting, ambientColor, ambientStrength);
 
         vec3 finalFog = c;
         if (enableFog){
-            finalFog = mix(c, fogColor, fog);
+            finalFog = mix(c, fogColor, totalFog);
         }
 
 

@@ -216,7 +216,7 @@ export class TerrainBuilder_threaded{
                 landMaterial.vertexShader = LandShader.vertexShader;
                 landMaterial.fragmentShader = LandShader.fragmentShader;
                 landMaterial.uniforms.size.value = this.FLAT_PLANE_SIZE;
-                landMaterial.uniforms.enableFog.value = false;
+                landMaterial.uniforms.enableFog.value = true;
                 landMaterial.uniforms.showNormals.value = false;
                 landMaterial.wireframe = this.wireframe;
 
