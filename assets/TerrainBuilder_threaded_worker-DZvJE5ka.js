@@ -1,6 +1,14 @@
 
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
-import { FBM } from '../Utils/FBM.js';
+// Dynamically import FBM
+let FBM;
+(async () => {
+  // Resolve the path dynamically, and ensure it's loaded correctly in both local and production
+  const FBMPath = new URL('../Utils/FBM.js', import.meta.url);
+  const module = await import(FBMPath.href);
+  FBM = module.FBM;
+})();
+
 
 self.onmessage = async function (e) {
   const { subject, params } = e.data;
@@ -12,6 +20,12 @@ self.onmessage = async function (e) {
 
     console.log("Generating tile with params:", center, size, resolution);
     
+    //yield until FBM is loaded
+    while (!FBM) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    
+
     const chunkData = buildChunk(center, size, planeSize, resolution, noiseParams);
     self.postMessage({
       subject: 'generate_tile_result', // Use the correct subject
