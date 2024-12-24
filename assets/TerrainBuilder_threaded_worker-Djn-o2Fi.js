@@ -1,16 +1,8 @@
 
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
-// Dynamically import FBM
-let FBM;
-(async () => {
-  // Resolve the path dynamically, and ensure it's loaded correctly in both local and production
-  const FBMPath = new URL('../Utils/FBM.js', import.meta.url);
-  const module = await import(FBMPath.href);
-  FBM = module.FBM;
-})();
 
 
-self.onmessage = async function (e) {
+self.onmessage = function (e) {
   const { subject, params } = e.data;
 
   console.log("Worker received message:", e.data);
@@ -19,12 +11,6 @@ self.onmessage = async function (e) {
     const { center, size, planeSize, resolution, noiseParams } = params;
 
     console.log("Generating tile with params:", center, size, resolution);
-    
-    //yield until FBM is loaded
-    while (!FBM) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-    
 
     const chunkData = buildChunk(center, size, planeSize, resolution, noiseParams);
     self.postMessage({
@@ -152,5 +138,63 @@ function accumulateNormal(normals, index, normal) {
   normals[index * 3 + 1] += normal.y;
   normals[index * 3 + 2] += normal.z;
 }
+
+
+/**
+* Applies vertex offsets in z direction to a given object based on a noise function, returns a heightmap for debugging
+* @param {THREE.Vector3} center - the center of the tile
+* @param {{ min: number, max: number }} heightRange - the range of heights for the noise
+* @param {ImprovedNoise} n - the noise function to use
+* @param {{ amplitude: number, octaves: number, frequency: number, persistence: number, lacunarity: number, exponentiation: number, noiseZ: number }} noiseParams - the parameters for the noise
+* @param {number} size - the size of the tile (subset of planeSize)
+* @param {number} planeSize - the size of the entire plane
+* @param {number} resolution - the resolution of the object
+* @returns {Array<number>} - the heightmap
+*/
+export function FBM(center, heightRange, n, noiseParams, size, planeSize, resolution) {
+  const heightMap = [];
+
+  // Loop through each grid point (resolution + 1) and apply FBM to the x/y coordinates
+  for (let i = 0; i < (resolution + 1) * (resolution + 1); i++) {
+      // Calculate the x, y, z coordinates for this grid point
+      const{x, y} = arrayToWorld(i, resolution, size, center);
+
+      // Normalize the u, v coordinates to [0, 1] based on the total plane size (to get our relative position in the global noise field)
+      const u = (x + planeSize/2) / planeSize;
+      const v = (y + planeSize/2) / planeSize;
+
+      // Use the FBM function to generate height values (apply it on x/y)
+      const h = fbmPerCell(u, v, noiseParams, n);  // You can modify fbmPerCell to return the height at this position
+      heightMap[i] = h * (heightRange.max - heightRange.min);
+  }
+
+  return heightMap;
+}
+/**
+* Fractal Brownian Motion based noise, normalized to a value between 0 and 1
+* @param {number} x 
+* @param {number} y 
+* @param {number} octaves
+* @param {number} persistence
+* @param {number} size
+* @param {ImprovedNoise} n
+* @returns {number} - the noise value for this x/y coordinate
+*/
+function fbmPerCell(x, y, noiseParams, n) {
+  let total = 0.0;
+  let frequency = 2.0;
+  let amplitude = noiseParams.amplitude;
+  let maxValue = 0.0;
+
+  for (let i = 0; i < noiseParams.octaves; i++) {
+      total += n.noise(x * frequency, y * frequency, noiseParams.noiseZ) * amplitude;
+      maxValue += amplitude;
+      amplitude *= noiseParams.persistence;
+      frequency *= noiseParams.lacunarity;
+  }
+
+  return Math.pow(total, noiseParams.exponentiation) / maxValue;
+}
+
 
 
