@@ -12,6 +12,8 @@ export class TerrainBuilder{
         this.camera = params.camera;
         this.scene = params.scene;
         this.wireframe = false;
+
+        this.updateTerrain = true;
     
         // Flat quadtree parameters
         this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
