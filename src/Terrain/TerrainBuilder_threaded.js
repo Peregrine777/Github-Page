@@ -92,10 +92,13 @@ export class TerrainBuilder_threaded{
     constructor(params){
         this.camera = params.camera;
         this.scene = params.scene;
+        this.gui = params.gui;
         this.wireframe = false;
 
+        this.updateTerrain = true;
+        const workerPath = new URL('./TerrainBuilder_threaded_worker.js', import.meta.url)
         this._workerPool = new WorkerThreadPool(
-          _NUM_WORKERS, 'src/Terrain/TerrainBuilder_threaded_worker.js');
+          _NUM_WORKERS, workerPath);
 
         this.updateInProgress = false;
     
@@ -107,6 +110,15 @@ export class TerrainBuilder_threaded{
 
         this.noise = new ImprovedNoise();
         this.noiseZ = randFloat(0, 1000); // Randomize the noise function
+        this.noiseParams = {
+          amplitude: 1,
+          octaves: 8,
+          frequency: 1,
+          persistence: 0.5,
+          lacunarity: 2,
+          exponentiation: 2.0,
+          noiseZ: this.noiseZ
+        };
 
         // Initialize FlatQuadTree
         this.quadTree = new quadtree.FlatQuadTree({
@@ -121,6 +133,75 @@ export class TerrainBuilder_threaded{
         
         // Initial rendering based on the camera position
         this.updateQuadtreeTiles();
+
+        this._initGUI();
+    }
+
+    _initGUI(){
+      let terrainGUI = this.gui.addFolder('Terrain');
+      // Add a boolean to whether the terrain updates or not
+      terrainGUI.add(this, 'updateTerrain').name('Update Terrain');
+      terrainGUI.add(this, 'wireframe').onChange(() => {
+          this.updateTerrainMesh();
+      });
+
+      terrainGUI.add(this, 'FLAT_PLANE_SIZE')
+          .name('Terrain Size')
+          .min(100)
+          .max(10000)
+          .step(100)
+          .onChange(() => {
+              this.updateTerrainParams({
+                  flat_plane_size: this.FLAT_PLANE_SIZE
+              });
+          });
+      terrainGUI.add(this, 'MIN_CELL_SIZE').name('Min Cell Size')
+          .min(1)
+          .max(512)
+          .step(32)
+          .onChange(() => {
+              this.updateTerrainParams({
+                  min_cell_size: this.MIN_CELL_SIZE
+              });
+          });
+      terrainGUI.add(this, 'CELL_RESOLUTION').name('Cell Resolution').min(16).max(512).step(16).onChange(() => {
+        this.updateTerrainParams({
+          cell_resolution: this.CELL_RESOLUTION
+        });
+      });
+      let noiseParams = terrainGUI.addFolder('NoiseParams');
+      noiseParams.add(this.noiseParams, 'octaves').min(1).max(16).step(1).name('Octaves').onChange(() => {
+        console.log("Octaves changed:", this.noiseParams.octaves);
+        this.updateTerrainParams({
+          octaves: this.noiseParams.octaves
+        });
+        noiseParams.updateDisplay(); 
+      });
+      noiseParams.add(this.noiseParams, 'frequency').min(0.1).max(2).step(0.1).name('Frequency').onChange(() => {
+        this.updateTerrainParams({
+          frequency: this.noiseParams.frequency
+        });
+      });
+      noiseParams.add(this.noiseParams, 'amplitude').min(0.1).max(10).step(0.1).name('Amplitude').onChange(() => {
+        this.updateTerrainParams({
+          amplitude: this.noiseParams.amplitude
+        });
+      });
+      noiseParams.add(this.noiseParams, 'persistence').min(0.1).max(2).step(0.1).name('Persistence').onChange(() => {
+        this.updateTerrainParams({
+          persistence: this.noiseParams.persistence
+        });
+      });
+      noiseParams.add(this.noiseParams, 'lacunarity').min(1).max(4).step(0.1).name('Lacunarity').onChange(() => {
+        this.updateTerrainParams({
+          lacunarity: this.noiseParams.lacunarity
+        });
+      });
+      noiseParams.add(this.noiseParams, 'exponentiation').min(1).max(10).step(0.1).name('Exponentiation').onChange(() => {
+        this.updateTerrainParams({
+          exponentiation: this.noiseParams.exponentiation
+        });
+      });
     }
 
     updateTerrainMesh(){
@@ -131,16 +212,22 @@ export class TerrainBuilder_threaded{
 
 
     updateTerrainParams(params) {
-        this.FLAT_PLANE_SIZE = params.flat_plane_size || this.FLAT_PLANE_SIZE;
-        this.MIN_CELL_SIZE = params.min_cell_size || this.MIN_CELL_SIZE;
-        this.CELL_RESOLUTION = params.cell_resolution || this.CELL_RESOLUTION;
-        this.quadTree = new quadtree.FlatQuadTree({
-            size: this.FLAT_PLANE_SIZE,
-            min_node_size: this.MIN_CELL_SIZE,
-            cell_resolution: this.CELL_RESOLUTION
-        });
+      this.FLAT_PLANE_SIZE = params.flat_plane_size || this.FLAT_PLANE_SIZE;
+      this.MIN_CELL_SIZE = params.min_cell_size || this.MIN_CELL_SIZE;
+      this.CELL_RESOLUTION = params.cell_resolution || this.CELL_RESOLUTION;
+      this.noiseParams.octaves = params.octaves || this.noiseParams.octaves;
+      this.noiseParams.frequency = params.frequency || this.noiseParams.frequency;
+      this.noiseParams.amplitude = params.amplitude || this.noiseParams.amplitude;
+      this.noiseParams.persistence = params.persistence || this.noiseParams.persistence;
+      this.noiseParams.lacunarity = params.lacunarity || this.noiseParams.lacunarity;
+      this.noiseParams.exponentiation = params.exponentiation || this.noiseParams.exponentiation;
+      this.quadTree = new quadtree.FlatQuadTree({
+        size: this.FLAT_PLANE_SIZE,
+        min_node_size: this.MIN_CELL_SIZE,
+        cell_resolution: this.CELL_RESOLUTION
+      });
 
-        this.updateQuadtreeTiles();
+      this.updateQuadtreeTiles();
     }
 
     async updateQuadtreeTiles() {
@@ -203,6 +290,7 @@ export class TerrainBuilder_threaded{
           size: size,
           planeSize: this.FLAT_PLANE_SIZE,
           resolution: resolution,
+          noiseParams: this.noiseParams,
           noiseZ: this.noiseZ
       };
   
@@ -253,11 +341,13 @@ export class TerrainBuilder_threaded{
   
     
     update() {
+      if (this.updateTerrain) {
           // Check if the camera has moved significantly since the last update
           const cameraPosition = this.camera.position;
           if (this.needsUpdate(cameraPosition)) {
               this.updateQuadtreeTiles();
           }
+      }
     }
 
     needsUpdate(cameraPosition) {

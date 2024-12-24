@@ -87,6 +87,7 @@ export class sc_Reclaimer extends SceneBase {
     let uiVals = {HeightTexture: true};
 
     let environment = new Environment(this.scene, this.renderer);
+    this.environment = environment;
     let sunDirection = environment.sun;
 
     let materialsArray = [];
@@ -315,18 +316,18 @@ export class sc_Reclaimer extends SceneBase {
 
   update(t)
   {
-    reclaimerProperties.frame += 0.01;
-    if (isReclaiming == true){
-      reclaimerProperties.reclaimFrame += 0.01;
-    }
-    frame += 0.01;
+    // reclaimerProperties.frame += 0.01;
+    // if (isReclaiming == true){
+    //   reclaimerProperties.reclaimFrame += 0.01;
+    // }
+    // frame += 0.01;
   
     TWEEN.update(t);
 
-    if(cityVals.isSimulating){
-      city.updateBuildings();
-      physicsworld.fixedStep();
-    }
+    // if(cityVals.isSimulating){
+    //   city.updateBuildings();
+    //   physicsworld.fixedStep();
+    // }
     
     //cannonDebugger.update();
     this.environment.update();

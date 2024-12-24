@@ -8,11 +8,11 @@ self.onmessage = async function (e) {
   console.log("Worker received message:", e.data);
 
   if (subject == 'generate_tile') { // Changed 'build_chunk' to 'generate_tile'
-    const { center, size, planeSize, resolution, noiseZ } = params;
+    const { center, size, planeSize, resolution, noiseParams } = params;
 
     console.log("Generating tile with params:", center, size, resolution);
     
-    const chunkData = buildChunk(center, size, planeSize, resolution, noiseZ);
+    const chunkData = buildChunk(center, size, planeSize, resolution, noiseParams);
     self.postMessage({
       subject: 'generate_tile_result', // Use the correct subject
       positions: chunkData
@@ -21,13 +21,20 @@ self.onmessage = async function (e) {
 };
 
 
-function buildChunk(center, size, planeSize, resolution, _noiseZ) {
+function buildChunk(center, size, planeSize, resolution, noiseParams) {
   const n = new ImprovedNoise();
+
 
   let heightmap = FBM(center,
     { min: -100, max: 100 },
     n,
-    { octaves: 16, frequency: 1.0, amplitude: 2, octaves: 16, persistence: 0.5, lacunarity:2, exponentiation: 2.0, noiseZ: _noiseZ },
+    { octaves: noiseParams.octaves, 
+      frequency: noiseParams.frequency, 
+      amplitude: noiseParams.amplitude, 
+      persistence: noiseParams.persistence, 
+      lacunarity:noiseParams.lacunarity, 
+      exponentiation: noiseParams.exponentiation, 
+      noiseZ: noiseParams.noiseZ },
     size,
     planeSize,
     resolution
