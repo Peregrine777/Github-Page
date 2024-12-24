@@ -128,7 +128,7 @@ export const quadtree = (function() {
         children: [],
         center: b.getCenter(new THREE.Vector3()),
         size: b.getSize(new THREE.Vector3()),
-        depth: depth, // Assign depth to each child node
+        depth: depth, 
       }));
     }
   }

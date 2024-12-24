@@ -15,9 +15,9 @@ export class TerrainBuilder{
     
         // Flat quadtree parameters
         this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
-        this.MIN_CELL_SIZE = params.min_cell_size || 1;     // Minimum quadtree cell size
+        this.MIN_CELL_SIZE = params.min_cell_size || 16;     // Minimum quadtree cell size
         // For each child, we will create with x segments
-        this.CELL_RESOLUTION = params.cell_resolution || 64;   
+        this.CELL_RESOLUTION = params.cell_resolution || 16;   
 
         this.noise = new ImprovedNoise();
         this.noiseZ = randFloat(0, 1000); // Randomize the noise function
@@ -67,9 +67,7 @@ export class TerrainBuilder{
         const center = new THREE.Vector3();
         const dimensions = new THREE.Vector3();
     
-        // Render each node in the quadtree
         for (let node of children) {
-          // Get node center and dimensions
           node.bounds.getCenter(center);
           node.bounds.getSize(dimensions);
     
@@ -88,6 +86,7 @@ export class TerrainBuilder{
               let mesh = this.generateTile(center, size, color, resolution);
               // Create a new tile for this position
               newTerrainChunks[key] = mesh;
+              this.scene.add(newTerrainChunks[key]); // Add new tile to the scene
           }
         }
         // Any remaining items in this.terrainChunks are tiles that were not in the new state and need to be removed
@@ -113,26 +112,34 @@ export class TerrainBuilder{
         landMaterial.wireframe = this.wireframe;
         
         material.wireframe = false; // Enable wireframe mode for visualization
-        const mesh = new THREE.Mesh(geometry, landMaterial);
+        const mesh = new THREE.Mesh(geometry, landMaterial); 
 
         // Position and rotate the mesh
         mesh.position.set(center.x, center.y, center.z);
         mesh.rotation.x = -Math.PI / 2;
 
-        let coords = new THREE.Vector3(center.x, center.z, center.y);
+        let positionAttribute = mesh.geometry.attributes.position;
 
-        FBM(mesh, coords.x, coords.y,
+        // fbm returns an array of heightmap values
+        let heightmap = FBM(center,
                 { min: -100, max: 100 },
                 this.noise,
                 { octaves: 16, frequency: 1.0, amplitude: 2, octaves: 16, persistence: 0.5, lacunarity:2, exponentiation: 2.0, noiseZ: this.noiseZ },
-                this.FLAT_PLANE_SIZE);
+                size,
+                this.FLAT_PLANE_SIZE,
+                resolution);
+
+        for (let i = 0; i < positionAttribute.count; i++) {
+            positionAttribute.setZ(i, heightmap[i]);
+        }
+
+        geometry.computeVertexNormals();
+        positionAttribute.needsUpdate = true;
         
         // Add the new mesh to the scene and new terrain chunks
-        this.scene.add(mesh);
+        
         return mesh;
     }
-    
-    
     
     update() {
           // Check if the camera has moved significantly since the last update

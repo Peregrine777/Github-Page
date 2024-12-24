@@ -10,6 +10,7 @@ export const LandShader = {
         size: {value: 20.0},
         enableFog: {value: true},
         isWireframe: {value: false},
+        showNormals: {value: true},
         wireframeWidth: {value: 1.0}
     },
     vertexShader: /* glsl */`
@@ -20,9 +21,9 @@ export const LandShader = {
     out vec2 vUV;
     out vec3 lightVec;
     out vec3 upVec;
-    out vec3 vNorm;
     out vec3 vViewDirection;
     out vec3 vViewNormal;
+    out vec3 vWorldNormal;
     out vec3 vReflect;
     out vec3 viewZ;
 
@@ -37,7 +38,7 @@ export const LandShader = {
         viewZ = gl_Position.xyz;
 
         vNormal = normalize(normalMatrix * normal);
-        vNorm = ((normal) * -1.0);
+        vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
         vec3 view = viewMatrix[3].xyz;
         vViewDirection = normalize(-(modelViewMatrix * vec4(position, 1.0))).xyz;
 
@@ -57,14 +58,15 @@ export const LandShader = {
     uniform bool enableFog;
 
     uniform bool isWireframe;
+    uniform bool showNormals;
     uniform float wireframeWidth;
 
     in vec3 vNormal;
     in vec3 vPosition;
     in vec3 lightVec;
-    in vec3 vNorm;
     in vec3 vViewNormal;
     in vec3 vViewDirection;
+    in vec3 vWorldNormal;
     in vec3 upVec;
     in vec2 vUV;
     in vec3 vReflect;
@@ -107,6 +109,11 @@ export const LandShader = {
     }
 
     void main() {
+
+        if (showNormals){
+            gl_FragColor = vec4(vWorldNormal, 1.0);      
+            return;
+        }
 
         vec3 skyColor = vec3(0.6, 0.62, 0.85);
         vec3 fogColor = vec3(0.6, 0.62, 0.85);
@@ -152,13 +159,23 @@ export const LandShader = {
             return;
         }
 
-        float fog = viewZ.z/5000.;
+        float fog = viewZ.z/3000.;
+        float altitude = vPosition.y;
+
+        float fogDensity = smoothstep(0.0, 100.0, altitude); 
+
+        float mist = viewZ.z/1000.;
+        float misDensity = smoothstep(0.0, 30.0, altitude);
+
+        float fogAmount = abs(fog * (1.0-fogDensity));
+        float mistAmount = abs(mist * (1.0-misDensity));
+        float totalFog = clamp(fogAmount + mistAmount, 0., 1.);
         
         vec3 c = mix(finalLighting, ambientColor, ambientStrength);
 
         vec3 finalFog = c;
         if (enableFog){
-            finalFog = mix(c, fogColor, fog);
+            finalFog = mix(c, fogColor, totalFog);
         }
 
 
