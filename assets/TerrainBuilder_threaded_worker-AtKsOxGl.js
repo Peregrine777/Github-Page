@@ -13,6 +13,7 @@ self.onmessage = function (e) {
     console.log("Generating tile with params:", center, size, resolution);
     
     const chunkData = buildChunk(center, size, planeSize, resolution, noiseParams);
+    console.log("Worker: Generated tile data:", chunkData);
     self.postMessage({
       subject: 'generate_tile_result', // Use the correct subject
       data: chunkData
