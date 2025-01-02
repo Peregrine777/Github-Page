@@ -103,16 +103,16 @@ export class TerrainBuilder_threaded{
         this.updateInProgress = false;
     
         // Flat quadtree parameters
-        this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
-        this.MIN_CELL_SIZE = params.min_cell_size || 4;     // Minimum quadtree cell size
+        this.FLAT_PLANE_SIZE = params.flat_plane_size || 10000; // Set the plane size
+        this.MIN_CELL_SIZE = params.min_cell_size || 16;     // Minimum quadtree cell size
         // For each child, we will create with x segments
-        this.CELL_RESOLUTION = params.cell_resolution || 64;   
+        this.CELL_RESOLUTION = params.cell_resolution || 256;   
 
         this.noise = new ImprovedNoise();
         this.noiseZ = randFloat(0, 1000); // Randomize the noise function
         this.noiseParams = {
-          amplitude: 1,
-          octaves: 8,
+          amplitude: 10,
+          octaves: 16,
           frequency: 1,
           persistence: 0.5,
           lacunarity: 2,
