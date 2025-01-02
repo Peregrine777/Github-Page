@@ -316,20 +316,20 @@ export class TerrainBuilder_threaded{
                 // Apply the positions array from the worker
                 let meshPositions = mesh.geometry.attributes.position; 
                 for (let i = 0; i < meshPositions.count; i++) {
-                    let height = result.positions.positions[i];
+                    let height = result.data.positions[i];
                     meshPositions.setZ(i, height);
 
                 }
 
-                let meshNormals = mesh.geometry.attributes.normal;
-                for (let i = 0; i < meshNormals.count; i++) {
-                  const nx = result.positions.normals[i * 3 + 0];
-                  const ny = result.positions.normals[i * 3 + 1];
-                  const nz = result.positions.normals[i * 3 + 2];
-                  meshNormals.setXYZ(i, -nx, nz, -ny);
-                }
+                // let meshNormals = mesh.geometry.attributes.normal;
+                // for (let i = 0; i < meshNormals.count; i++) {
+                //   const nx = result.positions.normals[i * 3 + 0];
+                //   const ny = result.positions.normals[i * 3 + 1];
+                //   const nz = result.positions.normals[i * 3 + 2];
+                //   meshNormals.setXYZ(i, -nx, nz, -ny);
+                // }
 
-                meshNormals.needsUpdate = true;
+                //meshNormals.needsUpdate = true;
                 meshPositions.needsUpdate = true;
                 //geometry.computeVertexNormals();
                 this.scene.add(mesh);

@@ -15,7 +15,7 @@ self.onmessage = async function (e) {
     const chunkData = buildChunk(center, size, planeSize, resolution, noiseParams);
     self.postMessage({
       subject: 'generate_tile_result', // Use the correct subject
-      positions: chunkData
+      data: chunkData
     });
   }
 };
@@ -91,9 +91,9 @@ function buildChunk(center, size, planeSize, resolution, noiseParams) {
 
   return {
     positions,
-    normals,
   };
 }
+
 function arrayToWorld(i, resolution, size, center) {
   const step = size / resolution;
   const halfSize = size / 2;
