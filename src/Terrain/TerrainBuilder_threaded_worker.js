@@ -1,8 +1,8 @@
 
-import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
-import { FBM } from '../Utils/FBM.js';
+// import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
+// import { FBM } from '../Utils/FBM.js';
 
-self.onmessage = async function (e) {
+self.onmessage = function (e) {
   const { subject, params } = e.data;
 
   console.log("Worker received message:", e.data);
@@ -22,72 +22,72 @@ self.onmessage = async function (e) {
 
 
 function buildChunk(center, size, planeSize, resolution, noiseParams) {
-  const n = new ImprovedNoise();
+  //const n = new ImprovedNoise();
 
 
-  let heightmap = FBM(center,
-    { min: -100, max: 100 },
-    n,
-    { octaves: noiseParams.octaves, 
-      frequency: noiseParams.frequency, 
-      amplitude: noiseParams.amplitude, 
-      persistence: noiseParams.persistence, 
-      lacunarity:noiseParams.lacunarity, 
-      exponentiation: noiseParams.exponentiation, 
-      noiseZ: noiseParams.noiseZ },
-    size,
-    planeSize,
-    resolution
-  );
+  // let heightmap = FBM(center,
+  //   { min: -100, max: 100 },
+  //   n,
+  //   { octaves: noiseParams.octaves, 
+  //     frequency: noiseParams.frequency, 
+  //     amplitude: noiseParams.amplitude, 
+  //     persistence: noiseParams.persistence, 
+  //     lacunarity:noiseParams.lacunarity, 
+  //     exponentiation: noiseParams.exponentiation, 
+  //     noiseZ: noiseParams.noiseZ },
+  //   size,
+  //   planeSize,
+  //   resolution
+  // );
 
-  const positionArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * Float32Array.BYTES_PER_ELEMENT);
-  const normalArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * 3 * Float32Array.BYTES_PER_ELEMENT);
+  //const positionArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * Float32Array.BYTES_PER_ELEMENT);
+  //const normalArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * 3 * Float32Array.BYTES_PER_ELEMENT);
 
-  const positions = [];
-  const normals = new Float32Array(normalArrayBuffer);
+  const positions = center.x;
+  //const normals = new Float32Array(normalArrayBuffer);
 
   // Fill positions
-  const step = size / resolution;
-  for (let i = 0; i < positions.length; i++) {
-    positions[i] = heightmap[i];
-  }
+  // const step = size / resolution;
+  // for (let i = 0; i < positions.length; i++) {
+  //   positions[i] = heightmap[i];
+  // }
 
   // Compute normals using triangle connectivity
-  for (let z = 0; z < resolution; z++) {
-    for (let x = 0; x < resolution; x++) {
-      const i = z * (resolution + 1) + x;
+  // for (let z = 0; z < resolution; z++) {
+  //   for (let x = 0; x < resolution; x++) {
+  //     const i = z * (resolution + 1) + x;
 
-      // Get the vertices of the two triangles forming the quad
-      const v1 = { x: x * step, y: heightmap[i], z: z * step };
-      const v2 = { x: (x + 1) * step, y: heightmap[i + 1], z: z * step };
-      const v3 = { x: x * step, y: heightmap[i + resolution + 1], z: (z + 1) * step };
-      const v4 = { x: (x + 1) * step, y: heightmap[i + resolution + 2], z: (z + 1) * step };
+  //     // Get the vertices of the two triangles forming the quad
+  //     const v1 = { x: x * step, y: heightmap[i], z: z * step };
+  //     const v2 = { x: (x + 1) * step, y: heightmap[i + 1], z: z * step };
+  //     const v3 = { x: x * step, y: heightmap[i + resolution + 1], z: (z + 1) * step };
+  //     const v4 = { x: (x + 1) * step, y: heightmap[i + resolution + 2], z: (z + 1) * step };
 
-      // Compute face normals for both triangles
-      const normal1 = computeFaceNormal(v1, v2, v3);
-      const normal2 = computeFaceNormal(v2, v4, v3);
+  //     // Compute face normals for both triangles
+  //     const normal1 = computeFaceNormal(v1, v2, v3);
+  //     const normal2 = computeFaceNormal(v2, v4, v3);
 
-      // Accumulate normals for each vertex
-      accumulateNormal(normals, i, normal1);
-      accumulateNormal(normals, i + 1, normal1);
-      accumulateNormal(normals, i + resolution + 1, normal1);
+  //     // Accumulate normals for each vertex
+  //     accumulateNormal(normals, i, normal1);
+  //     accumulateNormal(normals, i + 1, normal1);
+  //     accumulateNormal(normals, i + resolution + 1, normal1);
 
-      accumulateNormal(normals, i + 1, normal2);
-      accumulateNormal(normals, i + resolution + 2, normal2);
-      accumulateNormal(normals, i + resolution + 1, normal2);
-    }
-  }
+  //     accumulateNormal(normals, i + 1, normal2);
+  //     accumulateNormal(normals, i + resolution + 2, normal2);
+  //     accumulateNormal(normals, i + resolution + 1, normal2);
+  //   }
+  // }
 
-  // Normalize normals
-  for (let i = 0; i < normals.length; i += 3) {
-    const nx = normals[i];
-    const ny = normals[i + 1];
-    const nz = normals[i + 2];
-    const length = Math.sqrt(nx * nx + ny * ny + nz * nz);
-    normals[i] = nx / length;
-    normals[i + 1] = ny / length;
-    normals[i + 2] = nz / length;
-  }
+  // // Normalize normals
+  // for (let i = 0; i < normals.length; i += 3) {
+  //   const nx = normals[i];
+  //   const ny = normals[i + 1];
+  //   const nz = normals[i + 2];
+  //   const length = Math.sqrt(nx * nx + ny * ny + nz * nz);
+  //   normals[i] = nx / length;
+  //   normals[i + 1] = ny / length;
+  //   normals[i + 2] = nz / length;
+  // }
 
   return {
     positions,
