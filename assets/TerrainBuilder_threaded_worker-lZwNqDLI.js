@@ -1,5 +1,5 @@
 import { ImprovedNoise } from '../Utils/ImprovedNoise.js';
-import { FBM } from '../Utils/FBM.js';
+//import { FBM } from '../Utils/FBM.js';
 
 console.log('Worker loaded successfully');
 
