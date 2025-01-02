@@ -1,6 +1,15 @@
-
 import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
 // import { FBM } from '../Utils/FBM.js';
+
+console.log('Worker loaded successfully');
+
+// Test the import to verify it works
+try {
+  const noise = new ImprovedNoise();
+  console.log('ImprovedNoise imported successfully:', noise);
+} catch (error) {
+  console.error('Failed to create ImprovedNoise instance:', error);
+}
 
 self.onmessage = function (e) {
   const { subject, params } = e.data;
