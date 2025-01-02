@@ -1,5 +1,5 @@
 
-// import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
+import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
 // import { FBM } from '../Utils/FBM.js';
 
 self.onmessage = function (e) {
@@ -23,7 +23,7 @@ self.onmessage = function (e) {
 
 
 function buildChunk(center, size, planeSize, resolution, noiseParams) {
-  //const n = new ImprovedNoise();
+  const n = new ImprovedNoise();
 
 
   // let heightmap = FBM(center,
