@@ -43,7 +43,7 @@ function buildChunk(center, size, planeSize, resolution, noiseParams) {
   const positionArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * Float32Array.BYTES_PER_ELEMENT);
   const normalArrayBuffer = new ArrayBuffer((resolution + 1) ** 2 * 3 * Float32Array.BYTES_PER_ELEMENT);
 
-  const positions = new Float32Array(positionArrayBuffer);
+  const positions = [];
   const normals = new Float32Array(normalArrayBuffer);
 
   // Fill positions
