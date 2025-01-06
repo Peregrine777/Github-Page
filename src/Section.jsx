@@ -1,0 +1,21 @@
+import React from "react";
+import { useInView } from "react-intersection-observer";
+import "./Section.css";
+
+const Section = ({ title, darkMode, children }) => {
+  const { ref, inView } = useInView({
+    threshold: 0.2, // Trigger when 20% of the section is in view
+    triggerOnce: true, // Only trigger the animation once
+  });
+
+  return (
+    <section
+      ref={ref}
+      className={`section ${inView ? "section-visible" : "section-hidden"} ${darkMode ? "dark-mode" : "light-mode"}`}    >
+      <h2>{title}</h2>
+      <div className="section-content">{children}</div>
+    </section>
+  );
+};
+
+export default Section;
