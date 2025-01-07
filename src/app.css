@@ -51,14 +51,15 @@ body.dark-mode {
     font-family: Montserrat, sans-serif;
 }
 
+
 .clickableImage:hover {
-    opacity: 0.8;
+    opacity: 1.0;
     transform: scale(1.05);
     transition: opacity 0.3s, transform 0.3s;
 }
 
 .header.light-mode {
-    background-color: #f0f0f0;
+    background-color: #d6d6d6;
     color: #333;
 }
 .header.dark-mode {
@@ -66,71 +67,6 @@ body.dark-mode {
     color: #f4f4f9;
 }
     
-  /* Settings Icon */
-  .settings {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .settings-icon {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .settings-menu {
-    position: absolute;
-    top: 2rem;
-    min-height: 100px; /* Ensure menu is tall enough */
-    right: 0;
-    min-width: 200px; /* Ensure menu is wide enough */
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 10; /* Keep menu on top */
-    overflow: hidden; /* Prevent content overflow */
-  }
-
-  .settings-menu.dark-mode {
-    background-color: #121212;
-    color: #f4f4f9;
-  }
-
-  .settings-menu.light-mode {
-    background-color: white;
-    color: #333;
-  }
-
-  
-  .settings-icon:hover + .settings-menu,
-  .settings-menu:hover {
-    display: block;
-  }
-  
-  .settings-menu button {
-    background: none;
-    border: none;
-    right: 30px;
-    padding: 10px;
-    width: 100%;
-    line-height: 40px;
-    text-align: left;
-    font-family: Montserrat, sans-serif;
-    color: inherit;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    overflow: hidden;
-  }
-  
-  .settings-menu button:hover {
-    background-color: rgba(200, 200, 200, 0.1);
-  }
-
   .container {
     width: 100%;
     display: flex;
@@ -144,13 +80,21 @@ body.dark-mode {
     box-sizing: border-box;
   }
 
+
+ /* major columns, prefer to be full width, wrap if needed */
+  .majorColumn {
+    flex: 1;
+    min-width: 400px; /* Minimum width for each column */
+    text-align: center;
+    box-sizing: border-box;
+    padding: 1rem; /* Optional: Padding for inner spacing */
+  }
+
   .column-content {
     flex-grow: 1;
     flex-shrink: 2;
-    min-height: 100vh;
-    width: 50%;
+    width: 100%;
     -webkit-mask-image: linear-gradient(270deg, #000 60%, transparent);
-    
   }
   
   /* Smooth transition for dark/light mode */

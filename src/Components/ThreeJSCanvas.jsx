@@ -52,8 +52,10 @@ const ThreeJSSection = ({darkMode}) => {
     <div
       ref={containerRef}
       style={{
+        minWidth: "250px",
+        minHeight: "250px",
         width: "auto",
-        height: "100%",
+        height: "auto",
       }}
     />
   );
