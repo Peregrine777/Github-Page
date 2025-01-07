@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export default function setupThreeJS(containerRef, sectionRef) {
-const container = containerRef.current;
+let container = containerRef.current;
 
 if (!container) return;
 
@@ -41,7 +41,8 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 // Handle resizing
-const handleResize = () => {
+const handleResize = (containerRef) => {
+  console.log("3jsContainer: ", container);
   console.log("Resizing");
   console.log("3js Container: ", container.offsetWidth, ", ", container.offsetHeight);
   renderer.setSize(container.offsetWidth, container.offsetHeight);

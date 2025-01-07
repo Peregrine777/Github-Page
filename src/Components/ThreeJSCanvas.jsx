@@ -31,7 +31,7 @@ const ThreeJSSection = ({darkMode}) => {
       console.log("delayed container size", containerRef.current.offsetWidth, containerRef.current.offsetHeight);
       console.log("ThreeJS Instance: ", threeJSInstance);
       if (threeJSInstance?.handleResize) {
-        threeJSInstance.handleResize(); // Call the resize function from Three.js setup
+        threeJSInstance.handleResize(containerRef); // Call the resize function from Three.js setup
       }
     }, 1000); 
 
@@ -52,10 +52,8 @@ const ThreeJSSection = ({darkMode}) => {
     <div
       ref={containerRef}
       style={{
-        width: "100%",
+        width: "auto",
         height: "100%",
-        position: "relative",
-        overflow: "hidden", // Ensure canvas doesn't spill outside
       }}
     />
   );
