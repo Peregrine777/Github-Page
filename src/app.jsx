@@ -37,10 +37,19 @@ const toggleDarkMode = () => {
           <p>This is custom content for the first section.</p>
           <img src="path-to-image.jpg" alt="Example" />
         </Section>
+
         <Section title="Section 2" darkMode={darkMode}>
-          <div style={{ width: "400px", height: "400px", backgroundColor: "black", margin: "0 auto" }}>
-            <ThreeJSSection />
-          </div>
+          <div className="container">
+            <div className="column">
+              <h2>Column 1</h2>
+              <p>This is the first column.</p>
+            </div>
+            <div className="column-content">
+                <ThreeJSSection darkMode={darkMode} />
+            </div>
+
+          </div>  
+
           
 
         </Section>

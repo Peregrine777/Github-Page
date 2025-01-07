@@ -12,8 +12,9 @@ const Section = ({ title, darkMode, children }) => {
     <section
       ref={ref}
       className={`section ${inView ? "section-visible" : "section-hidden"} ${darkMode ? "dark-mode" : "light-mode"}`}    >
-      <h2>{title}</h2>
-      <div className="section-content">{children}</div>
+      <div className="section-content">
+        {children}
+      </div>
     </section>
   );
 };

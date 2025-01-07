@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     min-height: 100vh;
     padding: 2rem;
     text-align: center;
@@ -15,6 +14,14 @@
   .section-visible {
     opacity: 1;
     transform: translateY(0);
+  } 
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    align-items: center;
   }
   
   .section-hidden {
@@ -26,17 +33,17 @@
     background-color: #e0e7ff;
   }
     .section:nth-child(odd).light-mode{
-        background-color: #e0e7ff;
+        background-color: #f7f7f7;
     }
     .section:nth-child(odd).dark-mode{
         background-color: #171c2a;
     }
 
   .section:nth-child(even) {
-    background-color: #d1fae5;
+    background-color: #d5e8de;
   }
     .section:nth-child(even).light-mode{
-        background-color: #d1fae5;
+        background-color: #f0f0f0;
     }
     .section:nth-child(even).dark-mode{
         background-color: #222424;
