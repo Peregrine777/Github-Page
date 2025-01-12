@@ -1,0 +1,99 @@
+.clickableImage {
+  opacity: 0.8;
+  transition: opacity 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.clickableImage:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.settings-icon {
+  background: none;
+  border: none;
+  display: block;
+  max-width: 40px;
+  max-height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.settings-menu-wrapper {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  min-height: 150px; /* Ensure menu is tall enough */
+  min-width: 250px;
+  padding: 8px; /* Add padding to make it slightly larger than the settings menu */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Slight transparency for the glass effect */
+  border-radius: 10px; /* Rounded corners */
+  backdrop-filter: blur(10px); /* Apply the frosted-glass effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  z-index: 10;
+  overflow: hidden;
+  display: none;
+}
+
+.settings-menu-wrapper:hover {
+  display: block; /* Show the menu when hovering over the icon */
+}
+
+.settings-menu-wrapper.dark-mode {
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.25);
+}
+
+.settings-menu-wrapper.light-mode {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.settings-menu {
+  position: relative;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.settings-menu.dark-mode {
+  background-color: #121212;
+  box-shadow: 0 4px 6px rgba(234, 234, 234, 0.1);
+  color: #f4f4f9;
+}
+
+.settings-menu.light-mode {
+  background-color: white;
+  color: #333;
+}
+
+.settings-icon:hover + .settings-menu-wrapper {
+  display: block; /* Show the menu when hovering over the icon */
+}
+
+.settings-menu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  line-height: 40px;
+  text-align: left;
+  font-family: Montserrat, sans-serif;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+}
+
+.settings-menu button:hover {
+  background-color: rgba(150, 150, 150, 0.05);
+}

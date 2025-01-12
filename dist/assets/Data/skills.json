@@ -1,0 +1,82 @@
+[
+  {
+    "category": "Languages",
+    "title": "Languages",
+    "skills": [
+      {
+        "name": "C#",
+        "image": "assets/Images/Skills/CSharp.png"
+      },
+      {
+        "name": "C++",
+        "image": "assets/Images/Skills/CPP.png"
+      },
+      {
+        "name": "Javascript",
+        "image": "assets/Images/Skills/js.svg"
+      },
+      {
+        "name": "Typescript",
+        "image": "assets/Images/Skills/typescript.svg"
+      },
+      {
+        "name": "Python",
+        "image": "assets/Images/Skills/python.png"
+      }
+    ]
+  },
+  {
+    "category": "Frameworks",
+    "title": "Frameworks",
+    "skills": [
+      {
+        "name": "ReactJS",
+        "image": "assets/Images/Skills/reactjs.svg"
+      },
+      {
+        "name": "Git",
+        "image": "assets/Images/Skills/git-icon.svg"
+      },
+      {
+        "name": "mySQL",
+        "image": "assets/Images/Skills/mysql.svg"
+      },
+      {
+        "name": "ImGui",
+        "image": ""
+      }
+    ]
+  },
+  {
+    "category": "APIs",
+    "title": "APIs",
+    "skills": [
+      {
+        "name": "GraphQL",
+        "image": "assets/Images/Skills/graphql.svg"
+      },
+      {
+        "name": "WebGL",
+        "image": "assets/Images/Skills/WebGL.png"
+      },
+      {
+        "name": "OpenGL",
+        "image": "assets/Images/Skills/OpenGL.png"
+      }
+    ]
+  },
+  {
+    "category": "Tools",
+    "title": "Tools",
+    "skills": [
+      {
+        "name": "Unity",
+        "image": "assets/Images/Skills/unity.svg"
+      },
+      {
+        "name": "Unreal Engine 5",
+        "image": "assets/Images/Skills/ue.svg"
+      }
+    ]
+  }
+]

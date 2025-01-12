@@ -1,16 +1,20 @@
-import * as THREE from 'three';
-import TWEEN from '@tweenjs/tween.js';
+import * as THREE from "three";
+import TWEEN from "@tweenjs/tween.js";
 
 export class SmoothPath {
   constructor(points) {
     this.points = points; // Extract the positions from pointTargets
-    this.times = points.map(point => point.time); // Extract the times from pointTargets
+    this.times = points.map((point) => point.time); // Extract the times from pointTargets
     this.smoothedPath = this.createSmoothedPath(this.points); // Call the method within the class
     this.arcLengths = this.computeArcLengths(this.smoothedPath);
   }
 
   getDivisions(numberOfDivisions) {
-    return dividePathEvenly(this.smoothedPath, this.arcLengths, numberOfDivisions);
+    return dividePathEvenly(
+      this.smoothedPath,
+      this.arcLengths,
+      numberOfDivisions
+    );
   }
 
   getLineGeometry(color = new THREE.Color(0x0000ff)) {
@@ -25,11 +29,19 @@ export class SmoothPath {
     for (let i = 0; i < points.length; i++) {
       let tangent;
       if (i === 0) {
-        tangent = new THREE.Vector3().subVectors(points[i + 1].data.pos, points[i].data.pos);
+        tangent = new THREE.Vector3().subVectors(
+          points[i + 1].data.pos,
+          points[i].data.pos
+        );
       } else if (i === points.length - 1) {
-        tangent = new THREE.Vector3().subVectors(points[i].data.pos, points[i - 1].data.pos);
+        tangent = new THREE.Vector3().subVectors(
+          points[i].data.pos,
+          points[i - 1].data.pos
+        );
       } else {
-        tangent = new THREE.Vector3().subVectors(points[i + 1].data.pos, points[i - 1].data.pos).multiplyScalar(0.5);
+        tangent = new THREE.Vector3()
+          .subVectors(points[i + 1].data.pos, points[i - 1].data.pos)
+          .multiplyScalar(0.5);
       }
       tangents.push(tangent);
     }
@@ -46,15 +58,23 @@ export class SmoothPath {
       const divisions = 20; // Number of divisions between points
       for (let j = 0; j <= divisions; j++) {
         const t = j / divisions;
-        const point = new THREE.Vector3().copy(startPoint)
-          .multiplyScalar((2 * t**3 - 3 * t**2 + 1))
-          .add(new THREE.Vector3().copy(endPoint)
-            .multiplyScalar((-2 * t**3 + 3 * t**2)))
-          .add(new THREE.Vector3().copy(tangentStart)
-            .multiplyScalar((t**3 - 2 * t**2 + t)))
-          .add(new THREE.Vector3().copy(tangentEnd)
-            .multiplyScalar((t**3 - t**2)));
-        
+        const point = new THREE.Vector3()
+          .copy(startPoint)
+          .multiplyScalar(2 * t ** 3 - 3 * t ** 2 + 1)
+          .add(
+            new THREE.Vector3()
+              .copy(endPoint)
+              .multiplyScalar(-2 * t ** 3 + 3 * t ** 2)
+          )
+          .add(
+            new THREE.Vector3()
+              .copy(tangentStart)
+              .multiplyScalar(t ** 3 - 2 * t ** 2 + t)
+          )
+          .add(
+            new THREE.Vector3().copy(tangentEnd).multiplyScalar(t ** 3 - t ** 2)
+          );
+
         segmentPoints.push(point);
       }
       controlPoints.push(...segmentPoints);
@@ -92,7 +112,11 @@ export class SmoothPath {
       const segmentLength = arcLengths[j] - arcLengths[j - 1];
 
       const t = (targetLength - arcLengths[j - 1]) / segmentLength;
-      const interpolatedPoint = new THREE.Vector3().lerpVectors(segmentStart, segmentEnd, t);
+      const interpolatedPoint = new THREE.Vector3().lerpVectors(
+        segmentStart,
+        segmentEnd,
+        t
+      );
       divisions.push(interpolatedPoint);
     }
 
@@ -106,7 +130,10 @@ export class SmoothPath {
 
     // Find the corresponding segment and interpolate within it
     let j = 1;
-    while (this.arcLengths[j] < targetLength && j < this.arcLengths.length - 1) {
+    while (
+      this.arcLengths[j] < targetLength &&
+      j < this.arcLengths.length - 1
+    ) {
       j++;
     }
 

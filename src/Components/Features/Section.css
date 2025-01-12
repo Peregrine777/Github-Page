@@ -1,0 +1,70 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  border-bottom: #ccc 1px solid; /* Add a border to each section */
+}
+
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.section-hidden {
+  opacity: 0;
+}
+
+.section:nth-child(odd) {
+  background-color: #e0e7ff;
+}
+.section:nth-child(odd).light-mode {
+  color: #333;
+  background-color: #e8e8e8;
+}
+
+section.dark-mode h2 {
+  color: #eae9e9;
+}
+
+.section:nth-child(odd).dark-mode {
+  color: #d6d6d6;
+  background-color: #1d212d;
+}
+
+.section:nth-child(even) {
+  color: #333;
+  background-color: #d5e8de;
+}
+.section:nth-child(even).light-mode {
+  background-color: #f0f0f0;
+}
+.section:nth-child(even).dark-mode {
+  color: #e3e3e3;
+  background-color: #222424;
+}
+
+/* Children default hidden state (only if fade is enabled) */
+.child-hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* Children visible state (only if fade is enabled) */
+.child-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

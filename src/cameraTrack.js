@@ -1,10 +1,9 @@
-import * as THREE from 'three';
-import { spline } from './spline.js';
-import { SmoothPath } from './smoothPath.js';
-import TWEEN from '@tweenjs/tween.js'; // Ensure you import TWEEN.js
+import * as THREE from "three";
+import { spline } from "./spline.js";
+import { SmoothPath } from "./smoothPath.js";
+import TWEEN from "@tweenjs/tween.js"; // Ensure you import TWEEN.js
 
-export const camera_track = (function() {
-
+export const camera_track = (function () {
   class _CameraTrack {
     constructor(params) {
       this._params = params;
@@ -28,16 +27,16 @@ export const camera_track = (function() {
       this._spline = new spline.CubicHermiteSpline(cubicLerp);
       this._smoothPath = new SmoothPath(params.points);
 
-        //Discard
-        for (let p of params.points) {
+      //Discard
+      for (let p of params.points) {
         // Pass position and rotation easing functions (or defaults) for each point
         this._spline.AddPoint(
-            p.time, 
-            p.data, 
-            p.posEasing || TWEEN.Easing.Linear.None,  // Default to linear if undefined
-            p.rotEasing || TWEEN.Easing.Quadratic.InOut   // Default to linear if undefined
+          p.time,
+          p.data,
+          p.posEasing || TWEEN.Easing.Linear.None, // Default to linear if undefined
+          p.rotEasing || TWEEN.Easing.Quadratic.InOut // Default to linear if undefined
         );
-        }
+      }
     }
 
     Update(timeInSeconds) {

@@ -1,28 +1,28 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { Vector3 } from "three";
 
 export const ReclaimerLandShader = {
-
-
-    uniforms: {
-        lightDirection: {value: new Vector3(1.0, 1.0, 1.0)},
-        lightColor: {value: new Vector3(0.8, 0.76, 0.50)},
-        gradientMap: {value: null},
-        size: {value: 20.0},
-        hmax: {value: null},
-        hmin: {value: null},
-        envMap: {value: null},
-        vpw: {value: 0.00005},
-        vph: {value: 0.00005},
-        offset: {value: new THREE.Vector2(-0.5,-0.5)},
-        pitch: {value: new THREE.Vector2(4, 4)},
-        enableFog: {value: true},
-        heightMap: {value: new THREE.DataTexture(new Uint8Array(1), 1, 1, THREE.RGBAFormat)},
-        hmMin: {value: 0.0},
-        hmMax: {value: 0.0},
-        heightMapRes: {value: 400.0}
+  uniforms: {
+    lightDirection: { value: new Vector3(1.0, 1.0, 1.0) },
+    lightColor: { value: new Vector3(0.8, 0.76, 0.5) },
+    gradientMap: { value: null },
+    size: { value: 20.0 },
+    hmax: { value: null },
+    hmin: { value: null },
+    envMap: { value: null },
+    vpw: { value: 0.00005 },
+    vph: { value: 0.00005 },
+    offset: { value: new THREE.Vector2(-0.5, -0.5) },
+    pitch: { value: new THREE.Vector2(4, 4) },
+    enableFog: { value: true },
+    heightMap: {
+      value: new THREE.DataTexture(new Uint8Array(1), 1, 1, THREE.RGBAFormat),
     },
-    vertexShader: /* glsl */`
+    hmMin: { value: 0.0 },
+    hmMax: { value: 0.0 },
+    heightMapRes: { value: 400.0 },
+  },
+  vertexShader: /* glsl */ `
     uniform vec3 lightDirection;
 
     uniform samplerCube envMap;
@@ -62,7 +62,7 @@ export const ReclaimerLandShader = {
     
     
     `,
-    fragmentShader: /* glsl */`
+  fragmentShader: /* glsl */ `
     #define PI 3.14159265358979323846
     uniform vec3 lightColor;
     uniform vec3 lightDirection;
@@ -290,5 +290,5 @@ export const ReclaimerLandShader = {
 
         gl_FragColor = vec4(finalFog, 1.0 );
     }
-    `
-}
+    `,
+};
