@@ -1,0 +1,78 @@
+[
+  {
+    "category": "Languages",
+    "title": "Languages",
+    "skills": [
+      {
+        "name": "C#",
+        "image": "CSharp.png"
+      },
+      {
+        "name": "C++",
+        "image": "CPP.png"
+      },
+      {
+        "name": "Javascript",
+        "image": "js.svg"
+      },
+      {
+        "name": "Typescript",
+        "image": "typescript.svg"
+      },
+      {
+        "name": "Python",
+        "image": "python.png"
+      }
+    ]
+  },
+  {
+    "category": "Frameworks",
+    "title": "Frameworks",
+    "skills": [
+      {
+        "name": "ReactJS",
+        "image": "reactjs.svg"
+      },
+      {
+        "name": "Git",
+        "image": "git-icon.svg"
+      },
+      {
+        "name": "mySQL",
+        "image": "mysql.svg"
+      }
+    ]
+  },
+  {
+    "category": "APIs",
+    "title": "APIs",
+    "skills": [
+      {
+        "name": "GraphQL",
+        "image": "graphql.svg"
+      },
+      {
+        "name": "WebGL",
+        "image": "WebGL.png"
+      },
+      {
+        "name": "OpenGL",
+        "image": "OpenGL.png"
+      }
+    ]
+  },
+  {
+    "category": "Tools",
+    "title": "Tools",
+    "skills": [
+      {
+        "name": "Unity",
+        "image": "UnityCube.png"
+      },
+      {
+        "name": "Unreal Engine 5",
+        "image": "UE.png"
+      }
+    ]
+  }
+]
