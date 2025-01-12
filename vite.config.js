@@ -1,8 +1,12 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
+import path from "path";
+import react from "@vitejs/plugin-react";
+import vitePluginFaviconsInject from "vite-plugin-favicons-inject";
 
 export default defineConfig({
-  base: '/Github-Page/', // The repo name
+  plugins: [react()],
+  base: "/Github-Page/", // The repo name
   build: {
-    outDir: 'dist',
+    outDir: "dist",
   },
 });

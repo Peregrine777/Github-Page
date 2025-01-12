@@ -1,9 +1,21 @@
 <html>
   <head>
     <title>Sam MckSell</title>
-	<link rel="stylesheet" href="style.css">
+
+    <!-- favicon-->
+  <link rel="icon" type="image/png" href="/assets/Images/Favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/assets/Images/Favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/Images/Favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/Images/Favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="SamMcksell" />
+  <link rel="manifest" href="/assets/Images/Favicon/site.webmanifest" />
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<meta charset="utf-8">
-	<link rel="icon" type="image/jpg" sizes="16x16" href="assets/images/SamIcon16.jpg">
+
   </head>
 
   <style>
@@ -14,21 +26,12 @@
   <body>
 	<link rel="shortcut icon" href="#">
     <div id="info">
-      <p>
-      left button to rotate the scene, scroll to zoom in/out</p>
-	  
     </div>
-
-	<div id="button">
-	<button name="ReclaimButton" type ="button"> RECLAIM</button>
-	</div>
 		
 	<body>
-			
-	  <canvas id="heightgrd" width="1" height="256"></canvas>
-	  <canvas id="overlay-canvas" style="position: absolute; left: 0; top: 0; width:100; height:100"></canvas>
-	  <canvas id="render"></canvas>
-		<script src="/src/main.js" type="module">
-		</script>
+
+		<div id="root"></div>
+  		<script type="module" src="/src/main.jsx"></script>
+
 	</body>
 </html>

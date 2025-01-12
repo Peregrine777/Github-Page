@@ -1,0 +1,23 @@
+.glow-effect {
+  position: absolute;
+  pointer-events: none; /* Ensure the glow doesn’t block interaction */
+  z-index: 1000;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+
+  transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
+}
+
+.glow-effect::before {
+  content: "";
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(0, 0, 0, 0.1),
+    70%
+  );
+  border-radius: inherit; /* Inherit the border radius from the parent */
+  box-shadow: inherit; /* Inherit the box shadow from the parent */
+}
