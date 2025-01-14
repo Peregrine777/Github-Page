@@ -1,0 +1,12 @@
+.textArea {
+  width: 100%;
+  padding: 4px 10px; /* Reduced top and bottom padding */
+  font-size: 14px;
+  color: white;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  background-color: unset;
+  border-radius: 5px;
+  outline: none;
+  text-align: left; /* Ensure text aligns left */
+}

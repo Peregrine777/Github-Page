@@ -34,7 +34,10 @@ const Footer = ({ darkMode }) => {
 
         <Socials darkMode={darkMode} />
       </div>
-      <div className="column" style={{ flex: "0", alignSelf: "start" }}>
+      <div
+        className="column"
+        style={{ flex: "0", alignSelf: "start", textAlign: "left" }}
+      >
         <h2 style={{ textAlign: "left" }}> Contact </h2>
         <p> samuelmckenziesell@gmail.com </p>
         <p> +61 0401 384 885 </p>
