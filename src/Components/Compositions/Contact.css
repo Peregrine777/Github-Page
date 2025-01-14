@@ -1,0 +1,168 @@
+/* Custom CSS for the form */
+
+.form-container {
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 90lvw;
+  min-width: calc(max(50vw, 500px));
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.form-container h2 {
+  text-align: center;
+}
+
+.input-group {
+  position: relative;
+  --bg-color: #2c2c2c;
+  padding-bottom: 0.5rem;
+}
+
+.input-group.dark-mode {
+  background-color: var(--bg-color);
+  --bg-color: #2c2c2c;
+  --color: rgb(255, 255, 255);
+}
+
+.input-group.light-mode {
+  background-color: white;
+  --bg-color: white;
+  --color: #2c2c2c;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 4px 10px; /* Reduced top and bottom padding */
+  font-size: 14px;
+  color: var(--color);
+  border: 1px solid #ddd;
+  background-color: unset;
+  border-radius: 5px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: left; /* Ensure text aligns left */
+  line-height: 2rem;
+}
+
+.input-group textarea {
+  width: 100%;
+  padding: 10px 10px; /* Reduced top and bottom padding */
+  font-size: 14px;
+  color: white;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  background-color: unset;
+  border-radius: 5px;
+  outline: none;
+  text-align: left; /* Ensure text aligns left */
+}
+
+.error {
+  color: red;
+  position: absolute;
+  display: block;
+}
+
+.input-group input:focus {
+  border-color: #0484d1; /* Highlight input border on focus */
+}
+
+.input-group textArea:focus {
+  border-color: #0484d1; /* Highlight input border on focus */
+}
+
+.input-group label {
+  position: absolute; /* Makes the label overlay the input */
+  padding-left: 5px;
+  padding-right: 5px;
+  top: 40%; /* Center label vertically */
+  left: 10px; /* Add some padding from the left */
+  transform: translateY(-50%); /* Adjust for perfect centering */
+  font-size: 16px; /* Default label font size */
+  color: rgba(var(--color), 0.01); /* 50% opacity */
+  pointer-events: none; /* Prevent label from interfering with clicks */
+  transition: 0.3s ease all; /* Smooth transition for label movement */
+  background-color: var(--bg-color);
+}
+
+.input-group label.dark-mode {
+  background-color: #121212;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+.form-container button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.input-group input:hover {
+  border-color: var(--color);
+  border-width: 2px;
+}
+
+.input-group textArea:hover {
+  border-color: var(--color);
+  border-width: 2px;
+}
+
+.input-group input:focus {
+  border-color: #0484d1;
+  border-width: 2px;
+}
+
+/*.input-group input:not(:valid) {
+  border-color: red;
+}*/
+
+.input-group input:focus + label {
+  top: 0px; /* Moves the label to the top border */
+  font-size: 12px; /* Shrinks the label */
+  font-weight: bold;
+  color: #0484d1; /* Optional: Change color on focus */
+}
+
+.input-group textArea:focus + label {
+  top: 0px; /* Moves the label to the top border */
+  font-size: 12px; /* Shrinks the label */
+  font-weight: bold;
+  color: #0484d1; /* Optional: Change color on focus */
+}
+
+.input-group input.not-empty + label {
+  top: 0px; /* Moves the label to the top border */
+  font-size: 12px; /* Shrinks the label */
+  color: white;
+}
+
+.input-group input.not-empty:not(:valid) + label {
+  top: 0px; /* Moves the label to the top border */
+  font-size: 12px; /* Shrinks the label */
+  color: rgb(193, 0, 0);
+}
+
+.input-group textarea:valid + label {
+  top: 0px; /* Moves the label to the top border */
+  font-size: 12px; /* Shrinks the label */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #a9a9a9;
+}

@@ -6,6 +6,7 @@ import FlexReveal from "./Components/Features/FlexReveal.jsx";
 import SettingsMenu from "./Components/Compositions/SettingsMenu.jsx";
 import MinimalButton from "./Components/Features/MinimalButton.jsx";
 import LightboxModal from "./Components/Features/LightboxModal.jsx";
+import Contact from "./Components/Compositions/Contact.jsx";
 import Socials from "./Components/Compositions/Socials.jsx";
 import Skills from "./Components/Compositions/Skills.jsx";
 import Header from "./Components/Compositions/Header.jsx";
@@ -187,9 +188,8 @@ const App = () => {
             <div className="majorColumn">
               <h2 style={{ textAlign: "center" }}>Data Analysis</h2>
               <p>
-                Gloria Armada combines 2D shootemup genres but with physics
-                based controls and a perspective that changes between top-down,
-                side-on and rear aspect!{" "}
+                8 years of experience in statistical, modelling and benchmarking
+                analysis in Australia and overseas{" "}
               </p>
             </div>
             <div className="majorColumn">
@@ -207,9 +207,34 @@ const App = () => {
         </Section>
 
         <Section title="Skills" darkMode={darkMode}>
-          <Skills darkMode={darkMode} />
+          <Skills darkMode={darkMode}> </Skills>
         </Section>
 
+        <Section
+          title="ContactMe"
+          darkMode={darkMode}
+          style={{ backgroundColor: "#0061aa" }}
+        >
+          <h2 style={{ textAlign: "center", color: "white", marginTop: "0px" }}>
+            Get In Touch!
+          </h2>
+          <MinimalButton
+            darkMode={darkMode}
+            text="Contact"
+            style={{
+              color: "white",
+              borderColor: "white",
+              borderRadius: "5px",
+            }}
+            onClick={() => handleOpenLightbox(<Contact darkMode={darkMode} />)}
+          />
+        </Section>
+
+        <Section
+          title="Portfolio"
+          darkMode={darkMode}
+          style={{ padding: "0px" }}
+        ></Section>
         <Section title="Footer" darkMode={darkMode}>
           <Footer darkMode={darkMode} />
         </Section>

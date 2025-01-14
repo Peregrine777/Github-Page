@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./MinimalButton.css";
 
-const MinimalButton = ({ darkMode, text, onClick }) => {
+const MinimalButton = ({ darkMode, text, style, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
@@ -12,6 +12,7 @@ const MinimalButton = ({ darkMode, text, onClick }) => {
       style={{
         padding: "10px 20px",
         cursor: "pointer",
+        ...style,
       }}
     >
       {text}
