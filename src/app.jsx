@@ -79,7 +79,7 @@ const App = () => {
         <Features.Section
           title="Greetings"
           darkMode={darkMode}
-          style={{ paddingTop: "6rem" }}
+          style={{ paddingTop: "1rem" }}
         >
           <Sections.Greetings
             darkMode={darkMode}
@@ -102,7 +102,11 @@ const App = () => {
           title="ContactMe"
           id="contactMe"
           darkMode={darkMode}
-          style={{ backgroundColor: "#0061aa" }}
+          style={{
+            backgroundColor: "#0061aa",
+            paddingBottom: "1rem",
+            paddingTop: "1rem",
+          }}
         >
           <h2 style={{ textAlign: "center", color: "white", marginTop: "0px" }}>
             Get In Touch!

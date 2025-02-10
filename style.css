@@ -6,6 +6,10 @@ body {
   overflow: hidden;
 }
 
+#root {
+  overflow-x: hidden;
+}
+
 #info {
   position: absolute;
   top: 10px;

@@ -4,7 +4,8 @@ import "./FlexReveal.css";
 
 const FlexReveal = ({ children, className, style, childStyle }) => {
   const { ref, inView } = useInView({
-    threshold: 0.85, // Trigger when 20% of the flexbox is in view
+    root: null, // Uses viewport as root
+    rootMargin: "-50% 0px", // Triggers when 50% of the viewport is taken up
     triggerOnce: true, // Only trigger the animation once
   });
 
@@ -26,6 +27,7 @@ const FlexReveal = ({ children, className, style, childStyle }) => {
           style={{
             transitionDelay: `${index * 0.5}s`, // Add delay based on index
             flex: "1", // Allow children to grow and shrink
+            flexWrap: "wrap",
             ...childStyle, // Merge with child's existing styles
           }}
         >

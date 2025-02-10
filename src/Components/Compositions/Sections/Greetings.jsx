@@ -5,7 +5,7 @@ import * as Feature from "../../Features";
 const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
   return (
     <div className="container">
-      <div className="column" style={{ paddingLeft: "10%", flexGrow: "0" }}>
+      <div className="column" style={{ flexGrow: "0" }}>
         <div style={{ flex: "1", flexDirection: "vertical" }}>
           <div style={{ justifyContent: "center", padding: "2rem" }}>
             <h2

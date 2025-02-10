@@ -4,7 +4,8 @@ import "./Section.css";
 
 const Section = ({ height, title, darkMode, children, style, id }) => {
   const { ref, inView } = useInView({
-    threshold: 0.6, // Trigger when 20% of the section is in view
+    root: null, // Uses viewport as root
+    rootMargin: "-20% 0px", // Triggers when 50% of the viewport is taken up
     triggerOnce: true, // Only trigger the animation once
   });
 

@@ -5,7 +5,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 90lvw;
-  min-width: calc(max(50vw, 500px));
+  min-width: calc(max(50vw, 300px));
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@
 .input-group input {
   width: 100%;
   padding: 4px 10px; /* Reduced top and bottom padding */
-  font-size: 14px;
+  font-size: 12px;
   color: var(--color);
   border: 1px solid #ddd;
   background-color: unset;
@@ -80,7 +80,7 @@
   top: 40%; /* Center label vertically */
   left: 10px; /* Add some padding from the left */
   transform: translateY(-50%); /* Adjust for perfect centering */
-  font-size: 16px; /* Default label font size */
+  font-size: 14px; /* Default label font size */
   color: rgba(var(--color), 0.01); /* 50% opacity */
   pointer-events: none; /* Prevent label from interfering with clicks */
   transition: 0.3s ease all; /* Smooth transition for label movement */
@@ -128,33 +128,33 @@
 
 .input-group input:focus + label {
   top: 0px; /* Moves the label to the top border */
-  font-size: 12px; /* Shrinks the label */
+  font-size: 10px; /* Shrinks the label */
   font-weight: bold;
   color: #0484d1; /* Optional: Change color on focus */
 }
 
 .input-group textArea:focus + label {
   top: 0px; /* Moves the label to the top border */
-  font-size: 12px; /* Shrinks the label */
+  font-size: 10px; /* Shrinks the label */
   font-weight: bold;
   color: #0484d1; /* Optional: Change color on focus */
 }
 
 .input-group input.not-empty + label {
   top: 0px; /* Moves the label to the top border */
-  font-size: 12px; /* Shrinks the label */
+  font-size: 10px; /* Shrinks the label */
   color: white;
 }
 
 .input-group input.not-empty:not(:valid) + label {
   top: 0px; /* Moves the label to the top border */
-  font-size: 12px; /* Shrinks the label */
+  font-size: 10px; /* Shrinks the label */
   color: rgb(193, 0, 0);
 }
 
 .input-group textarea:valid + label {
   top: 0px; /* Moves the label to the top border */
-  font-size: 12px; /* Shrinks the label */
+  font-size: 10px; /* Shrinks the label */
 }
 
 ::-webkit-scrollbar {

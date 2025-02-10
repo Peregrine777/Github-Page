@@ -106,7 +106,12 @@ const Contact = ({ darkMode }) => {
       >
         <div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
           <div
-            style={{ display: "flex", gap: "20px", justifyContent: "center" }}
+            style={{
+              display: "flex",
+              gap: "20px",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
             {/* Name Field */}
             <div

@@ -2,6 +2,7 @@
 .portfolioCard {
   flex: 1;
   min-width: 400px; /* Minimum width for each column */
+  min-height: 300px;
   text-align: center;
   box-sizing: border-box;
   padding: 1rem; /* Optional: Padding for inner spacing */

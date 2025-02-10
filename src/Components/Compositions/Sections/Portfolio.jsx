@@ -24,7 +24,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
         }
       >
         <h2 style={{ color: boldTextCol }}>GameDev</h2>
-        <h3>Games, game Engines, physics and rendering</h3>
+        <h3>Games, game engines, physics and rendering</h3>
         <a
           href="https://chanel-parfait.itch.io/gloria-armada"
           target="_blank"
