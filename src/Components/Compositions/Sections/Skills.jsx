@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import FlexReveal from "../Features/FlexReveal";
-import VariableImage from "../Features/VariableImage";
+import FlexReveal from "../../Features/FlexReveal";
+import VariableImage from "../../Features/VariableImage";
 import "./Skills.css";
 
 const Skills = ({ darkMode }) => {

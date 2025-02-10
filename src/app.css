@@ -114,3 +114,16 @@ header {
 .settings-menu {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+.partial-divider {
+  min-width: 100%;
+  min-height: 1px;
+  /* Gradient coming in from the outside of the screen on both sides
+    to create a smooth transition */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(128, 128, 128, 0.5) 20%,
+    rgba(128, 128, 128, 0.5) 80%,
+    transparent 100%
+  );
+}

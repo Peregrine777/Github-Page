@@ -1,0 +1,67 @@
+.analytics-overview {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+}
+
+.section-header p {
+  font-size: 1.1rem;
+
+  line-height: 1.6;
+}
+
+.skills-and-tools h3 {
+  font-size: 1.5rem;
+
+  margin-top: 30px;
+}
+
+.skills-and-tools ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.skills-and-tools li {
+  font-size: 1.1rem;
+
+  margin: 8px 0;
+}
+
+.impact h3 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+}
+
+.impact p {
+  font-size: 1.1rem;
+
+  line-height: 1.6;
+}
+
+.visuals {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.sample-graph img {
+  max-width: 80%;
+  height: auto;
+}
+
+.cta {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.cta p {
+  font-size: 1.2rem;
+}
+
+.contact-button:hover {
+  background-color: #036a9e;
+}

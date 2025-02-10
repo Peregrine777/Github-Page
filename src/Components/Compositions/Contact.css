@@ -48,7 +48,7 @@
 
 .input-group textarea {
   width: 100%;
-  padding: 10px 10px; /* Reduced top and bottom padding */
+  padding: 15px 10px; /* Reduced top and bottom padding */
   font-size: 14px;
   color: white;
   border: 1px solid #ddd;

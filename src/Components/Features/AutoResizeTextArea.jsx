@@ -25,7 +25,6 @@ function AutoResizeTextarea({ ...props }) {
         width: "100%", // Full width
         minHeight: "40px", // Minimum height
         resize: "none", // Disable manual resizing
-        padding: "8px", // Add padding for better UX
         borderRadius: "4px",
         ...props.style, // Merge any custom styles passed via props
       }}

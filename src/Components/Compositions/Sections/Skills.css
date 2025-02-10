@@ -1,0 +1,8 @@
+/* major columns, prefer to be full width, wrap if needed */
+.skill-item {
+  flex: 1;
+  min-width: 100px; /* Minimum width for each column */
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0rem; /* Optional: Padding for inner spacing */
+}

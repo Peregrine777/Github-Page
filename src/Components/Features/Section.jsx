@@ -2,7 +2,7 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import "./Section.css";
 
-const Section = ({ height, title, darkMode, children, style }) => {
+const Section = ({ height, title, darkMode, children, style, id }) => {
   const { ref, inView } = useInView({
     threshold: 0.6, // Trigger when 20% of the section is in view
     triggerOnce: true, // Only trigger the animation once
@@ -11,6 +11,7 @@ const Section = ({ height, title, darkMode, children, style }) => {
   return (
     <section
       ref={ref}
+      id={id}
       style={{ minHeight: height, ...style }}
       className={`section ${inView ? "section-visible" : "section-hidden"} ${
         darkMode ? "dark-mode" : "light-mode"

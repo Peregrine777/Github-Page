@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FlexReveal from "../Features/FlexReveal";
 import MinimalButton from "../Features/MinimalButton";
 
-const Socials = ({ darkMode }) => {
+const Socials = ({ darkMode, scrollToSection }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -29,6 +29,11 @@ const Socials = ({ darkMode }) => {
           darkMode={darkMode}
           text="Résumé"
           onClick={() => window.open("assets/Files/Resume.pdf", "_blank")}
+        />
+        <MinimalButton
+          darkMode={darkMode}
+          onClick={scrollToSection}
+          text="Contact"
         />
         <div className="column" style={{ flex: "0" }}>
           <a

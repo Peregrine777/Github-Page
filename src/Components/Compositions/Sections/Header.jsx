@@ -1,5 +1,5 @@
 import React from "react";
-import SettingsMenu from "./SettingsMenu";
+import SettingsMenu from "../SettingsMenu";
 
 const Header = ({ darkMode, toggleDarkMode }) => {
   return (
