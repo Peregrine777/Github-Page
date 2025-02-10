@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./app.css";
-import Section from "./Components/Features/Section.jsx";
-import ThreeJSSection from "./Components/Features/ThreeJSCanvas.jsx";
-import FlexReveal from "./Components/Features/FlexReveal.jsx";
-import SettingsMenu from "./Components/Compositions/SettingsMenu.jsx";
-import MinimalButton from "./Components/Features/MinimalButton.jsx";
-import LightboxModal from "./Components/Features/LightboxModal.jsx";
-import Contact from "./Components/Compositions/Contact.jsx";
-import Socials from "./Components/Compositions/Socials.jsx";
-import Skills from "./Components/Compositions/Skills.jsx";
-import Header from "./Components/Compositions/Header.jsx";
-import Footer from "./Components/Compositions/Footer.jsx";
+import * as Features from "./Components/Features";
+import { SettingsMenu, Contact, Socials } from "./Components/Compositions";
+import * as Sections from "./Components/Compositions/Sections";
+import Greetings from "./Components/Compositions/Sections/Greetings";
+import * as PP from "./Components/Compositions/PortfolioPieces";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [lightboxContent, setLightboxContent] = useState(null);
+  const [lightboxContent, setLightboxContent] = useState("Test");
+  const [lightboxStyle, setLightboxStyle] = useState(null);
   useEffect(() => {
     // Ensure scrolling happens after rendering
     setTimeout(() => {
@@ -41,8 +36,18 @@ const App = () => {
     };
   }, []);
 
-  const handleOpenLightbox = (content) => {
+  const scrollToSection = () => {
+    const targetSection = document.getElementById("contactMe");
+    if (targetSection != null) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      console.error("Target section not found");
+    }
+  };
+
+  const handleOpenLightbox = (content, style) => {
     setLightboxContent(content); // Set the content dynamically
+    setLightboxStyle(style); // Set the style dynamically
     setIsLightboxOpen(true); // Open the lightbox
   };
 
@@ -60,165 +65,53 @@ const App = () => {
 
   return (
     <div className="app">
-      <LightboxModal
+      <Features.LightboxModal
         darkMode={darkMode}
         isOpen={isLightboxOpen}
         content={lightboxContent} // Can be replaced with an iframe, image, etc.
+        style={lightboxStyle}
         onClose={handleCloseLightbox}
       />
 
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <Sections.Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
       <main className={`main ${darkMode ? "dark-mode" : "light-mode"}`}>
-        <Section
+        <Features.Section
           title="Greetings"
           darkMode={darkMode}
-          style={{ paddingTop: "6rem" }}
+          style={{ paddingTop: "1rem" }}
         >
-          <div className="container">
-            <div
-              className="column"
-              style={{ paddingLeft: "10%", flexGrow: "0" }}
-            >
-              <div style={{ flex: "1", flexDirection: "vertical" }}>
-                <div style={{ justifyContent: "center", padding: "2rem" }}>
-                  <h2
-                    style={{
-                      textAlign: "left",
-                      fontSize: "36",
-                      textWrap: "wrap",
-                      paddingLeft: "0rem",
-                    }}
-                  >
-                    Let's make something amazing together!
-                  </h2>
-                </div>
-                <p>
-                  {" "}
-                  I am a software engineer with a passion for creating
-                  innovative solutions.{" "}
-                </p>
-                <p>
-                  {" "}
-                  I have experience in various programming languages and
-                  frameworks.{" "}
-                </p>
-                <p>
-                  {" "}
-                  I enjoy collaborating with teams and solving complex problems.{" "}
-                </p>
-              </div>
-              <Socials darkMode={darkMode} />
-            </div>
-            <div
-              className="column"
-              margin="4rem"
-              padding="4rem"
-              style={{ flexShrink: "3" }}
-            >
-              <img
-                src="assets/Images/Profile.png"
-                alt="Profile"
-                style={{
-                  maxWidth: "300px",
-                  verticalAlign: "middle",
-                  height: "auto",
-                }}
-              />
-            </div>
-          </div>
-        </Section>
+          <Sections.Greetings
+            darkMode={darkMode}
+            scrollToSection={scrollToSection}
+          />
+        </Features.Section>
 
-        <Section title="Overview" darkMode={darkMode}>
-          <FlexReveal
-            style={{ justifyContent: "center" }}
-            childStyle={{ minWidth: "400px" }}
-          >
-            <div className="majorColumn">
-              <h2 style={{ textAlign: "center" }}>Game Development</h2>
-              <a
-                href="https://chanel-parfait.itch.io/gloria-armada"
-                target="_blank"
-                rel="noreferer"
-              >
-                <img
-                  className="clickableImage"
-                  src="assets/Images/Gloria_Armada.png"
-                  alt="Gloria Armada"
-                  style={{
-                    maxWidth: "100%",
-                    objectFit: "contain",
-                    alignSelf: "normal",
-                    height: "auto",
-                  }}
-                />
-              </a>
-              <h3>Gloria Armada</h3>
-              <p>
-                Gloria Armada combines 2D shootemup genres but with physics
-                based controls and a perspective that changes between top-down,
-                side-on and rear aspect!{" "}
-              </p>
-              <MinimalButton
-                darkMode={darkMode}
-                text="More Info"
-                onClick={() =>
-                  handleOpenLightbox(
-                    <div style={{ textAlign: "center" }}>
-                      <h2>Gloria Armada</h2>
-                      <p>
-                        Gloria Armada combines 2D shoot-'em-up genres but with
-                        physics-based controls and a perspective that changes
-                        between top-down, side-on, and rear aspect!
-                      </p>
-                      <iframe
-                        src="https://itch.io/embed-upload/10600258?color=0484d1"
-                        width="100%"
-                        height="60%"
-                      >
-                        <a href="https://chanel-parfait.itch.io/gloria-armada">
-                          Play Gloria Armada on itch.io
-                        </a>
-                      </iframe>
-                    </div>
-                  )
-                }
-              />
-            </div>
-            <div className="majorColumn">
-              <h2 style={{ textAlign: "center" }}>Data Analysis</h2>
-              <p>
-                8 years of experience in statistical, modelling and benchmarking
-                analysis in Australia and overseas{" "}
-              </p>
-            </div>
-            <div className="majorColumn">
-              <h2 style={{ textAlign: "center" }}>
-                Interactive Visualizations
-              </h2>
-              <div className="column-content" id="threejsContainer">
-                <ThreeJSSection
-                  darkMode={darkMode}
-                  containerID="threejsContainer"
-                />
-              </div>
-            </div>
-          </FlexReveal>
-        </Section>
+        <Features.Section title="Overview" darkMode={darkMode}>
+          <Sections.Portfolio
+            darkMode={darkMode}
+            handleOpenLightbox={handleOpenLightbox}
+          />
+        </Features.Section>
 
-        <Section title="Skills" darkMode={darkMode}>
-          <Skills darkMode={darkMode}> </Skills>
-        </Section>
+        <Features.Section title="Skills" darkMode={darkMode}>
+          <Sections.Skills darkMode={darkMode}> </Sections.Skills>
+        </Features.Section>
 
-        <Section
+        <Features.Section
           title="ContactMe"
+          id="contactMe"
           darkMode={darkMode}
-          style={{ backgroundColor: "#0061aa" }}
+          style={{
+            backgroundColor: "#0061aa",
+            paddingBottom: "1rem",
+            paddingTop: "1rem",
+          }}
         >
           <h2 style={{ textAlign: "center", color: "white", marginTop: "0px" }}>
             Get In Touch!
           </h2>
-          <MinimalButton
+          <Features.MinimalButton
             darkMode={darkMode}
             text="Contact"
             style={{
@@ -226,18 +119,22 @@ const App = () => {
               borderColor: "white",
               borderRadius: "5px",
             }}
-            onClick={() => handleOpenLightbox(<Contact darkMode={darkMode} />)}
+            onClick={() =>
+              handleOpenLightbox(<Contact darkMode={darkMode} />, {
+                height: "unset",
+              })
+            }
           />
-        </Section>
+        </Features.Section>
 
-        <Section
+        <Features.Section
           title="Portfolio"
           darkMode={darkMode}
           style={{ padding: "0px" }}
-        ></Section>
-        <Section title="Footer" darkMode={darkMode}>
-          <Footer darkMode={darkMode} />
-        </Section>
+        ></Features.Section>
+        <Features.Section title="Footer" darkMode={darkMode}>
+          <Sections.Footer darkMode={darkMode} />
+        </Features.Section>
       </main>
     </div>
   );

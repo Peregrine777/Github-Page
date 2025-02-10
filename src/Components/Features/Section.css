@@ -2,12 +2,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem;
+
   text-align: center;
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease-out, transform 1s ease-out;
   border-bottom: #ccc 1px solid; /* Add a border to each section */
+}
+
+@media screen and (min-width: 768px) {
+  .section {
+    padding: 2rem;
+  }
 }
 
 .section-visible {

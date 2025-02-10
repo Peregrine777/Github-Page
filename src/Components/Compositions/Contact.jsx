@@ -28,7 +28,7 @@ const Contact = ({ darkMode }) => {
   const validateForm = () => {
     const newErrors = {};
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    const phoneRegex = /(^04\d{8}$)|(^\+?[1-9]\d{1,14}$)/;
 
     // Name validation
     if (!formData.name) {
@@ -106,7 +106,12 @@ const Contact = ({ darkMode }) => {
       >
         <div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
           <div
-            style={{ display: "flex", gap: "20px", justifyContent: "center" }}
+            style={{
+              display: "flex",
+              gap: "20px",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
           >
             {/* Name Field */}
             <div
@@ -139,10 +144,13 @@ const Contact = ({ darkMode }) => {
                 className={formData.phone ? "not-empty" : ""}
                 value={formData.phone}
                 onChange={handleChange}
-                pattern="^\+?[1-9]\d{1,14}$"
-                title="Phone number must be in the international format, e.g., +1234567890"
+                pattern="(^04\d{8}$)|(^\+?[1-9]\d{1,14}$)"
+                title="Phone number must be in the format: 
+                       - Local (Australian): 04xxxxxxxx 
+                       - International: +1234567890"
+                placeholder="Enter your phone number"
               />
-              <label htmlFor="phone">Phone Number</label>
+              <label htmlFor="phone">Phone Number (Optional)</label>
               {errors.phone && <span className="error">{errors.phone}</span>}
             </div>
           </div>
