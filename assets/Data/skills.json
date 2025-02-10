@@ -22,6 +22,10 @@
       {
         "name": "Python",
         "image": "python.png"
+      },
+      {
+        "name": "HTML",
+        "image": "HTML5 Logo.svg"
       }
     ]
   },
