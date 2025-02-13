@@ -1,56 +1,53 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
-import setupThreeJS from "../../threeTest.js";
+import React, { useEffect, useRef } from "react";
 
-const ThreeJSSection = ({ darkMode }) => {
+const ThreeJSSection = ({ darkMode, threeJSEntry }) => {
   const containerRef = useRef(null);
-  let parentElement = useRef(null);
-  let threeJSInstance = useRef(null);
+  const parentElementRef = useRef(null);
+  const threeJSInstanceRef = useRef(null);
 
   useEffect(() => {
-    parentElement = containerRef.current?.parentElement;
-    while (parentElement && parentElement.tagName !== "SECTION") {
-      //console.log("Parent Element: ", parentElement.tagName);
-      parentElement = parentElement.parentElement; // Move up one level
+    // Ensure we have a valid Three.js entry function
+    if (typeof threeJSEntry !== "function") {
+      console.error("Invalid threeJSEntry function provided.");
+      return;
     }
-    console.log("Parent Element: ", parentElement);
 
-    threeJSInstance = setupThreeJS(containerRef, parentElement);
-    // console.log("Container: ", containerRef.current);
-    // console.log(
-    //   "init container size",
-    //   containerRef.current.offsetWidth,
-    //   containerRef.current.offsetHeight
-    // );
+    // Find the parent <section> element
+    let parentElement = containerRef.current?.parentElement;
+    while (parentElement && parentElement.tagName !== "SECTION") {
+      parentElement = parentElement.parentElement;
+    }
+    parentElementRef.current = parentElement;
 
-    // Function to handle dark mode change
+    console.log("Parent Element:", parentElement);
+
+    // Initialize the Three.js scene
+    threeJSInstanceRef.current = threeJSEntry(containerRef, parentElement);
+
+    // Handle dark mode changes
     const handleDarkModeChange = () => {
-      if (threeJSInstance?.handleDarkModeChange) {
-        threeJSInstance.handleDarkModeChange(darkMode);
+      if (threeJSInstanceRef.current?.handleDarkModeChange) {
+        threeJSInstanceRef.current.handleDarkModeChange(darkMode);
       }
     };
 
-    // Call the handleDarkModeChange function when darkMode changes
     handleDarkModeChange();
+
+    // Handle resizing after a slight delay
     const delayResize = setTimeout(() => {
-      // console.log(
-      //   "delayed container size",
-      //   containerRef.current.offsetWidth,
-      //   containerRef.current.offsetHeight
-      // );
-      console.log("ThreeJS Instance: ", threeJSInstance);
-      if (threeJSInstance?.handleResize) {
-        threeJSInstance.handleResize(containerRef); // Call the resize function from Three.js setup
+      if (threeJSInstanceRef.current?.handleResize) {
+        threeJSInstanceRef.current.handleResize(containerRef);
       }
     }, 1000);
 
-    // Cleanup the timeout when component unmounts
+    // Cleanup on unmount
     return () => {
       clearTimeout(delayResize);
-      if (threeJSInstance?.cleanup) {
-        threeJSInstance.cleanup(); // Cleanup Three.js resources
+      if (threeJSInstanceRef.current?.cleanup) {
+        threeJSInstanceRef.current.cleanup();
       }
     };
-  }, [darkMode]);
+  }, [darkMode, threeJSEntry]);
 
   return (
     <div

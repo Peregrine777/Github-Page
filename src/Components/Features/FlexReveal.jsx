@@ -2,12 +2,29 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import "./FlexReveal.css";
 
-const FlexReveal = ({ children, className, style, childStyle }) => {
-  const { ref, inView } = useInView({
-    root: null, // Uses viewport as root
-    rootMargin: "-50% 0px", // Triggers when 50% of the viewport is taken up
-    triggerOnce: true, // Only trigger the animation once
-  });
+const FlexReveal = ({
+  children,
+  className,
+  style,
+  childStyle,
+  revealMode,
+  revealPercent,
+}) => {
+  const mode = revealMode ? revealMode : "rootMargin";
+  mode === "threshold" ? (revealPercent ? revealPercent : 0.5) : "-50% 0px";
+
+  const { ref, inView } = useInView(
+    mode === "rootMargin"
+      ? {
+          root: null, // Uses viewport as root
+          rootMargin: revealPercent, // Triggers when `revealPercent` of the viewport is taken up
+          triggerOnce: true, // Only trigger the animation once
+        }
+      : {
+          threshold: revealPercent, // Triggers when `revealPercent` of the element is in view
+          triggerOnce: true,
+        }
+  );
 
   return (
     <div

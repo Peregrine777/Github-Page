@@ -40,10 +40,7 @@ const AnalyticsOverview = ({ darkMode }) => {
       <div className="visuals">
         <div className="sample-graph">
           {/* This could be a placeholder or an animated graph */}
-          <img
-            src="/path-to-placeholder-image.png"
-            alt="Data analytics placeholder"
-          />
+          <img src="/path-to-placeholder-image.png" />
         </div>
       </div>
     </section>

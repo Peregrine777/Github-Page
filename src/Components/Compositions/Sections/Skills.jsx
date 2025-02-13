@@ -64,7 +64,7 @@ const Skills = ({ darkMode }) => {
                     alt={skill.name}
                     style={{
                       maxWidth: "100%",
-                      width: "80px",
+                      width: "50px",
                       objectFit: "contain",
                       alignSelf: "normal",
                       height: "auto",

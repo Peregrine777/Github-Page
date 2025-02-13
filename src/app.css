@@ -109,13 +109,13 @@ body.dark-mode {
   flex-grow: 1;
   flex-shrink: 2;
   width: 100%;
-  -webkit-mask-image: linear-gradient(
+  /* -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
     rgba(128, 128, 128, 1) 20%,
     rgba(128, 128, 128, 1) 80%,
     transparent 100%
-  );
+  ); */
 }
 
 /* Smooth transition for dark/light mode */

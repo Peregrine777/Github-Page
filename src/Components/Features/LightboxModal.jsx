@@ -1,5 +1,7 @@
 import React, { isValidElement, cloneElement, useState } from "react";
 import "./LightboxModal.css";
+import MinimalButton from "./MinimalButton";
+
 const LightboxModal = ({ darkMode, isOpen, content, style, onClose }) => {
   if (!isOpen) return null; // Don't render if not open
 
@@ -18,12 +20,18 @@ const LightboxModal = ({ darkMode, isOpen, content, style, onClose }) => {
         onClick={(e) => e.stopPropagation()}
         style={style}
       >
-        <button
+        <MinimalButton
+          darkMode={darkMode}
           className={`close-button ${darkMode ? "dark-mode" : "light-mode"}`}
           onClick={onClose}
-        >
-          X
-        </button>
+          text="X"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            fontWeight: "bold",
+          }}
+        />
         <div>{contentWithProps}</div>
       </div>
     </div>

@@ -21,7 +21,12 @@ const Footer = ({ darkMode }) => {
       </div>
       <div
         className="column"
-        style={{ flexBasis: "45%", flex: "0 0 auto", textAlign: "left" }}
+        style={{
+          flexBasis: "45%",
+          flex: "0 0 auto",
+          alignItems: "left",
+          textAlign: "left",
+        }}
       >
         <h2 style={{ textAlign: "left" }}> Links </h2>
         <a href="https://www.linkedin.com/in/samuel-mckenzie-sell-95a63231b">

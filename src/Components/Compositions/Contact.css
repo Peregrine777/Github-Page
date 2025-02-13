@@ -74,16 +74,16 @@
 }
 
 .input-group label {
-  position: absolute; /* Makes the label overlay the input */
+  position: absolute;
   padding-left: 5px;
   padding-right: 5px;
-  top: 40%; /* Center label vertically */
-  left: 10px; /* Add some padding from the left */
-  transform: translateY(-50%); /* Adjust for perfect centering */
-  font-size: 14px; /* Default label font size */
-  color: rgba(var(--color), 0.01); /* 50% opacity */
-  pointer-events: none; /* Prevent label from interfering with clicks */
-  transition: 0.3s ease all; /* Smooth transition for label movement */
+  top: 40%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: rgba(var(--color), 0.01);
+  pointer-events: none;
+  transition: 0.3s ease all;
   background-color: var(--bg-color);
 }
 

@@ -47,8 +47,8 @@ const VariableImage = ({ darkMode, src, alt, style }) => {
 
       // Placeholder styling (before the image loads)
       const placeholderStyle = {
-        width: style.width || "80px", // Default width if not provided
-        height: style.height || "80px", // Default height if not provided
+        width: style.width || "40px", // Default width if not provided
+        height: style.height || "40px", // Default height if not provided
         backgroundColor: "#f0f0f0", // Placeholder color
         display: isLoading ? "block" : "none", // Show placeholder while loading
       };
@@ -100,6 +100,7 @@ const VariableImage = ({ darkMode, src, alt, style }) => {
             alt={alt}
             style={{
               ...style,
+              width: "40px",
               display: isLoading ? "none" : "unset", // Hide the image until it's loaded
               opacity: isLoading ? 0 : 1, // Fade the image in after loading
               transition: "opacity 0.3s ease-in-out", // Smooth fade-in transition

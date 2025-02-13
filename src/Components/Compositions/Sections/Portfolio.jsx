@@ -2,6 +2,7 @@ import React from "react";
 import * as Features from "../../Features/index";
 import * as PP from "../PortfolioPieces/index";
 import "./Portfolio.css";
+import setupThreeJS from "../../../threeTest.js";
 
 const Portfolio = ({ darkMode, handleOpenLightbox }) => {
   const boldTextCol = darkMode ? "white" : "#333";
@@ -94,6 +95,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
           <Features.ThreeJSSection
             darkMode={darkMode}
             containerID="threejsContainer"
+            threeJSEntry={setupThreeJS}
           />
         </div>
       </div>

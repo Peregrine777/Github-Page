@@ -19,6 +19,7 @@ const Socials = ({ darkMode, scrollToSection }) => {
   return (
     <div>
       <FlexReveal
+        revealMode="threshold"
         style={{
           justifyContent: "center",
           alignItems: "center",

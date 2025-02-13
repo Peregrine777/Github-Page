@@ -80,6 +80,7 @@ const App = () => {
           title="Greetings"
           darkMode={darkMode}
           style={{ paddingTop: "1rem" }}
+          revealPercent="-50% 0px"
         >
           <Sections.Greetings
             darkMode={darkMode}
@@ -102,6 +103,7 @@ const App = () => {
           title="ContactMe"
           id="contactMe"
           darkMode={darkMode}
+          revealPercent="50px 0px"
           style={{
             backgroundColor: "#0061aa",
             paddingBottom: "1rem",
@@ -132,7 +134,11 @@ const App = () => {
           darkMode={darkMode}
           style={{ padding: "0px" }}
         ></Features.Section>
-        <Features.Section title="Footer" darkMode={darkMode}>
+        <Features.Section
+          title="Footer"
+          darkMode={darkMode}
+          revealPercent="50px 0px"
+        >
           <Sections.Footer darkMode={darkMode} />
         </Features.Section>
       </main>
