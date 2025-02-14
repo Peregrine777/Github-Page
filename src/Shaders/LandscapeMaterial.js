@@ -228,38 +228,38 @@ export const ReclaimerLandShader = {
         vec3 skyLightColor = skyColor * aLight;
         
         //Shadows
-        int Steps = 10 ;
-        float heightMapH = getHeightInterpolated(vUV);
-        //get width of texture2D heightmap
-        vec3 p = vec3(vUV, heightMapH);
-        vec3 lightDir = normalize(lightDirection);
-        lightDir = vec3(lightDir.x, -lightDir.z, lightDir.y);
-        vec3 stepDir = normalize(lightDir);
-        float stepDist = 0.01;
-        float inShadow = 0.0;
-        float h = p.z + 0.05;
-        if (dProd > 0.0){
-            for (int i = 0; i < Steps; i++) {
-                p += stepDir * max(stepDist, (p.z - h) * 0.05);
-                //if p.x or p.y are outside the texture, break
-                if (p.x < 0.0 || p.x > 1.0 || p.y < 0.0 || p.y > 1.0) {
-                    break;
-                }
-                float h = getHeightInterpolated(p.xy);
-                //expand h to real range using the min/max heights of the heightmap
-                //h = h/255.0;
-                //h = mix(hmMin, hmMax, h);
-                if (p.z < h) {
-                    inShadow = 1.0;
-                    break;
-                }
-                if (p.z > 1.0){
-                    break;
-                }
-            }
-        }
+        // int Steps = 10 ;
+        // float heightMapH = getHeightInterpolated(vUV);
+        // //get width of texture2D heightmap
+        // vec3 p = vec3(vUV, heightMapH);
+        // vec3 lightDir = normalize(lightDirection);
+        // lightDir = vec3(lightDir.x, -lightDir.z, lightDir.y);
+        // vec3 stepDir = normalize(lightDir);
+        // float stepDist = 0.01;
+        // float inShadow = 0.0;
+        // float h = p.z + 0.05;
+        // if (dProd > 0.0){
+        //     for (int i = 0; i < Steps; i++) {
+        //         p += stepDir * max(stepDist, (p.z - h) * 0.05);
+        //         //if p.x or p.y are outside the texture, break
+        //         if (p.x < 0.0 || p.x > 1.0 || p.y < 0.0 || p.y > 1.0) {
+        //             break;
+        //         }
+        //         float h = getHeightInterpolated(p.xy);
+        //         //expand h to real range using the min/max heights of the heightmap
+        //         //h = h/255.0;
+        //         //h = mix(hmMin, hmMax, h);
+        //         if (p.z < h) {
+        //             inShadow = 1.0;
+        //             break;
+        //         }
+        //         if (p.z > 1.0){
+        //             break;
+        //         }
+        //     }
+        // }
 
-        vec3 debugShadow = (1.0 - inShadow) * vec3(0.3, 0.3, 0.3);
+        // vec3 debugShadow = (1.0 - inShadow) * vec3(0.3, 0.3, 0.3);
 
         //pseudo fresnel
         float fresnel =  dot(vNormal, vViewDirection);
@@ -268,7 +268,7 @@ export const ReclaimerLandShader = {
 
         //final colour
         vec3 directLight = landColor * directLightColor;
-        directLight = mix(directLight , landColor * 0.1, inShadow);
+        //directLight = mix(directLight , landColor * 0.1, inShadow);
         vec3 directFresnel = mix(directLight, fresnelLight, fresnel);
 
         vec3 skyLight = landColor * skyLightColor;

@@ -16,7 +16,13 @@ export class sc_IntroScene extends SceneBase {
     // run the threading test
     //let test = new threadTest();
     //test.Run();
-    this.terrain = new TerrainBuilder_threaded(this, this.params);
+    this.updateTerrain = true;
+    this.terrain = new TerrainBuilder({
+      camera: this.camera,
+      scene: this.scene,
+      renderer: this.renderer,
+      gui: this.gui,
+    });
   }
 
   update(deltaTime) {

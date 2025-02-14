@@ -20,7 +20,7 @@ import { sc_IntroScene } from "./Scenes/Intro/introScene.js";
 import { sc_Reclaimer } from "./Scenes/Reclaimer/Reclaimer.js";
 
 export default function setupThreeJS(containerRef, sectionRef) {
-  let container = containerRef.current;
+  const container = containerRef.current;
 
   if (!container) return;
 
@@ -36,6 +36,13 @@ export default function setupThreeJS(containerRef, sectionRef) {
   const pixelRatio = window.devicePixelRatio || 1;
   renderer.setSize(container.offsetWidth, container.offsetHeight);
   renderer.setPixelRatio(pixelRatio);
+  // Ensure the renderer is positioned correctly inside the container
+  //renderer.domElement.style.position = "absolute";
+  renderer.domElement.style.top = "0";
+  renderer.domElement.style.left = "0";
+  renderer.domElement.style.width = "100%"; // Ensure it stretches to fit the container
+  renderer.domElement.style.height = "100%";
+  renderer.domElement.style.zIndex = "1";
   container.appendChild(renderer.domElement);
 
   //camera
@@ -78,7 +85,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
   //////////////////
 
   function switchScene() {
-    let newScene = new sc_IntroScene({
+    let newScene = new sc_Reclaimer({
       camera: camera,
       renderer: renderer,
       gui: gui,
@@ -226,9 +233,19 @@ export default function setupThreeJS(containerRef, sectionRef) {
     let _guiParams = {
       general: {},
     };
-    let gui = new GUI();
+    let gui = new GUI({ autoPlace: false });
     const generalRollup = gui.addFolder("General");
     gui.close();
+    container.style.position = "relative";
+
+    // Style the GUI panel to stay inside the container and on top
+    gui.domElement.style.position = "absolute";
+
+    gui.domElement.style.zIndex = "1000"; // Ensure GUI is on top
+    gui.domElement.style.overflow = "visible"; // Ensure rollups are visible
+
+    container.appendChild(gui.domElement);
+    console.log("datGUI container:" + container);
     return gui;
   }
 
@@ -248,6 +265,11 @@ export default function setupThreeJS(containerRef, sectionRef) {
   let CSSRenderer = new CSS3DRenderer();
 
   CSSRenderer.setSize(container.offsetWidth, container.offsetHeight);
+  CSSRenderer.domElement.style.position = "absolute";
+  CSSRenderer.domElement.style.top = "0";
+  CSSRenderer.domElement.style.left = "0";
+  CSSRenderer.domElement.style.zIndex = "2"; // Renderer stays behind
+  //
   //container.appendChild(CSSRenderer.domElement);
 
   const cssCanvas = document.createElement("canvas");
@@ -257,14 +279,14 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
   // Handle resizing
   const handleResize = (containerRef) => {
-    // console.log("3jsContainer: ", container);
-    // console.log("Resizing");
-    // console.log(
-    //   "3js Container: ",
-    //   container.offsetWidth,
-    //   ", ",
-    //   container.offsetHeight
-    // );
+    console.log("3jsContainer: ", container);
+    console.log("Resizing");
+    console.log(
+      "3js Container: ",
+      container.offsetWidth,
+      ", ",
+      container.offsetHeight
+    );
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     CSSRenderer.setSize(container.offsetWidth, container.offsetHeight);
     cssCanvas.width = container.offsetWidth;
@@ -276,7 +298,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
   let hasResized = false;
 
-  switchScene();
+  //switchScene();
   // Animation loop
   const clock = new THREE.Clock();
   //final update loop

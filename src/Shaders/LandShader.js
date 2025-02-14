@@ -1,19 +1,17 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { Vector3 } from "three";
 
 export const LandShader = {
-
-
-    uniforms: {
-        lightDirection: {value: new Vector3(1.0, 1.0, 1.0)},
-        lightColor: {value: new Vector3(0.9, 0.76, 0.50)},
-        size: {value: 20.0},
-        enableFog: {value: true},
-        isWireframe: {value: false},
-        showNormals: {value: true},
-        wireframeWidth: {value: 1.0}
-    },
-    vertexShader: /* glsl */`
+  uniforms: {
+    lightDirection: { value: new Vector3(1.0, 1.0, 1.0) },
+    lightColor: { value: new Vector3(0.9, 0.76, 0.5) },
+    size: { value: 20.0 },
+    enableFog: { value: true },
+    isWireframe: { value: false },
+    showNormals: { value: false },
+    wireframeWidth: { value: 1.0 },
+  },
+  vertexShader: /* glsl */ `
     uniform vec3 lightDirection;
 
     out vec3 vNormal;
@@ -51,7 +49,7 @@ export const LandShader = {
     
     
     `,
-    fragmentShader: /* glsl */`
+  fragmentShader: /* glsl */ `
     #define PI 3.14159265358979323846
     uniform vec3 lightColor;
     uniform vec3 lightDirection;
@@ -182,5 +180,5 @@ export const LandShader = {
 
         gl_FragColor = vec4(finalFog, 1.0 );
     }
-    `
-}
+    `,
+};

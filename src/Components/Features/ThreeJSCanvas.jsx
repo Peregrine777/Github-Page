@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const ThreeJSSection = ({ darkMode, threeJSEntry }) => {
+const ThreeJSSection = ({ darkMode, threeJSEntry, style }) => {
   const containerRef = useRef(null);
   const parentElementRef = useRef(null);
   const threeJSInstanceRef = useRef(null);
@@ -55,8 +55,8 @@ const ThreeJSSection = ({ darkMode, threeJSEntry }) => {
       style={{
         minWidth: "250px",
         minHeight: "250px",
-        width: "auto",
-        height: "auto",
+        maxHeight: "60vh",
+        ...style,
       }}
     />
   );
