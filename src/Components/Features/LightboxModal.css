@@ -6,7 +6,7 @@
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  padding-top: calc(60px + 1rem);
+  padding-top: 110px;
   background: rgba(0, 0, 0, 0.7); /* Dimmed background */
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@
 }
 
 .lightbox-content.dark-mode {
-  background: #2c2c2c;
+  background: #1e1e1e;
   color: #f4f4f9;
 }
 

@@ -21,6 +21,7 @@ const ThreeJSSection = ({ darkMode, threeJSEntry, style }) => {
 
     console.log("Parent Element:", parentElement);
 
+    console.log("ThreeJS Container:", containerRef.current);
     // Initialize the Three.js scene
     threeJSInstanceRef.current = threeJSEntry(containerRef, parentElement);
 
@@ -55,7 +56,9 @@ const ThreeJSSection = ({ darkMode, threeJSEntry, style }) => {
       style={{
         minWidth: "250px",
         minHeight: "250px",
-        maxHeight: "60vh",
+        maxHeight: "100%",
+        height: "100%",
+        width: "100%",
         ...style,
       }}
     />

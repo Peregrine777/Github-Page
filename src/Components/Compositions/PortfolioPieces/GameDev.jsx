@@ -1,12 +1,52 @@
 import React from "react";
 import * as Compositions from "../../Compositions";
+import "./GameDev.css";
 
 const GameDev = ({ darkMode }) => {
   const menuContent = {
-    "Game Engines": { subOptions: ["OpenGL engine", "Physics"] }, // No sub-options for A
-    Games: { subOptions: [] }, // Sub-options for B
-    C: { subOptions: [] }, // No sub-options for C
+    Games: { subOptions: [] },
+    "Game Engines": { subOptions: ["OpenGL engine", "Physics"] },
   };
+
+  const GameInfo = ({ title, img, link, description, children }) => (
+    <div className="game">
+      <GameImage img={img} link={link} />
+      <GameDesc title={title} descr={description}>
+        {children}
+      </GameDesc>
+    </div>
+  );
+
+  const GameImage = ({ img, link }) => (
+    <a
+      className="game-icon"
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img className="game-icon-img" src={img} alt="Game Icon" />
+    </a>
+  );
+
+  const GameDesc = ({ title, descr, children }) => (
+    <div className="game-info">
+      <GameTitle>{title}</GameTitle>
+      <GameFeatures>{children}</GameFeatures>
+      <GameDescription>{descr}</GameDescription>
+    </div>
+  );
+
+  const GameTitle = ({ children }) => (
+    <div className="game-title">{children}</div>
+  );
+
+  const GameFeatures = ({ children }) => (
+    <div className="features">{children}</div>
+  );
+
+  const GameDescription = ({ children }) => (
+    <div className="game-description">{children}</div>
+  );
 
   const contentRenderer = (activeSection, activeSubOption) => {
     if (activeSubOption) {
@@ -22,16 +62,23 @@ const GameDev = ({ darkMode }) => {
         return (
           <div>
             <h2>Games</h2>
-            <p>
-              Gloria Armada combines 2D shoot-'em-up genres but with
-              physics-based controls and a perspective that changes between
-              top-down, side-on, and rear aspect!
-            </p>
-            <img src="assets/Images/Gloria_Armada.png" alt="Gloria Armada" />
-
-            <a href="https://chanel-parfait.itch.io/gloria-armada">
-              Play Gloria Armada on itch.io
-            </a>
+            <div className="game-list">
+              <GameInfo
+                title="Gloria Armada"
+                img="assets/Images/Gloria_Armada.png"
+                link="https://chanel-parfait.itch.io/gloria-armada"
+                description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
+              ></GameInfo>
+              <h2 style={{ textAlign: "left", marginBottom: "0px" }}>
+                Tech Demoes
+              </h2>
+              <GameInfo
+                title="Gloria Armada"
+                img="assets/Images/Gloria_Armada.png"
+                link="https://chanel-parfait.itch.io/gloria-armada"
+                description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
+              ></GameInfo>
+            </div>
           </div>
         );
       }
@@ -49,40 +96,14 @@ const GameDev = ({ darkMode }) => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", maxHeight: "100vh" }}>
       <h2>Game Development</h2>
       <div>
         <Compositions.MenuBar
           content={menuContent}
-          darkMode={true}
+          darkMode={darkMode}
           contentRenderer={contentRenderer}
         />
-      </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flex: "1", padding: "1rem" }}>
-          <h3>Games</h3>
-          <p>
-            Gloria Armada combines 2D shoot-'em-up genres but with physics-based
-            controls and a perspective that changes between top-down, side-on,
-            and rear aspect!
-          </p>
-
-          <img src="assets/Images/Gloria_Armada.png" alt="Gloria Armada" />
-          {/* <iframe
-            src="https://itch.io/embed-upload/10600258?color=0484d1"
-            width="100%"
-            height="60%"
-            title="Gloria Armada"
-          >
-            <a href="https://chanel-parfait.itch.io/gloria-armada">
-              Play Gloria Armada on itch.io
-            </a>
-          </iframe> */}
-        </div>
-        <div style={{ flex: "1", padding: "1rem" }}>
-          <h3>Game Engines</h3>
-          <p>s</p>
-        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import * as Features from "../../Features";
 import setupThreeJS from "../../../three.js";
-import { Container } from "postcss";
+//import setupThreeJS from "../../../threeTest.js";
 
 const Interactives = ({ darkMode }) => {
   return (
@@ -9,18 +9,32 @@ const Interactives = ({ darkMode }) => {
       <h2>Interactive Media</h2>
       <div
         id="flexLB"
-        style={{ display: "flex", width: "90%", height: "70%", margin: "auto" }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2rem",
+          margin: "auto",
+        }}
       >
-        <div className="column-content" id="pf3js">
+        <div
+          className="column-content"
+          id="pf3js"
+          style={{
+            maxHeight: "600px",
+            minWidth: "250px",
+            minHeight: "250px",
+
+            maxWidth: "900px",
+          }}
+        >
           <Features.ThreeJSSection
             darkMode={darkMode}
             containerID="pf3js"
             threeJSEntry={setupThreeJS}
-            style={{ maxWidth: "900px" }}
           />
         </div>
-        <div style={{ flex: "1" }}>
-          <p style={{ width: "40%" }}>
+        <div style={{ flex: "1", minWidth: "400px" }}>
+          <p>
             Interactive visualizations, simulations, and animations using react,
             three.js
           </p>

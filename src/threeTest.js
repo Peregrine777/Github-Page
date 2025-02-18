@@ -79,7 +79,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
   // Handle resizing
   const handleResize = (containerRef) => {
-    // console.log("3jsContainer: ", container);
+    // console.log("3jsTestContainer: ", container);
     // console.log("Resizing");
     // console.log(
     //   "3js Container: ",

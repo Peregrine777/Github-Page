@@ -43,6 +43,8 @@ export default function setupThreeJS(containerRef, sectionRef) {
   renderer.domElement.style.width = "100%"; // Ensure it stretches to fit the container
   renderer.domElement.style.height = "100%";
   renderer.domElement.style.zIndex = "1";
+  renderer.domElement.width = container.offsetWidth;
+  renderer.domElement.height = container.offsetHeight;
   container.appendChild(renderer.domElement);
 
   //camera
@@ -244,7 +246,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
     gui.domElement.style.zIndex = "1000"; // Ensure GUI is on top
     gui.domElement.style.overflow = "visible"; // Ensure rollups are visible
 
-    container.appendChild(gui.domElement);
+    //container.appendChild(gui.domElement);
     console.log("datGUI container:" + container);
     return gui;
   }
@@ -273,13 +275,15 @@ export default function setupThreeJS(containerRef, sectionRef) {
   //container.appendChild(CSSRenderer.domElement);
 
   const cssCanvas = document.createElement("canvas");
+
   cssCanvas.width = container.offsetWidth;
   cssCanvas.height = container.offsetHeight;
   const cssContext = cssCanvas.getContext("2d");
 
   // Handle resizing
-  const handleResize = (containerRef) => {
+  const handleResize = (parentRef) => {
     console.log("3jsContainer: ", container);
+    console.log("3jsParent: ", parentRef);
     console.log("Resizing");
     console.log(
       "3js Container: ",
@@ -288,9 +292,13 @@ export default function setupThreeJS(containerRef, sectionRef) {
       container.offsetHeight
     );
     renderer.setSize(container.offsetWidth, container.offsetHeight);
-    CSSRenderer.setSize(container.offsetWidth, container.offsetHeight);
-    cssCanvas.width = container.offsetWidth;
-    cssCanvas.height = container.offsetHeight;
+    composer.setSize(container.offsetWidth, container.offsetHeight);
+    composer.setPixelRatio(window.devicePixelRatio);
+    renderer.domElement.width = container.offsetWidth;
+    renderer.domElement.height = container.offsetHeight;
+    // CSSRenderer.setSize(container.offsetWidth, container.offsetHeight);
+    // cssCanvas.width = container.offsetWidth;
+    // cssCanvas.height = container.offsetHeight;
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
   };
@@ -298,7 +306,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
   let hasResized = false;
 
-  //switchScene();
+  switchScene();
   // Animation loop
   const clock = new THREE.Clock();
   //final update loop

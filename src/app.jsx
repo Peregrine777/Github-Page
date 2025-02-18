@@ -46,14 +46,30 @@ const App = () => {
   };
 
   const handleOpenLightbox = (content, style) => {
+    document.body.classList.add("no-scroll");
+    // Add a new history state when opening
+    history.pushState({ lightboxOpen: true }, "", "#lightbox");
     setLightboxContent(content); // Set the content dynamically
     setLightboxStyle(style); // Set the style dynamically
     setIsLightboxOpen(true); // Open the lightbox
   };
 
   const handleCloseLightbox = () => {
+    document.body.classList.remove("no-scroll");
     setIsLightboxOpen(false);
+    // Go back in history (removing the lightbox state)
+    // Ensure we only go back if we actually added a state
+    if (history.state?.lightboxOpen) {
+      setTimeout(() => history.back(), 100); // ✅ Debounce back action
+    }
   };
+
+  // Handle the Back button closing the lightbox
+  window.addEventListener("popstate", (event) => {
+    if (event.state?.lightboxOpen) {
+      handleCloseLightbox();
+    }
+  });
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => {

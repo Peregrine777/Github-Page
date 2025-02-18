@@ -26,22 +26,16 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
       >
         <h2 style={{ color: boldTextCol }}>GameDev</h2>
         <h3>Games, game engines, physics and rendering</h3>
-        <a
-          href="https://chanel-parfait.itch.io/gloria-armada"
-          target="_blank"
-          rel="noreferer"
-        >
-          <img
-            src="assets/Images/Gloria_Armada.png"
-            alt="Gloria Armada"
-            style={{
-              maxWidth: "100%",
-              objectFit: "contain",
-              alignSelf: "normal",
-              height: "auto",
-            }}
-          />
-        </a>
+        <img
+          src="assets/Images/Gloria_Armada.png"
+          alt="Gloria Armada"
+          style={{
+            maxWidth: "100%",
+            objectFit: "contain",
+            alignSelf: "normal",
+            height: "auto",
+          }}
+        />
       </div>
 
       {/* Data Analysis Section */}

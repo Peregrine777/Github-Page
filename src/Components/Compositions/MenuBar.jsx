@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./MenuBar.css"; // Import CSS for styling and animations
 
 const MenuBar = ({ content, darkMode, contentRenderer }) => {
@@ -8,7 +8,23 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
   const [subMenuContent, setSubMenuContent] = useState([]);
   const [isContentVisible, setIsContentVisible] = useState(false);
 
-  const handleSectionClick = (section) => {
+  const underlineRef = useRef(null);
+
+  const moveUnderline = (target) => {
+    if (underlineRef.current) {
+      const { left, width } = target.getBoundingClientRect();
+      const containerLeft = document
+        .querySelector(".menu-items")
+        .getBoundingClientRect().left;
+      underlineRef.current.style.transform = `translateX(${
+        left - containerLeft
+      }px)`;
+      underlineRef.current.style.width = `${width}px`;
+    }
+  };
+
+  const handleSectionClick = (target, section) => {
+    moveUnderline(target);
     if (activeSection === section) {
       // Deselect the current section
       setActiveSection(null);
@@ -22,9 +38,9 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
       // After a short delay, update the section and fade in the new content
       setTimeout(() => {
         setActiveSection(section);
-        setActiveSubOption(null);
         if (content[section]?.subOptions) {
           setSubMenuContent(content[section].subOptions);
+          setActiveSubOption(content[section].subOptions[0]);
           setSubMenuVisible(true);
         } else {
           setSubMenuVisible(false);
@@ -33,6 +49,13 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
       }, 300); // Match this delay with the CSS transition duration
     }
   };
+
+  // Set the first section as the default when the component mounts
+  useEffect(() => {
+    const firstSection = Object.keys(content)[0];
+    setActiveSection(firstSection);
+    setIsContentVisible(true); // Show content for the first section by default
+  }, [content]);
 
   const handleSubOptionClick = (subOption) => {
     if (activeSubOption === subOption) {
@@ -54,11 +77,12 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
   return (
     <div className={`menu-bar ${darkMode ? "dark-mode" : ""}`}>
       <div className="menu-items">
+        <div className="menu-underline" ref={underlineRef}></div>
         {Object.keys(content).map((section) => (
           <div
             key={section}
             className={`menu-item ${activeSection === section ? "active" : ""}`}
-            onClick={() => handleSectionClick(section)}
+            onClick={(e) => handleSectionClick(e.currentTarget, section)}
           >
             {section}
           </div>
@@ -81,7 +105,10 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
         </div>
       )}
 
-      <div className={`content ${isContentVisible ? "fade-in" : "fade-out"}`}>
+      <div
+        className={`content ${isContentVisible ? "fade-in" : "fade-out"}`}
+        style={{ overflow: "auto" }}
+      >
         {contentRenderer
           ? contentRenderer(activeSection, activeSubOption)
           : activeSubOption

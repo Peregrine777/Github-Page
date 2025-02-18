@@ -1,37 +1,53 @@
-.menu-bar {
-  font-family: Arial, sans-serif;
-}
-
 .menu-bar.dark-mode {
-  background-color: #333;
   color: #fff;
 }
 
 .menu-items {
   display: flex;
   justify-content: space-around;
-  background-color: #444;
   padding: 10px;
 }
 
 .menu-item {
   cursor: pointer;
   padding: 10px;
-  transition: background-color 0.3s;
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .menu-item.active {
   background-color: #666;
 }
 
-.menu-item:hover {
+/* Hover and active fill entire box */
+.menu-item:hover,
+.menu-item.active {
   background-color: #555;
+}
+
+.menu-underline {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background: black; /* or white for dark mode */
+  width: 0;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+.menu-bar.dark-mode .menu-item.active::after {
+  background-color: white;
+}
+
+.menu-bar.light-mode .menu-item.active::after {
+  background-color: black;
 }
 
 .sub-menu {
   display: flex;
   justify-content: space-around;
-  background-color: #555;
   padding: 10px;
   opacity: 0;
   animation: fade-in 0.3s forwards;
@@ -40,7 +56,7 @@
 .sub-menu-item {
   cursor: pointer;
   padding: 5px;
-  transition: background-color 0.3s;
+  flex: 1;
 }
 
 .sub-menu-item:hover {
@@ -49,8 +65,8 @@
 
 .content {
   margin-top: 20px;
-  padding: 20px;
-  background-color: #eee;
+  max-height: 60lvh;
+  overflow: auto;
   transition: opacity 0.3s, transform 0.3s;
 }
 
