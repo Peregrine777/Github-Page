@@ -22,30 +22,25 @@ const Footer = ({ darkMode }) => {
       <div
         className="column"
         style={{
-          flexBasis: "45%",
-          flex: "0 0 auto",
+          flexBasis: "25%",
+          flex: "1 2 auto",
           alignItems: "left",
           textAlign: "left",
+          padding: "0 10px",
         }}
       >
-        <h2 style={{ textAlign: "left" }}> Links </h2>
-        <a href="https://www.linkedin.com/in/samuel-mckenzie-sell-95a63231b">
-          LinkedIn
-        </a>
-        <br />
-        <a href="https://www.linkedin.com/in/samuel-mckenzie-sell-95a63231b">
-          GitHub
-        </a>
-        <p style={{ textAlign: "left", fontSize: "24px" }}> </p>
-
         <Socials darkMode={darkMode} />
       </div>
       <div
         className="column"
-        style={{ flex: "0", alignSelf: "start", textAlign: "left" }}
+        style={{
+          flex: "0",
+          alignSelf: "start",
+          lineHeight: "14px",
+          textAlign: "left",
+        }}
       >
-        <h2 style={{ textAlign: "left" }}> Contact </h2>
-        <p> samuelmckenziesell@gmail.com </p>
+        <p style={{ margin: "0" }}> samuelmckenziesell@gmail.com </p>
         <p> +61 0401 384 885 </p>
       </div>
     </div>
