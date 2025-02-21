@@ -151,7 +151,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
     camera.lookAt(0, 0, 0);
 
-    cameraGroup.position.y = -(normalizedScroll - 0.2);
+    cameraGroup.position.y = -(normalizedScroll - 0.5);
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
