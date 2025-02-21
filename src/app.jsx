@@ -11,6 +11,25 @@ const App = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);
+
+  const sceneModules = import.meta.glob("./Scenes/**/*.js");
+
+  async function loadScenes() {
+    const scenes = [];
+    for (const path in sceneModules) {
+      const module = await sceneModules[path]();
+      for (const key in module) {
+        if (typeof module[key] === "function" && key.startsWith("sc_")) {
+          scenes.push(module[key]); // Assuming scene classes are exported
+        }
+      }
+    }
+    return scenes;
+  }
+
+  loadScenes().then((sceneList) => {
+    console.log("Loaded scenes:", sceneList);
+  });
   useEffect(() => {
     // Ensure scrolling happens after rendering
     setTimeout(() => {
@@ -95,7 +114,7 @@ const App = () => {
         <Features.Section
           title="Greetings"
           darkMode={darkMode}
-          style={{ paddingTop: "1rem" }}
+          style={{ paddingTop: "1rem", height: "80vh" }}
           revealPercent="-50% 0px"
         >
           <Sections.Greetings
@@ -104,7 +123,11 @@ const App = () => {
           />
         </Features.Section>
 
-        <Features.Section title="Overview" darkMode={darkMode}>
+        <Features.Section
+          title="Overview"
+          darkMode={darkMode}
+          style={{ padding: "20 0" }}
+        >
           <Sections.Portfolio
             darkMode={darkMode}
             handleOpenLightbox={handleOpenLightbox}

@@ -23,7 +23,7 @@
 .settings-menu-wrapper {
   position: absolute;
   top: 2rem;
-  right: 0;
+  right: 1rem;
   min-height: 150px; /* Ensure menu is tall enough */
   min-width: 250px;
   padding: 8px; /* Add padding to make it slightly larger than the settings menu */

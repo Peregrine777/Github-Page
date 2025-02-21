@@ -6,9 +6,3 @@
   box-sizing: border-box;
   padding: 0rem; /* Optional: Padding for inner spacing */
 }
-
-@media screen and (max-width: 768px) {
-  h1 {
-    font-size: 20px;
-  }
-}

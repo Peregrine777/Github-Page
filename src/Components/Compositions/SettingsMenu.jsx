@@ -12,8 +12,8 @@ const SettingsMenu = ({ darkMode, toggleDarkMode }) => {
             darkMode ? "White.png" : "Black.png"
           }`}
           alt="Settings"
-          width="25px"
-          size="25px"
+          width="20px"
+          size="20px"
         />
       </button>
 

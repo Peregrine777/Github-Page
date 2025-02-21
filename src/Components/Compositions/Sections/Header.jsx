@@ -10,11 +10,11 @@ const Header = ({ darkMode, toggleDarkMode }) => {
           alt="Logo"
           className="logo"
           style={{
-            marginBottom: "1rem",
-            verticalAlign: "middle",
+            //marginBottom: "1rem",
+            verticalAlign: "text-bottom",
             objectFit: "contain",
-            width: "50px",
-            height: "50px",
+            width: "auto",
+            height: "30px",
           }}
         />
         <h1 style={{ display: "inline-block", paddingLeft: "10px" }}>
