@@ -11,7 +11,6 @@ export default function setupThreeJS(containerRef, sectionRef) {
   // Set up renderer
   const renderer = new THREE.WebGLRenderer({ antialias: true });
 
-  console.log(container.offsetWidth, ", ", container.offsetHeight);
   const pixelRatio = window.devicePixelRatio || 1;
   renderer.setSize(container.offsetWidth, container.offsetHeight);
   renderer.setPixelRatio(pixelRatio);
@@ -31,13 +30,11 @@ export default function setupThreeJS(containerRef, sectionRef) {
     0.1,
     1000
   );
-  camera.position.z = 5;
+  camera.position.z = 10.5;
 
-  // Add a cube to the scene
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  const cube = new THREE.Mesh(geometry, material);
-  //scene.add(cube);
+  const cameraGroup = new THREE.Group();
+  scene.add(cameraGroup);
+  cameraGroup.add(camera);
 
   const planeGeom = new THREE.PlaneGeometry(10, 10, 100, 100);
   let time = 0.0;
@@ -77,6 +74,24 @@ export default function setupThreeJS(containerRef, sectionRef) {
   points.rotation.x = -Math.PI / 2;
   scene.add(points);
 
+  const cursor = {};
+  cursor.x = 0;
+  cursor.y = 0;
+  window.addEventListener("mousemove", (event) => {
+    cursor.x = (event.clientX / visualViewport.width - 0.5) * 2;
+    cursor.y = (event.clientY / visualViewport.height - 0.5) * 2;
+  });
+
+  let normalizedScroll = 0.5;
+  window.addEventListener(
+    "scroll",
+    () => {
+      const maxScrollY =
+        document.documentElement.scrollHeight - window.innerHeight;
+      normalizedScroll = window.scrollY / maxScrollY;
+    },
+    { passive: true }
+  );
   // Handle resizing
   const handleResize = (containerRef) => {
     // console.log("3jsTestContainer: ", container);
@@ -93,20 +108,53 @@ export default function setupThreeJS(containerRef, sectionRef) {
   };
   window.addEventListener("resize", handleResize);
 
+  const clock = new THREE.Clock();
+  let previousTime = 0;
+
   let hasResized = false;
+
+  const softClamp = (value, reference, max, softness) => {
+    return (
+      value * Math.max(0, 1 - Math.pow(Math.abs(reference / max), softness))
+    );
+  };
+
   // Animation loop
   const animate = () => {
-    time += 0.001;
+    const elapsedTime = clock.getElapsedTime();
+    const deltaTime = elapsedTime - previousTime;
+    time += deltaTime;
+    previousTime = elapsedTime;
+
     landMaterial.uniforms.time.value = time;
     pMat.uniforms.time.value = time;
     if (!hasResized) {
       handleResize();
       hasResized = true;
     }
-    requestAnimationFrame(animate);
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+
+    const parallaxX = cursor.x;
+    const parallaxY = -cursor.y;
+
+    camera.position.x += softClamp(
+      (parallaxX - camera.position.x) * 0.05 * deltaTime,
+      camera.position.x,
+      1,
+      1
+    );
+    camera.position.y += softClamp(
+      (parallaxY - camera.position.y) * 0.05 * deltaTime,
+      camera.position.y,
+      1,
+      1
+    );
+
+    camera.lookAt(0, 0, 0);
+
+    cameraGroup.position.y = -(normalizedScroll - 0.2);
+
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
   };
   animate();
 

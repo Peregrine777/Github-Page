@@ -1,6 +1,8 @@
+// @ts-nocheck
+
 import * as THREE from "three";
 import * as TWEEN from "@tweenjs/tween.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
@@ -23,23 +25,16 @@ import * as CANNON from "cannon-es";
 export class sc_Reclaimer extends SceneBase {
   constructor(params) {
     super(params);
-    this.ratio = window.innerWidth / window.innerHeight;
+    console.log("Reclaimer Scene created with params:", params);
+    this.scene.name = "Reclaimer";
+
     this.frame = 0;
     this.reclaimFrame = 0;
     this.isReclaiming = false;
-    this.renderer =
-      params.renderer ||
-      new THREE.WebGLRenderer({
-        antialias: true,
-        canvas: document.getElementById("render"),
-      });
+
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.cameraVals = { FOV: 55 };
-    this.camera =
-      params.camera ||
-      new THREE.PerspectiveCamera(this.cameraVals.FOV, this.ratio, 0.1, 5000);
-    this.composer = new EffectComposer(this.renderer);
+
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.composer.addPass(new SSAOPass(this.scene, this.camera, 0, 0));
     this.composer.addPass(
@@ -52,7 +47,9 @@ export class sc_Reclaimer extends SceneBase {
       quatNormalizeFast: true,
       quatNormalizeSkip: 8,
     });
-    this.gui = params.gui || new GUI();
+
+    console.log("Rec renderer:", this.renderer);
+    console.log("Rec Cam:", this.camera);
 
     // PHYSICS WORLD //
     const physicsworld = new CANNON.World({
@@ -107,9 +104,9 @@ export class sc_Reclaimer extends SceneBase {
     };
     let uiVals = { HeightTexture: true };
 
-    let environment = new Environment(this.scene, this.renderer);
-    this.environment = environment;
-    let sunDirection = environment.sun;
+    this.environment = new Environment(this.scene, this.renderer);
+
+    let sunDirection = this.environment.sun;
 
     let materialsArray = [];
 
@@ -117,7 +114,7 @@ export class sc_Reclaimer extends SceneBase {
     let reclaimerProperties = {
       scene: this.scene,
       physicsworld,
-      environment,
+      environment: this.environment,
       sunDirection,
       frame: this.frame,
       reclaimFrame: this.reclaimFrame,
@@ -383,9 +380,11 @@ export class sc_Reclaimer extends SceneBase {
     }
 
     function updateEnvironment() {
-      this.environment.updateSun(scene, renderer, envVals);
+      this.environment.updateSun(this.scene, this.renderer, envVals);
       // environment.update();
     }
+
+    console.log("Reclaimer final:", this);
   }
 
   update(t) {
@@ -404,6 +403,7 @@ export class sc_Reclaimer extends SceneBase {
 
     //cannonDebugger.update();
     this.environment.update();
+    //console.log("Reclaimer Update: renderSize:" + this.renderer.getSize());
 
     // console.log(camera.position);
   }

@@ -7,7 +7,7 @@ const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
     <div className="container">
       <div className="column" style={{ flexGrow: "0" }}>
         <div style={{ flex: "1", flexDirection: "vertical" }}>
-          <div style={{ justifyContent: "center", padding: "2rem" }}>
+          <div style={{ justifyContent: "center" }}>
             <h2
               style={{
                 textAlign: "left",
@@ -19,18 +19,15 @@ const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
               Let's make something amazing together!
             </h2>
           </div>
-          <p>
-            {" "}
+          <p
+            style={{
+              lineHeight: "1.5rem",
+            }}
+          >
             I am a software engineer with a passion for creating innovative
-            solutions.{" "}
-          </p>
-          <p>
-            {" "}
-            I have experience in various programming languages and frameworks.{" "}
-          </p>
-          <p>
-            {" "}
-            I enjoy collaborating with teams and solving complex problems.{" "}
+            solutions. <br></br> I have experience in various programming
+            languages and frameworks. <br></br> I enjoy collaborating with teams
+            and solving complex problems.
           </p>
         </div>
 

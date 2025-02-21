@@ -23,7 +23,7 @@ const Socials = ({ darkMode, scrollToSection }) => {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "2rem",
+
           gap: "2rem",
         }}
       >
