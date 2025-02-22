@@ -8,8 +8,9 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
   const boldTextCol = darkMode ? "white" : "#333";
   return (
     <Features.FlexReveal
-      style={{ justifyContent: "center", gap: "2rem" }}
+      style={{ gap: "2rem" }}
       childStyle={{ minWidth: "400px" }}
+      className="content-scroll"
     >
       {/* Game Development Section */}
       <div

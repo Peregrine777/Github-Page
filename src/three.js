@@ -62,24 +62,11 @@ export default function setupThreeJS(containerRef, sectionRef) {
   composer.setSize(container.offsetWidth, container.offsetHeight);
   const renderPass = new RenderPass(activeScene, camera);
   composer.addPass(renderPass);
-  const ssaoPass = new SSAOPass(activeScene, camera, 0, 0);
-  composer.addPass(ssaoPass);
-  composer.addPass(
-    new UnrealBloomPass(
-      { x: container.offsetWidth, y: container.offsetHeight },
-      0.7,
-      0.0,
-      0.85
-    )
-  );
   const outputPass = new OutputPass();
   composer.addPass(outputPass);
-  renderer.toneMapping = THREE.LinearToneMapping;
-  renderer.toneMappingExposure = 1;
 
   function updateComposerScene(activeScene) {
     renderPass.scene = activeScene;
-    ssaoPass.scene = activeScene;
   }
 
   let gui = createGUI();

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import FlexReveal from "../Features/FlexReveal";
 import MinimalButton from "../Features/MinimalButton";
+import "./Socials.css";
 
-const Socials = ({ darkMode, scrollToSection }) => {
+const Socials = ({ darkMode, scrollToSection, style }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -17,7 +18,7 @@ const Socials = ({ darkMode, scrollToSection }) => {
   }, [isHovered]);
 
   return (
-    <div>
+    <div style={{ ...style }}>
       <FlexReveal
         revealMode="threshold"
         style={{
@@ -62,7 +63,7 @@ const Socials = ({ darkMode, scrollToSection }) => {
               rel="noreferer"
             >
               <img
-                className="clickableImage"
+                className="clickableImage scalable"
                 src={`assets/Images/github-logo_${
                   darkMode ? "dark.png" : "light.png"
                 }`}

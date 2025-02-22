@@ -41,7 +41,7 @@ export class sc_Reclaimer extends SceneBase {
       new UnrealBloomPass({ x: screen.width, y: screen.height }, 0.7, 0.0, 0.85)
     );
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1;
+    this.renderer.toneMappingExposure = 1.4;
     this.physicsworld = new CANNON.World({
       gravity: new CANNON.Vec3(0, -9.82, 0),
       quatNormalizeFast: true,
@@ -205,7 +205,7 @@ export class sc_Reclaimer extends SceneBase {
     // CITY CREATION //
     ///////////////////
 
-    let city = new City(cityGenPoint, sceneVals.size, reclaimerProperties);
+    //let city = new City(cityGenPoint, sceneVals.size, reclaimerProperties);
 
     let redrawCity = {
       Generate_City: function () {

@@ -1,0 +1,107 @@
+.greetings-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Left section (Text & Socials) */
+.greetings-content {
+  flex: 1;
+  min-width: 250px;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure the button-container stays at the bottom of text */
+.button-container {
+  margin-top: auto; /* Pushes socials to bottom */
+  display: flex;
+  justify-content: flex-start; /* Aligns socials left */
+}
+
+/* Right section (Profile Image) */
+.greetings-image {
+  order: 2;
+  align-self: flex-start;
+}
+
+.greetings-image {
+  width: 300px;
+}
+
+br {
+  margin-bottom: 0rem;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+/* --- Responsive Behavior --- */
+
+/* When the screen is SMALL (Below 768px) */
+@media (max-width: 768px) {
+  .greetings-container {
+    flex-direction: column;
+  }
+
+  .greetings-image {
+    align-self: center;
+    width: calc(min(200px, 20vh));
+    order: 2; /* Moves below text but above socials */
+  }
+
+  .greetings-image img {
+    width: 100%;
+  }
+
+  .greetings-content {
+    order: 1;
+  }
+
+  .button-container {
+    order: 3; /* Ensures socials stay at the bottom */
+    justify-content: center; /* Centers socials if needed */
+  }
+}
+
+/* When the screen is LARGER (Above 768px) */
+@media (min-width: 768px) {
+  .greetings-container {
+    flex-direction: row;
+  }
+
+  .greetings-image {
+    order: 2; /* Image remains on the right */
+  }
+
+  .button-container {
+    margin-top: 20px; /* Adjust spacing if needed */
+    justify-content: center;
+    order: 2;
+  }
+  .profileImg {
+    max-width: 300px;
+    padding-top: 2rem;
+  }
+  .title {
+    margin: auto;
+    padding: 2rem;
+  }
+  br {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+.title {
+  margin-bottom: 0;
+  font-size: calc(clamp(2.5vw, 20px, 30px));
+}

@@ -1,58 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as Compositions from "../../Compositions";
 import * as Feature from "../../Features";
+import "./Greetings.css";
 
 const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
-  return (
-    <div className="container">
-      <div className="column" style={{ flexGrow: "0" }}>
-        <div style={{ flex: "1", flexDirection: "vertical" }}>
-          <div style={{ justifyContent: "center" }}>
-            <h2
-              style={{
-                textAlign: "left",
-                fontSize: "36",
-                textWrap: "wrap",
-                paddingLeft: "0rem",
-              }}
-            >
-              Let's make something amazing together!
-            </h2>
-          </div>
-          <p
-            style={{
-              lineHeight: "1.5rem",
-            }}
-          >
-            I am a software engineer with a passion for creating innovative
-            solutions. <br></br> I have experience in various programming
-            languages and frameworks. <br></br> I enjoy collaborating with teams
-            and solving complex problems.
-          </p>
-        </div>
+  const [isMobile, setIsMobile] = useState(false);
 
-        <Compositions.Socials
-          darkMode={darkMode}
-          scrollToSection={scrollToSection}
-        />
+  // Hook to check if the screen size is smaller than 768px
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initialize the check
+    handleResize();
+
+    // Set up event listener for resizing the window
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div className="greetings-container">
+      {/* Left Section (Text & Socials) */}
+      <div className="greetings-content">
+        <h2 className="title">Let's make something amazing together!</h2>
+        <p className="greetings-text">
+          I am a software engineer with a passion for creating innovative
+          solutions. <br />
+          I have experience in various programming languages and frameworks.
+          <br />
+          enjoy collaborating with teams and solving complex problems.
+        </p>
+
+        {/* Socials inside content for larger screens */}
+        {!isMobile && (
+          <div className="button-container">
+            <Compositions.Socials
+              darkMode={darkMode}
+              scrollToSection={scrollToSection}
+            />
+          </div>
+        )}
       </div>
+
+      {/* Right Section (Profile Image) */}
       <div
-        className="column"
-        margin="4rem"
-        padding="4rem"
-        style={{ flexShrink: "3" }}
+        className="greetings-image"
+        style={{ flexGrow: "0", flexShrink: "3", order: "1" }}
       >
         <img
+          className="profileImg"
           src="assets/Images/Profile.png"
           alt="Profile"
-          style={{
-            maxWidth: "300px",
-            verticalAlign: "middle",
-            height: "auto",
-          }}
         />
       </div>
+
+      {/* Socials below content for smaller screens */}
+      {isMobile && (
+        <div className="button-container">
+          <Compositions.Socials
+            darkMode={darkMode}
+            scrollToSection={scrollToSection}
+          />
+        </div>
+      )}
     </div>
   );
 };
+
 export default Greetings;
