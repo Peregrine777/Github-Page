@@ -10,6 +10,8 @@ const Home = () => {
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);
 
+  document.body.className = "dark-mode"; // Set the default theme
+
   const sceneModules = import.meta.glob("./Scenes/**/*.js");
 
   async function loadScenes() {
@@ -63,22 +65,26 @@ const Home = () => {
   };
 
   const handleOpenLightbox = (content, style) => {
-    document.body.classList.add("no-scroll");
-    // Add a new history state when opening
+    requestAnimationFrame(() => {
+      document.body.classList.add("no-scroll");
+    });
     history.pushState({ lightboxOpen: true }, "", "#lightbox");
+
     setLightboxContent(content); // Set the content dynamically
     setLightboxStyle(style); // Set the style dynamically
-    setIsLightboxOpen(true); // Open the lightbox
+    setIsLightboxOpen(true); // Open the lightboxC
   };
 
   const handleCloseLightbox = () => {
-    document.body.classList.remove("no-scroll");
-    setIsLightboxOpen(false);
-    // Go back in history (removing the lightbox state)
-    // Ensure we only go back if we actually added a state
-    if (history.state?.lightboxOpen) {
-      setTimeout(() => history.back(), 100); // ✅ Debounce back action
-    }
+    requestAnimationFrame(() => {
+      document.body.classList.remove("no-scroll");
+      setIsLightboxOpen(false);
+      // Go back in history (removing the lightbox state)
+      // Ensure we only go back if we actually added a state
+      if (history.state?.lightboxOpen) {
+        setTimeout(() => history.back(), 100);
+      }
+    });
   };
 
   // Handle the Back button closing the lightbox
@@ -132,7 +138,11 @@ const Home = () => {
           />
         </Features.Section>
 
-        <Features.Section title="Skills" darkMode={darkMode}>
+        <Features.Section
+          title="Skills"
+          darkMode={darkMode}
+          revealPercent="10px 0px"
+        >
           <Sections.Skills darkMode={darkMode}> </Sections.Skills>
         </Features.Section>
 
@@ -175,6 +185,7 @@ const Home = () => {
           title="Footer"
           darkMode={darkMode}
           revealPercent="50px 0px"
+          style={{ padding: "10px", paddingTop: "2rem" }}
         >
           <Sections.Footer darkMode={darkMode} />
         </Features.Section>

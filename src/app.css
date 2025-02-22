@@ -85,10 +85,6 @@ body.dark-mode {
   font-family: Montserrat, sans-serif;
 }
 
-#p {
-  font-family: Cabin, sans-serif;
-}
-
 @media only screen and (min-width: 768px) {
   .header {
     padding-left: 3rem;
@@ -122,7 +118,7 @@ body.dark-mode {
 .column {
   flex-grow: 1;
   flex-shrink: 1; /* Prevent the column from shrinking */
-  padding: 20px;
+
   box-sizing: border-box;
 }
 

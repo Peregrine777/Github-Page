@@ -119,6 +119,11 @@ export default function setupThreeJS(containerRef, sectionRef) {
     );
   };
 
+  // lerp function
+  const lerp = (start, end, amt) => {
+    return (1 - amt) * start + amt * end;
+  };
+
   // Animation loop
   const animate = () => {
     const elapsedTime = clock.getElapsedTime();
@@ -137,13 +142,13 @@ export default function setupThreeJS(containerRef, sectionRef) {
     const parallaxY = -cursor.y;
 
     camera.position.x += softClamp(
-      (parallaxX - camera.position.x) * 0.05 * deltaTime,
+      (parallaxX - camera.position.x) * 0.1 * deltaTime,
       camera.position.x,
       1,
       1
     );
     camera.position.y += softClamp(
-      (parallaxY - camera.position.y) * 0.05 * deltaTime,
+      (parallaxY - camera.position.y) * 0.1 * deltaTime,
       camera.position.y,
       1,
       1
@@ -151,7 +156,9 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
     camera.lookAt(0, 0, 0);
 
-    cameraGroup.position.y = -(normalizedScroll - 0.5);
+    cameraGroup.position.y = -(normalizedScroll * 0.5 - 0.2);
+
+    //cameraGroup.position.y += lerp(cameraGroup.position.y, 0, 10);
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);

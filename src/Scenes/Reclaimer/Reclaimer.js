@@ -205,7 +205,7 @@ export class sc_Reclaimer extends SceneBase {
     // CITY CREATION //
     ///////////////////
 
-    let city = new City(cityGenPoint, sceneVals.size, reclaimerProperties);
+    //let city = new City(cityGenPoint, sceneVals.size, reclaimerProperties);
 
     let redrawCity = {
       Generate_City: function () {

@@ -10,7 +10,6 @@ const Footer = ({ darkMode }) => {
         justifyContent: "center",
         alignItems: "center",
         flex: "0 1 auto",
-        margin: "auto",
       }}
     >
       <div className="column" style={{ flexBasis: "10%", flex: "0 0 auto" }}>
@@ -35,12 +34,12 @@ const Footer = ({ darkMode }) => {
         className="column"
         style={{
           flex: "0",
-          alignSelf: "start",
+          alignSelf: "center",
           lineHeight: "14px",
           textAlign: "left",
         }}
       >
-        <p style={{ margin: "0" }}> samuelmckenziesell@gmail.com </p>
+        <p style={{ marginTop: "10px" }}> samuelmckenziesell@gmail.com </p>
         <p> +61 0401 384 885 </p>
       </div>
     </div>
