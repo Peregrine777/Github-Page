@@ -96,10 +96,7 @@ export class TerrainBuilder_threaded {
       "./TerrainBuilder_threaded_worker.js",
       import.meta.url
     );
-    this._workerPool = new WorkerThreadPool(
-      _NUM_WORKERS,
-      "src/Terrain/TerrainBuilder_threaded_worker.js"
-    );
+    this._workerPool = new WorkerThreadPool(_NUM_WORKERS, workerPath);
 
     this.updateInProgress = false;
 
