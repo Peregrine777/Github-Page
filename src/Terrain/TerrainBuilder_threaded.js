@@ -360,6 +360,7 @@ export class TerrainBuilder_threaded {
           landMaterial.uniforms.enableFog.value = true;
           landMaterial.uniforms.showNormals.value = false;
           landMaterial.wireframe = this.wireframe;
+          //mesh.geometry.attributes.normals;
 
           const mesh = new THREE.Mesh(geometry, landMaterial);
           mesh.position.set(params.center.x, params.center.y, params.center.z);
@@ -372,13 +373,13 @@ export class TerrainBuilder_threaded {
             meshPositions.setZ(i, height);
           }
 
-          // let meshNormals = mesh.geometry.attributes.normal;
-          // for (let i = 0; i < meshNormals.count; i++) {
-          //   const nx = result.positions.normals[i * 3 + 0];
-          //   const ny = result.positions.normals[i * 3 + 1];
-          //   const nz = result.positions.normals[i * 3 + 2];
-          //   meshNormals.setXYZ(i, -nx, nz, -ny);
-          // }
+          let meshNormals = mesh.geometry.attributes.normal;
+          for (let i = 0; i < meshNormals.count; i++) {
+            const nx = result.data.normals[i * 3 + 0];
+            const ny = result.data.normals[i * 3 + 1];
+            const nz = result.data.normals[i * 3 + 2];
+            meshNormals.setXYZ(i, -nx, nz, -ny);
+          }
 
           //meshNormals.needsUpdate = true;
           meshPositions.needsUpdate = true;

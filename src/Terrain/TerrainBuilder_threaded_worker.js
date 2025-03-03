@@ -48,7 +48,7 @@ function buildChunk(center, size, planeSize, resolution, noiseParams) {
 
   // create an array of 0s with the correct length (resolution + 1) ** 2
   const positions = new Float32Array((resolution + 1) ** 2);
-  //const normals = new Float32Array(normalArrayBuffer);
+  const normals = new Float32Array((resolution + 1) ** 2 * 3);
 
   // Fill positions
   const step = size / resolution;
@@ -56,46 +56,59 @@ function buildChunk(center, size, planeSize, resolution, noiseParams) {
     positions[i] = heightmap[i];
   }
 
-  // Compute normals using triangle connectivity
-  // for (let z = 0; z < resolution; z++) {
-  //   for (let x = 0; x < resolution; x++) {
-  //     const i = z * (resolution + 1) + x;
+  //Compute normals using triangle connectivity
+  for (let z = 0; z < resolution; z++) {
+    for (let x = 0; x < resolution; x++) {
+      const i = z * (resolution + 1) + x;
 
-  //     // Get the vertices of the two triangles forming the quad
-  //     const v1 = { x: x * step, y: heightmap[i], z: z * step };
-  //     const v2 = { x: (x + 1) * step, y: heightmap[i + 1], z: z * step };
-  //     const v3 = { x: x * step, y: heightmap[i + resolution + 1], z: (z + 1) * step };
-  //     const v4 = { x: (x + 1) * step, y: heightmap[i + resolution + 2], z: (z + 1) * step };
+      // Get the vertices of the two triangles forming the quad
+      const v1 = { x: x * step, y: heightmap[i], z: z * step };
+      const v2 = { x: (x + 1) * step, y: heightmap[i + 1], z: z * step };
+      const v3 = {
+        x: x * step,
+        y: heightmap[i + resolution + 1],
+        z: (z + 1) * step,
+      };
+      const v4 = {
+        x: (x + 1) * step,
+        y: heightmap[i + resolution + 2],
+        z: (z + 1) * step,
+      };
 
-  //     // Compute face normals for both triangles
-  //     const normal1 = computeFaceNormal(v1, v2, v3);
-  //     const normal2 = computeFaceNormal(v2, v4, v3);
+      // Compute face normals for both triangles
+      const normal1 = computeFaceNormal(v1, v2, v3);
+      const normal2 = computeFaceNormal(v2, v4, v3);
 
-  //     // Accumulate normals for each vertex
-  //     accumulateNormal(normals, i, normal1);
-  //     accumulateNormal(normals, i + 1, normal1);
-  //     accumulateNormal(normals, i + resolution + 1, normal1);
+      // Accumulate normals for each vertex
+      accumulateNormal(normals, i, normal1);
+      accumulateNormal(normals, i + 1, normal1);
+      accumulateNormal(normals, i + resolution + 1, normal1);
 
-  //     accumulateNormal(normals, i + 1, normal2);
-  //     accumulateNormal(normals, i + resolution + 2, normal2);
-  //     accumulateNormal(normals, i + resolution + 1, normal2);
-  //   }
-  // }
+      accumulateNormal(normals, i + 1, normal2);
+      accumulateNormal(normals, i + resolution + 2, normal2);
+      accumulateNormal(normals, i + resolution + 1, normal2);
+    }
+  }
 
-  // // Normalize normals
-  // for (let i = 0; i < normals.length; i += 3) {
-  //   const nx = normals[i];
-  //   const ny = normals[i + 1];
-  //   const nz = normals[i + 2];
-  //   const length = Math.sqrt(nx * nx + ny * ny + nz * nz);
-  //   normals[i] = nx / length;
-  //   normals[i + 1] = ny / length;
-  //   normals[i + 2] = nz / length;
-  // }
+  // Normalize normals
+  for (let i = 0; i < normals.length; i += 3) {
+    const nx = normals[i];
+    const ny = normals[i + 1];
+    const nz = normals[i + 2];
+    const length = sqrt(nx * nx + ny * ny + nz * nz);
+    normals[i] = nx / length;
+    normals[i + 1] = ny / length;
+    normals[i + 2] = nz / length;
+  }
 
   return {
     positions,
+    normals,
   };
+}
+
+function sqrt(x) {
+  return x ** 0.5;
 }
 
 function arrayToWorld(i, resolution, size, center) {
@@ -169,6 +182,22 @@ function max(a, b) {
 function smoothstep(edge0, edge1, x) {
   const t = max(0, min(1, (x - edge0) / (edge1 - edge0)));
   return t * t * (3 - 2 * t);
+}
+
+function computeFaceNormal(v1, v2, v3) {
+  const edge1 = { x: v2.x - v1.x, y: v2.y - v1.y, z: v2.z - v1.z };
+  const edge2 = { x: v3.x - v1.x, y: v3.y - v1.y, z: v3.z - v1.z };
+  return {
+    x: edge1.y * edge2.z - edge1.z * edge2.y,
+    y: edge1.z * edge2.x - edge1.x * edge2.z,
+    z: edge1.x * edge2.y - edge1.y * edge2.x,
+  };
+}
+
+function accumulateNormal(normals, index, normal) {
+  normals[index * 3 + 0] += normal.x;
+  normals[index * 3 + 1] += normal.y;
+  normals[index * 3 + 2] += normal.z;
 }
 
 var ImprovedNoise = function () {
