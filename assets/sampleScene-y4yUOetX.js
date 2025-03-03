@@ -1,0 +1,2 @@
+import{S as l,B as u,M as d,b as h,C as s,ao as m,ap as p}from"./index-B5K9CAbP.js";class g extends l{constructor(e){super(e);const t=new u,a=new d({color:65280}),n=new h(t,a);this.scene.add(n);let o=new s(.5,.72,1);const c=new m(o,.5);this.scene.add(c);let r=new s(1,.98,.8);const i=new p(r,1);this.scene.add(i)}update(e){super.update(e)}}export{g as sc_SampleScene};
+//# sourceMappingURL=sampleScene-y4yUOetX.js.map
