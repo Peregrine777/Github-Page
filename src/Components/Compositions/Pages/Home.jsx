@@ -10,9 +10,16 @@ const Home = () => {
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);
 
-  document.body.className = "dark-mode"; // Set the default theme
-
   const sceneModules = import.meta.glob("./Scenes/**/*.js");
+  const removeHash = () => {
+    // If the URL contains #lightbox, remove it
+    if (window.location.hash === "#lightbox") {
+      window.history.replaceState(null, "", window.location.pathname); // Remove the hash
+    }
+  };
+
+  // Remove hash on component mount (for initial load)
+  removeHash();
 
   async function loadScenes() {
     const scenes = [];
@@ -27,10 +34,10 @@ const Home = () => {
     return scenes;
   }
 
-  loadScenes().then((sceneList) => {
-    console.log("Loaded scenes:", sceneList);
-  });
   useEffect(() => {
+    loadScenes().then((sceneList) => {
+      console.log("Loaded scenes:", sceneList);
+    });
     // Ensure scrolling happens after rendering
     setTimeout(() => {
       window.scrollTo(0, 0);
@@ -54,6 +61,11 @@ const Home = () => {
       window.removeEventListener("scroll", handleFirstScroll);
     };
   }, []);
+
+  useEffect(() => {
+    //Apply darkmode to body on darkMode change
+    document.body.className = darkMode ? "dark-mode" : "light-mode";
+  }, [darkMode]);
 
   const scrollToSection = () => {
     const targetSection = document.getElementById("contactMe");
@@ -79,31 +91,44 @@ const Home = () => {
     requestAnimationFrame(() => {
       document.body.classList.remove("no-scroll");
       setIsLightboxOpen(false);
-      // Go back in history (removing the lightbox state)
-      // Ensure we only go back if we actually added a state
-      if (history.state?.lightboxOpen) {
+
+      if (window.location.hash === "#lightbox") {
         setTimeout(() => history.back(), 100);
       }
     });
   };
 
-  // Handle the Back button closing the lightbox
-  window.addEventListener("popstate", (event) => {
-    if (event.state?.lightboxOpen) {
-      handleCloseLightbox();
-    }
-  });
+  useEffect(() => {
+    const handlePopState = (event) => {
+      console.log("Popstate event:", event.state);
+      if (!event.state?.lightboxOpen) {
+        console.log("Closing lightbox");
+        handleCloseLightbox();
+      }
+
+      // If url contains #lightbox, remove it
+      if (window.location.hash === "#lightbox") {
+        window.history.replaceState(null, "", window.location.pathname); // This will remove the hash
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => {
       const newMode = !prevMode;
-      document.body.className = newMode ? "dark-mode" : "light-mode";
       return newMode;
     });
   };
   return (
     <div className="app">
       <Features.LightboxModal
+        lbName=""
         darkMode={darkMode}
         isOpen={isLightboxOpen}
         content={lightboxContent} // Can be replaced with an iframe, image, etc.
@@ -130,7 +155,7 @@ const Home = () => {
           title="Overview"
           darkMode={darkMode}
           revealPercent="50px 0px"
-          style={{ padding: "20 0" }}
+          style={{ padding: "0" }}
         >
           <Sections.Portfolio
             darkMode={darkMode}
@@ -153,8 +178,8 @@ const Home = () => {
           revealPercent="50px 0px"
           style={{
             backgroundColor: "#0061aa",
-            paddingBottom: "1rem",
-            paddingTop: "1rem",
+            paddingBottom: "3rem",
+            paddingTop: "2.5rem",
           }}
         >
           <h2 style={{ textAlign: "center", color: "white", marginTop: "0px" }}>
@@ -177,7 +202,7 @@ const Home = () => {
         </Features.Section>
 
         <Features.Section
-          title="Portfolio"
+          title=""
           darkMode={darkMode}
           style={{ padding: "0px" }}
         ></Features.Section>

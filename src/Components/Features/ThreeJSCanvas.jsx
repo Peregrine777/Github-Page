@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const ThreeJSSection = ({ darkMode, threeJSEntry, style }) => {
+const ThreeJSSection = ({ darkMode, threeJSEntry, style, onInit }) => {
   const containerRef = useRef(null);
   const parentElementRef = useRef(null);
   const threeJSInstanceRef = useRef(null);
@@ -22,8 +22,15 @@ const ThreeJSSection = ({ darkMode, threeJSEntry, style }) => {
     console.log("Parent Element:", parentElement);
 
     console.log("ThreeJS Container:", containerRef.current);
+
     // Initialize the Three.js scene
     threeJSInstanceRef.current = threeJSEntry(containerRef, parentElement);
+
+    if (onInit) {
+      onInit(threeJSInstanceRef);
+    }
+
+    // Return instance to parent component
 
     // Handle dark mode changes
     const handleDarkModeChange = () => {

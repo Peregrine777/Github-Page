@@ -20,12 +20,11 @@ const Socials = ({ darkMode, scrollToSection, style }) => {
   return (
     <div style={{ ...style }}>
       <FlexReveal
+        className="socials-flex"
         revealMode="threshold"
         style={{
           justifyContent: "center",
           alignItems: "center",
-
-          gap: "2rem",
         }}
       >
         <div className="buttons" style={{ display: "flex", gap: "1rem" }}>

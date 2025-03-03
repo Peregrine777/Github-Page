@@ -17,9 +17,9 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
         .querySelector(".menu-items")
         .getBoundingClientRect().left;
       underlineRef.current.style.transform = `translateX(${
-        left - containerLeft
+        left - containerLeft + width / 2 - 50
       }px)`;
-      underlineRef.current.style.width = `${width}px`;
+      underlineRef.current.style.width = `${100}px`;
     }
   };
 
@@ -77,7 +77,10 @@ const MenuBar = ({ content, darkMode, contentRenderer }) => {
   return (
     <div className={`menu-bar ${darkMode ? "dark-mode" : ""}`}>
       <div className="menu-items">
-        <div className="menu-underline" ref={underlineRef}></div>
+        <div
+          className={`menu-underline ${darkMode ? "dark-mode" : "light-mode"}`}
+          ref={underlineRef}
+        ></div>
         {Object.keys(content).map((section) => (
           <div
             key={section}

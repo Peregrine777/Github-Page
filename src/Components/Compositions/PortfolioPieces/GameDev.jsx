@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Compositions from "../../Compositions";
 import "./GameDev.css";
 
 const GameDev = ({ darkMode }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initialize the check
+    handleResize();
+
+    // Set up event listener for resizing the window
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const menuContent = {
     Games: { subOptions: [] },
-    "Game Engines": { subOptions: ["OpenGL engine", "Physics"] },
+    "Game Engines": { subOptions: [] },
+    "Interactive Experiences": { subOptions: [] },
   };
 
   const GameInfo = ({ title, img, link, description, children }) => (
     <div className="game">
-      <GameImage img={img} link={link} />
-      <GameDesc title={title} descr={description}>
+      {!isMobile && <GameImage img={img} link={link} />}
+      <GameDesc title={title} descr={description} img={img} link={link}>
         {children}
       </GameDesc>
     </div>
@@ -28,9 +43,15 @@ const GameDev = ({ darkMode }) => {
     </a>
   );
 
-  const GameDesc = ({ title, descr, children }) => (
+  const GameDesc = ({ title, descr, img, link, children }) => (
     <div className="game-info">
       <GameTitle>{title}</GameTitle>
+      {isMobile && (
+        <div className="image-holder-small">
+          {" "}
+          <GameImage img={img} link={link} />{" "}
+        </div>
+      )}
       <GameFeatures>{children}</GameFeatures>
       <GameDescription>{descr}</GameDescription>
     </div>
@@ -60,8 +81,8 @@ const GameDev = ({ darkMode }) => {
     } else if (activeSection) {
       if (activeSection === "Games") {
         return (
-          <div>
-            <h2>Games</h2>
+          <div style={{ padding: "10px" }}>
+            <h2 style={{ textAlign: "left", marginBottom: "16px" }}>Games</h2>
             <div className="game-list">
               <GameInfo
                 title="Gloria Armada"
@@ -70,17 +91,19 @@ const GameDev = ({ darkMode }) => {
                 description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
               ></GameInfo>
               <h2 style={{ textAlign: "left", marginBottom: "0px" }}>
-                Tech Demoes
+                Tech Demos
               </h2>
               <GameInfo
-                title="Gloria Armada"
-                img="assets/Images/Gloria_Armada.png"
-                link="https://chanel-parfait.itch.io/gloria-armada"
-                description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
+                title="Procedural Jones"
+                img="assets/Images/PJ_CaveGen.png"
+                link="https://github.com/Peregrine777/Procedural-Jones-CaveGen"
+                description="Procedural Jones is a tech demo that showcases procedural generation of walkable caves using rules-based box/corridor placement and marching-cubes terrain generation."
               ></GameInfo>
             </div>
           </div>
         );
+      } else if (activeSection === "Game Engines") {
+        return <div style={{ width: "95vw", padding: "10px" }} />;
       }
       // Render content for the selected section
       return (

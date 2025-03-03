@@ -5,23 +5,27 @@
     "skills": [
       {
         "name": "C#",
-        "image": "assets/Images/Skills/CSharp.png"
+        "image": "CSharp.png"
       },
       {
         "name": "C++",
-        "image": "assets/Images/Skills/CPP.png"
+        "image": "CPP.png"
       },
       {
         "name": "Javascript",
-        "image": "assets/Images/Skills/js.svg"
+        "image": "js.svg"
       },
       {
         "name": "Typescript",
-        "image": "assets/Images/Skills/typescript.svg"
+        "image": "typescript.svg"
       },
       {
         "name": "Python",
-        "image": "assets/Images/Skills/python.png"
+        "image": "python.png"
+      },
+      {
+        "name": "HTML",
+        "image": "HTML5 Logo.svg"
       }
     ]
   },
@@ -31,19 +35,15 @@
     "skills": [
       {
         "name": "ReactJS",
-        "image": "assets/Images/Skills/reactjs.svg"
+        "image": "reactjs.svg"
       },
       {
         "name": "Git",
-        "image": "assets/Images/Skills/git-icon.svg"
+        "image": "git-icon.svg"
       },
       {
         "name": "mySQL",
-        "image": "assets/Images/Skills/mysql.svg"
-      },
-      {
-        "name": "ImGui",
-        "image": ""
+        "image": "mysql.svg"
       }
     ]
   },
@@ -53,15 +53,15 @@
     "skills": [
       {
         "name": "GraphQL",
-        "image": "assets/Images/Skills/graphql.svg"
+        "image": "graphql.svg"
       },
       {
         "name": "WebGL",
-        "image": "assets/Images/Skills/WebGL.png"
+        "image": "WebGL.png"
       },
       {
         "name": "OpenGL",
-        "image": "assets/Images/Skills/OpenGL.png"
+        "image": "OpenGL.png"
       }
     ]
   },
@@ -71,11 +71,11 @@
     "skills": [
       {
         "name": "Unity",
-        "image": "assets/Images/Skills/unity.svg"
+        "image": "UnityCube.png"
       },
       {
         "name": "Unreal Engine 5",
-        "image": "assets/Images/Skills/ue.svg"
+        "image": "UE.png"
       }
     ]
   }

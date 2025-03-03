@@ -18,8 +18,27 @@ import { SmoothPath } from "./smoothPath.js";
 //Scenes
 import { sc_IntroScene } from "./Scenes/Intro/introScene.js";
 import { sc_Reclaimer } from "./Scenes/Reclaimer/Reclaimer.js";
+import { sc_TerrainScene } from "./Scenes/Intro/terrainScene.js";
 
 export default function setupThreeJS(containerRef, sectionRef) {
+  //import all scenes
+  const sceneModules = import.meta.glob("./Scenes/**/*.js");
+  const scenes = [];
+
+  async function loadScenes() {
+    for (const path in sceneModules) {
+      const module = await sceneModules[path]();
+      for (const key in module) {
+        if (typeof module[key] === "function" && key.startsWith("sc_")) {
+          scenes.push(module[key]); // Assuming scene classes are exported
+        }
+      }
+    }
+    return scenes;
+  }
+
+  loadScenes();
+
   const container = containerRef.current;
 
   if (!container) return;
@@ -48,7 +67,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
     cameraParams.FOV,
     container.offsetWidth / container.offsetHeight,
     0.1,
-    1000
+    10000
   );
   camera.position.set(-20, 5, -20);
   camera.lookAt(0, 0, 0);
@@ -74,19 +93,6 @@ export default function setupThreeJS(containerRef, sectionRef) {
   /////////////////
   // Scene Setup //
   //////////////////
-
-  function switchScene() {
-    let newScene = new sc_Reclaimer({
-      camera: camera,
-      composer: composer,
-      renderer: renderer,
-      gui: gui,
-    });
-    sceneClasses.push(newScene);
-    activeSceneClass = newScene;
-    activeScene = newScene.getScene();
-    updateComposerScene(activeScene);
-  }
 
   /////////////
   // Objects //
@@ -134,7 +140,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
     const generalRollup = gui.addFolder("General");
     gui.close();
 
-    //container.appendChild(gui.domElement);
+    container.appendChild(gui.domElement);
     console.log("datGUI container:" + container);
     return gui;
   }
@@ -149,9 +155,23 @@ export default function setupThreeJS(containerRef, sectionRef) {
   };
   window.addEventListener("resize", handleResize);
 
+  const switchScene = (_scene) => {
+    console.log("3js switcing to:", _scene);
+    let newScene = new _scene({
+      camera: camera,
+      composer: composer,
+      renderer: renderer,
+      gui: gui,
+    });
+    sceneClasses.push(newScene);
+    activeSceneClass = newScene;
+    activeScene = newScene.getScene();
+    updateComposerScene(activeScene);
+  };
+
   let hasResized = false;
 
-  switchScene();
+  switchScene(sc_TerrainScene);
   // Animation loop
   const clock = new THREE.Clock();
   //final update loop
@@ -173,6 +193,8 @@ export default function setupThreeJS(containerRef, sectionRef) {
   return {
     handleResize,
     scene,
+    scenes,
+    switchScene,
     cleanup: () => {
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
