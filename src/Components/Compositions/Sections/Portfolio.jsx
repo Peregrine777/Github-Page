@@ -7,11 +7,7 @@ import setupThreeJS from "../../../threeTest.js";
 const Portfolio = ({ darkMode, handleOpenLightbox }) => {
   const boldTextCol = darkMode ? "white" : "#333";
   return (
-    <Features.FlexReveal
-      style={{ gap: "2rem" }}
-      childStyle={{ minWidth: "400px" }}
-      className="content-scroll"
-    >
+    <Features.FlexReveal style={{ gap: "2rem" }} className="content-scroll">
       {/* Game Development Section */}
       <div
         className={`portfolioCard ${darkMode ? "dark-mode" : "light-mode"}`}
@@ -26,7 +22,11 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
         }
       >
         <h2 style={{ color: boldTextCol }}>GameDev</h2>
-        <h3>Games, game engines, physics and rendering</h3>
+        <p>
+          Games, game engines, physics and rendering <br />
+          <br />
+          <br />
+        </p>
         <img
           src="assets/Images/Gloria_Armada.png"
           alt="Gloria Armada"

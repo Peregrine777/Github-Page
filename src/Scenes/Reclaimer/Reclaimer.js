@@ -27,10 +27,12 @@ export class sc_Reclaimer extends SceneBase {
     super(params);
     console.log("Reclaimer Scene created with params:", params);
     this.scene.name = "Reclaimer";
-
+    this.gui = params.gui || new GUI();
     this.frame = 0;
     this.reclaimFrame = 0;
     this.isReclaiming = false;
+
+    this.cameraVals = { FOV: 60 };
 
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -80,8 +82,8 @@ export class sc_Reclaimer extends SceneBase {
     // Objects //
     ////////////
 
-    let sceneVals = { size: 20, sunHelper: false };
-    let landVals = {
+    this.sceneVals = { size: 20, sunHelper: false };
+    this.landVals = {
       octaves: 8,
       persistence: 0.5,
       lacunarity: 2,
@@ -102,7 +104,7 @@ export class sc_Reclaimer extends SceneBase {
       elevation: 7,
       azimuth: 180,
     };
-    let uiVals = { HeightTexture: true };
+    this.uiVals = { HeightTexture: true };
 
     this.environment = new Environment(this.scene, this.renderer);
 
@@ -130,8 +132,8 @@ export class sc_Reclaimer extends SceneBase {
     land.name = "land";
     this.scene.add(land);
     new Landscape(
-      sceneVals.size,
-      landVals,
+      this.sceneVals.size,
+      this.landVals,
       sunDirection,
       reclaimerProperties
     ).ChunkManager(land);
@@ -230,109 +232,111 @@ export class sc_Reclaimer extends SceneBase {
         physicsworld.removeBody(element);
         physicsworld.step();
       });
+    }
 
-      //Values for the GUI
-      this.gui.add(sceneVals, "size", 10, 20, 2).onChange(redrawScene);
-      this.gui.add(cameraVals, "FOV", 20, 90, 1).onChange(function (value) {
-        camera.fov = value;
-        camera.updateProjectionMatrix();
+    //Values for the GUI
+    this.gui.add(this.sceneVals, "size", 10, 20, 2).onChange(redrawScene);
+    this.gui.add(this.cameraVals, "FOV", 20, 90, 1).onChange(function (value) {
+      this.camera.fov = value;
+      this.camera.updateProjectionMatrix();
+    });
+
+    let folderLand = this.gui.addFolder("Landscape");
+    let folderFBM = folderLand.addFolder("FBM");
+    folderFBM.add(this.landVals, "octaves", 2, 16, 2).onChange(redrawScene);
+    folderFBM
+      .add(this.landVals, "persistence", 0.1, 1, 0.1)
+      .onChange(redrawScene);
+    folderFBM
+      .add(this.landVals, "lacunarity", 0.1, 4, 0.1)
+      .onChange(redrawScene);
+    folderFBM.add(this.landVals, "scale", 0.1, 4, 0.1).onChange(redrawScene);
+    folderFBM.add(this.landVals, "height", 10, 500, 5).onChange(redrawScene);
+    folderLand
+      .add(this.landVals, "falloff", -0.1, 0.3, 0.1)
+      .onChange(redrawScene);
+    folderLand.add(this.landVals, "iterations", 1, 16, 1).onChange(redrawScene);
+    folderLand
+      .add(this.landVals, "resolution", 255, 1279, 255)
+      .onChange(redrawScene);
+    folderLand
+      .add(this.landVals, "enableFog", "false", "true")
+      .onChange(redrawScene);
+
+    let folderCity = this.gui.addFolder("City");
+    folderCity.add(redrawCity, "Generate_City");
+    folderCity.open();
+    let folderColorPalette = folderCity.addFolder("Color Palette");
+    //folderCity.add(cityVals, 'isSimulating', true, false);
+
+    let paletteSky = {
+      SkyScraper: skyscraperColor,
+    };
+
+    let paletteApart = {
+      Apartment: apartmentColor,
+    };
+
+    let paletteHouse = {
+      House: houseColor,
+    };
+
+    let paletteRoof = {
+      Roof: roofColor,
+    };
+
+    folderColorPalette
+      .addColor(paletteSky, "SkyScraper")
+      .onChange(function (value) {
+        skyScraperMaterial.uniforms.baseColor.value = new THREE.Color(
+          value.r / 255,
+          value.g / 255,
+          value.b / 255
+        );
       });
 
-      let folderLand = this.gui.addFolder("Landscape");
-      let folderFBM = folderLand.addFolder("FBM");
-      folderFBM.add(landVals, "octaves", 2, 16, 2).onChange(redrawScene);
-      folderFBM.add(landVals, "persistence", 0.1, 1, 0.1).onChange(redrawScene);
-      folderFBM.add(landVals, "lacunarity", 0.1, 4, 0.1).onChange(redrawScene);
-      folderFBM.add(landVals, "scale", 0.1, 4, 0.1).onChange(redrawScene);
-      folderFBM.add(landVals, "height", 10, 500, 5).onChange(redrawScene);
-      folderLand.add(landVals, "falloff", -0.1, 0.3, 0.1).onChange(redrawScene);
-      folderLand.add(landVals, "iterations", 1, 16, 1).onChange(redrawScene);
-      folderLand
-        .add(landVals, "resolution", 255, 1279, 255)
-        .onChange(redrawScene);
-      folderLand
-        .add(landVals, "enableFog", "false", "true")
-        .onChange(redrawScene);
+    folderColorPalette
+      .addColor(paletteApart, "Apartment")
+      .onChange(function (value) {
+        apartmentMaterial.uniforms.baseColor.value = new THREE.Color(
+          value.r / 255,
+          value.g / 255,
+          value.b / 255
+        );
+      });
 
-      let folderCity = this.gui.addFolder("City");
-      folderCity.add(redrawCity, "Generate_City");
-      folderCity.open();
-      let folderColorPalette = folderCity.addFolder("Color Palette");
-      //folderCity.add(cityVals, 'isSimulating', true, false);
+    folderColorPalette
+      .addColor(paletteHouse, "House")
+      .onChange(function (value) {
+        houseMaterial.uniforms.baseColor.value = new THREE.Color(
+          value.r / 255,
+          value.g / 255,
+          value.b / 255
+        );
+      });
 
-      let paletteSky = {
-        SkyScraper: skyscraperColor,
-      };
+    folderColorPalette.addColor(paletteRoof, "Roof").onChange(function (value) {
+      houseMaterial.uniforms.roofColor.value = new THREE.Color(
+        value.r / 255,
+        value.g / 255,
+        value.b / 255
+      );
+    });
 
-      let paletteApart = {
-        Apartment: apartmentColor,
-      };
+    const folderSky = this.gui.addFolder("Sky");
+    folderSky.add(envVals, "elevation", 0, 90, 0.1).onChange(updateEnvironment);
+    folderSky
+      .add(envVals, "azimuth", -180, 180, 0.1)
+      .onChange(updateEnvironment);
 
-      let paletteHouse = {
-        House: houseColor,
-      };
+    const folderUI = this.gui.addFolder("UI");
+    folderUI.add(this.uiVals, "HeightTexture").onChange(updateUI);
 
-      let paletteRoof = {
-        Roof: roofColor,
-      };
-
-      folderColorPalette
-        .addColor(paletteSky, "SkyScraper")
-        .onChange(function (value) {
-          skyScraperMaterial.uniforms.baseColor.value = new THREE.Color(
-            value.r / 255,
-            value.g / 255,
-            value.b / 255
-          );
-        });
-
-      folderColorPalette
-        .addColor(paletteApart, "Apartment")
-        .onChange(function (value) {
-          apartmentMaterial.uniforms.baseColor.value = new THREE.Color(
-            value.r / 255,
-            value.g / 255,
-            value.b / 255
-          );
-        });
-
-      folderColorPalette
-        .addColor(paletteHouse, "House")
-        .onChange(function (value) {
-          houseMaterial.uniforms.baseColor.value = new THREE.Color(
-            value.r / 255,
-            value.g / 255,
-            value.b / 255
-          );
-        });
-
-      folderColorPalette
-        .addColor(paletteRoof, "Roof")
-        .onChange(function (value) {
-          houseMaterial.uniforms.roofColor.value = new THREE.Color(
-            value.r / 255,
-            value.g / 255,
-            value.b / 255
-          );
-        });
-
-      const folderSky = this.gui.addFolder("Sky");
-      folderSky
-        .add(envVals, "elevation", 0, 90, 0.1)
-        .onChange(updateEnvironment);
-      folderSky
-        .add(envVals, "azimuth", -180, 180, 0.1)
-        .onChange(updateEnvironment);
-
-      const folderUI = this.gui.addFolder("UI");
-      folderUI.add(uiVals, "HeightTexture").onChange(updateUI);
-
-      function updateUI() {
-        if (uiVals.HeightTexture == false) {
-          heightGradient.style.visibility = "hidden";
-        } else {
-          heightGradient.style.visibility = "visible";
-        }
+    function updateUI() {
+      if (this.uiVals.HeightTexture == false) {
+        heightGradient.style.visibility = "hidden";
+      } else {
+        heightGradient.style.visibility = "visible";
       }
     }
 

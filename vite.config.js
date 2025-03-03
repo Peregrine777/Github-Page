@@ -8,5 +8,6 @@ export default defineConfig({
   base: "/Github-Page/", // The repo name
   build: {
     outDir: "dist",
+    sourcemap: true, // Enable source maps
   },
 });

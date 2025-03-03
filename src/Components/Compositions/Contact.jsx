@@ -90,7 +90,7 @@ const Contact = ({ darkMode }) => {
   };
 
   return (
-    <div className={`form-container ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <div className={`form-container   `}>
       <h2>Say Hi!</h2>
       <iframe
         name="iframe"

@@ -3,8 +3,10 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
-  padding: 20px;
+}
+
+.greetings-text {
+  margin-top: 5px;
 }
 
 /* Left section (Text & Socials) */
@@ -73,6 +75,8 @@ p {
 @media (min-width: 768px) {
   .greetings-container {
     flex-direction: row;
+    padding: 20px;
+    gap: 20px;
   }
 
   .greetings-image {
@@ -94,6 +98,10 @@ p {
   }
   br {
     margin-bottom: 1rem;
+  }
+
+  .greetings-text {
+    margin-top: 16px;
   }
 
   p {

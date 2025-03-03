@@ -21,9 +21,9 @@ export class sc_TerrainScene extends SceneBase {
       gui: this.gui,
     });
 
-    // run the threading test
-    //let test = new threadTest();
-    //test.Run();
+    // //run the threading test
+    // let test = new threadTest();
+    // test.Run();
   }
 
   update(deltaTime) {

@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-around;
   padding: 10px;
+  position: relative;
 }
 
 .menu-item {
@@ -26,17 +27,24 @@
 /* Hover and active fill entire box */
 .menu-item:hover,
 .menu-item.active {
-  background-color: #555;
+  background-color: rgba(150, 150, 150, 0.1);
+  border-radius: 10px;
 }
 
 .menu-underline {
   position: absolute;
-  bottom: 0;
+  bottom: 6px;
+  left: 0px;
   height: 3px;
   background: black; /* or white for dark mode */
   width: 0;
   transition: transform 0.3s ease, width 0.3s ease;
 }
+
+.menu-underline.dark-mode {
+  background: white;
+}
+
 .menu-bar.dark-mode .menu-item.active::after {
   background-color: white;
 }
