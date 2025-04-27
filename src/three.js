@@ -10,7 +10,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
-import { GUI } from "dat.gui";
+import { GUI } from "lil-gui";
 
 import { camera_track } from "./cameraTrack.js";
 import { SmoothPath } from "./smoothPath.js";
@@ -136,12 +136,10 @@ export default function setupThreeJS(containerRef, sectionRef) {
     let _guiParams = {
       general: {},
     };
-    let gui = new GUI({ autoPlace: false });
-    const generalRollup = gui.addFolder("General");
+    let gui = new GUI();
     gui.close();
-
     container.appendChild(gui.domElement);
-    console.log("datGUI container:" + container);
+
     return gui;
   }
 
@@ -171,7 +169,7 @@ export default function setupThreeJS(containerRef, sectionRef) {
 
   let hasResized = false;
 
-  switchScene(sc_TerrainScene);
+  switchScene(sc_Reclaimer);
   // Animation loop
   const clock = new THREE.Clock();
   //final update loop

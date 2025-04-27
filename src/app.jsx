@@ -16,6 +16,10 @@ const App = () => {
       path: "/Github-Page/GloriaArmada",
       element: <Pages.GloriaArmada />,
     },
+    {
+      path: "/Github-Page/Interactives",
+      element: <Pages.Interactives />,
+    },
   ]);
 
   return <RouterProvider router={router} />;

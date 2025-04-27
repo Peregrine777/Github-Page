@@ -53,9 +53,10 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
       >
         <h2 style={{ color: boldTextCol }}>Data Analysis</h2>
         <p>
-          Using data to uncover insights, drive business decisions, and create
-          actionable solutions, with expertise in statistical analysis, machine
-          learning, and visualization.
+          Senior Data Analyst with 8+ years of experience
+          <br />
+          Senior Data Analyst with 8+ years of experience, including work with
+          global enterprises across international markets
         </p>
         <img
           src="assets/Images/tableau.webp"

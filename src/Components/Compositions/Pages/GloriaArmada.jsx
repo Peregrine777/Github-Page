@@ -10,20 +10,18 @@ const Test = (darkMode, toggleDarkMode) => {
 
   const handleOpenLightbox = (content, style) => {
     document.body.classList.add("no-scroll");
-    // Add a new history state when opening
+
     history.pushState({ lightboxOpen: true }, "", "#lightbox");
-    setLightboxContent(content); // Set the content dynamically
-    setLightboxStyle(style); // Set the style dynamically
-    setIsLightboxOpen(true); // Open the lightbox
+    setLightboxContent(content);
+    setLightboxStyle(style);
+    setIsLightboxOpen(true);
   };
 
   const handleCloseLightbox = () => {
     document.body.classList.remove("no-scroll");
     setIsLightboxOpen(false);
-    // Go back in history (removing the lightbox state)
-    // Ensure we only go back if we actually added a state
     if (history.state?.lightboxOpen) {
-      setTimeout(() => history.back(), 100); // ✅ Debounce back action
+      setTimeout(() => history.back(), 100);
     }
   };
   return (
@@ -31,25 +29,35 @@ const Test = (darkMode, toggleDarkMode) => {
       <Features.LightboxModal
         darkMode={darkMode}
         isOpen={isLightboxOpen}
-        content={lightboxContent} // Can be replaced with an iframe, image, etc.
+        content={lightboxContent}
         style={lightboxStyle}
         onClose={handleCloseLightbox}
       />
       <Sections.Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <main>
+        <Features.Section
+          title="about"
+          darkMode={darkMode}
+          revealPercent="50px 0px"
+        >
+          <div>
+            {" "}
+            <img
+              src={`assets/Images/Peregrine_${
+                darkMode ? "dark.png" : "light.png"
+              }`}
+            ></img>
+          </div>
+        </Features.Section>
 
-      <Features.Section
-        title="about"
-        darkMode={darkMode}
-        revealPercent="50px 0px"
-      ></Features.Section>
-
-      <Features.Section
-        title="Footer"
-        darkMode={darkMode}
-        revealPercent="50px 0px"
-      >
-        <Sections.Footer darkMode={darkMode} />
-      </Features.Section>
+        <Features.Section
+          title="Footer"
+          darkMode={darkMode}
+          revealPercent="50px 0px"
+        >
+          <Sections.Footer darkMode={darkMode} />
+        </Features.Section>
+      </main>
     </div>
   );
 };

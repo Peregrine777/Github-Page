@@ -98,11 +98,10 @@ const Contact = ({ darkMode }) => {
         style={{ display: "none" }}
       />
       <form
-        //https://docs.google.com/forms/d/e/1FAIpQLScNGQC5-w_fprc2Z_2FFcXwGAzxM232baBeIb7xvufomN-eaA/viewform?usp=pp_url&entry.1954550861=John+Doe&entry.561916195=%2B61412345678&entry.1965469943=email@email.com&entry.1168516071=Hi!
         action="https://docs.google.com/forms/d/e/1FAIpQLScNGQC5-w_fprc2Z_2FFcXwGAzxM232baBeIb7xvufomN-eaA/formResponse"
         method="POST"
-        id="contactForm" // Submit to iframe to avoid redirect
-        target="iframe"
+        id="contactForm"
+        target="iframe" // Submit to iframe to avoid redirect
       >
         <div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
           <div

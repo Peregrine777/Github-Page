@@ -4,3 +4,4 @@ export { default as FlexReveal } from "./FlexReveal.jsx";
 export { default as MinimalButton } from "./MinimalButton.jsx";
 export { default as LightboxModal } from "./LightboxModal.jsx";
 export { default as ErrorBoundary } from "./ErrorBoundary.jsx";
+export { default as SceneSelector } from "./ThreeJSSceneSelector.jsx";
