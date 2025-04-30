@@ -42,11 +42,16 @@ const Test = (darkMode, toggleDarkMode) => {
         >
           <div>
             {" "}
-            <img
-              src={`assets/Images/Peregrine_${
-                darkMode ? "dark.png" : "light.png"
-              }`}
-            ></img>
+            <iframe
+              height="167"
+              frameborder="0"
+              src="https://itch.io/embed/2620999"
+              width="552"
+            >
+              <a href="https://chanel-parfait.itch.io/gloria-armada">
+                Gloria Armada by Chanel Parfait, Alexis986, iMxttq, samMcksell
+              </a>
+            </iframe>
           </div>
         </Features.Section>
 

@@ -12,10 +12,6 @@
 }
 
 .dark {
-  --color-primary: hsl(218, 50%, 10%);
-  --color-secondary: hsl(218, 50%, 90%);
-  --color-tertiary: hsl(278, 80%, 80%);
-  --color-accent: hsl(158, 80%, 80%);
 }
 
 body.no-scroll {
@@ -71,6 +67,11 @@ body.light-mode {
 }
 
 body.dark-mode {
+  --color-bg: hsl(218, 50%, 10%);
+  --color-primary: #f4f4f9;
+  --color-secondary: hsl(218, 50%, 90%);
+  --color-tertiary: hsl(278, 80%, 80%);
+  --color-accent: hsl(158, 80%, 80%);
   background-color: #121212;
   color: #f4f4f9;
 }

@@ -163,7 +163,7 @@ export const LandShader = {
         float fogDensity = smoothstep(0.0, 100.0, altitude); 
 
         float mist = viewZ.z/1000.;
-        float misDensity = smoothstep(0.0, 10.0, altitude);
+        float mistDensity = smoothstep(0.0, 10.0, altitude);
 
         float fogAmount = abs(fog * (1.0-fogDensity));
         float mistAmount = abs(mist * (1.0-misDensity));

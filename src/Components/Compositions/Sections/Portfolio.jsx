@@ -16,14 +16,14 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
         tabIndex="0" // Make it focusable for keyboard interaction
         onClick={() =>
           handleOpenLightbox(
-            <PP.GameDev />,
+            <PP.SoftwareEngineering />,
             { height: "80vh" } // Fix: use vh instead of lvh
           )
         }
       >
-        <h2 style={{ color: boldTextCol }}>GameDev</h2>
-        <p>
-          Games, game engines, physics and rendering <br />
+        <h2 style={{ color: boldTextCol }}>Software Engineering</h2>
+        <p className="flavorText">
+          Programming, games, rendering and physics <br />
           <br />
           <br />
         </p>
@@ -52,7 +52,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
         }
       >
         <h2 style={{ color: boldTextCol }}>Data Analysis</h2>
-        <p>
+        <p className="flavorText">
           Senior Data Analyst with 8+ years of experience
           <br />
           Senior Data Analyst with 8+ years of experience, including work with
@@ -71,7 +71,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
       </div>
 
       {/* Interactive Visualizations Section */}
-      <div
+      {/* <div
         className={`portfolioCard ${darkMode ? "dark-mode" : "light-mode"}`}
         style={{ cursor: "pointer" }}
         role="button"
@@ -94,7 +94,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
             threeJSEntry={setupThreeJS}
           />
         </div>
-      </div>
+      </div> */}
     </Features.FlexReveal>
   );
 };

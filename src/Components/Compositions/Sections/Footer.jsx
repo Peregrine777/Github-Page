@@ -10,6 +10,7 @@ const Footer = ({ darkMode }) => {
         justifyContent: "center",
         alignItems: "center",
         flex: "0 1 auto",
+        maxWidth: "1000px",
       }}
     >
       <div className="column" style={{ flexBasis: "10%", flex: "0 0 auto" }}>

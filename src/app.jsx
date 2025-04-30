@@ -20,6 +20,10 @@ const App = () => {
       path: "/Github-Page/Interactives",
       element: <Pages.Interactives />,
     },
+    {
+      path: "/Github-Page/GameEngine",
+      element: <Pages.GameEngine />,
+    },
   ]);
 
   return <RouterProvider router={router} />;
