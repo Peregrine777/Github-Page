@@ -208,22 +208,6 @@ const Test = (props) => {
         </Features.Section>
 
         <Features.Section
-          title="AI"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <h3>AI</h3>
-        </Features.Section>
-
-        <Features.Section
-          title="Graphics"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <h3>Graphics</h3>
-        </Features.Section>
-
-        <Features.Section
           title="Footer"
           darkMode={darkMode}
           revealPercent="50px 0px"

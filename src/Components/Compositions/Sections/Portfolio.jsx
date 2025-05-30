@@ -7,7 +7,10 @@ import setupThreeJS from "../../../threeTest.js";
 const Portfolio = ({ darkMode, handleOpenLightbox }) => {
   const boldTextCol = darkMode ? "white" : "#333";
   return (
-    <Features.FlexReveal style={{ gap: "2rem" }} className="content-scroll">
+    <Features.FlexReveal
+      style={{ width: "95%", gap: "2rem" }}
+      className="content-scroll"
+    >
       {/* Game Development Section */}
       <div
         className={`portfolioCard ${darkMode ? "dark-mode" : "light-mode"}`}

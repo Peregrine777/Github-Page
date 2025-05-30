@@ -39,15 +39,15 @@ section.dark-mode h2 {
 }
 
 .section {
-  color: #333;
-  background-color: #d5e8de;
+  color: var(--color-primary-light);
+  background-color: var(--color-bg-light);
 }
 .section.light-mode {
-  background-color: #f0f0f0;
+  background-color: var(--color-bg-light);
 }
 .section.dark-mode {
-  color: #e3e3e3;
-  background-color: #222424;
+  color: var(--color-primary);
+  background-color: var(--color-bg-2);
 }
 
 /* Children default hidden state (only if fade is enabled) */

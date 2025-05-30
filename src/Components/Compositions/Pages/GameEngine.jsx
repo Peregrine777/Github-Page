@@ -1,14 +1,32 @@
-<link href="https://vjs.zencdn.net/8.22.0/video-js.css" rel="stylesheet" />;
-
 import React, { useEffect, useState } from "react";
 import * as Features from "../../Features";
 import { SettingsMenu, Contact, Socials } from "..";
 import * as Sections from "../Sections";
 import "./GameEngine.css";
 
+<link href="https://vjs.zencdn.net/8.22.0/video-js.css" rel="stylesheet" />;
+
 // video path
 
-const GameEnginePage = (darkMode, toggleDarkMode) => {
+const GameEnginePage = (props) => {
+  document.body.classList.remove("no-scroll");
+
+  // Check localStorage first for dark mode setting
+  const [localDarkMode, setLocalDarkMode] = useState(() => {
+    const stored = localStorage.getItem("darkMode");
+    return stored ? JSON.parse(stored) : true;
+  });
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(localDarkMode));
+  }, [localDarkMode]);
+
+  const localToggleDarkMode = () => {
+    setLocalDarkMode((prevMode) => !prevMode);
+  };
+
+  const darkMode = props.darkMode ?? localDarkMode;
+  const toggleDarkMode = props.toggleDarkMode ?? localToggleDarkMode;
+
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);
@@ -39,6 +57,7 @@ const GameEnginePage = (darkMode, toggleDarkMode) => {
         onClose={handleCloseLightbox}
       />
       <Sections.Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+
       <main>
         <Features.Section
           title="about"
@@ -60,67 +79,95 @@ const GameEnginePage = (darkMode, toggleDarkMode) => {
           darkMode={darkMode}
           revealPercent="50px 0px"
         >
-          <div className="flex-container">
-            <div className="column-content">
-              <h2>Application</h2>
-              <h3>Drawing to the screen</h3>
-              <ul>
-                <li> Building an exe</li>
-                <li> Using OpenGL</li>
-              </ul>
-              <h3>Exploring Libraries</h3>
-              <ul>
-                <li> ImGui</li>
-                <li> Glad</li>
-                <li> GLFW</li>
-                <li> GLM</li>
-              </ul>
-              <p> Realtime Graphing, debugging and UI</p>
-              <p> Interactivity and control</p>
+          <div className="flex-container" style={{ padding: "10px" }}>
+            <div className="column-content-container">
+              <div
+                className="column-content-titlebar"
+                style={{ backgroundColor: "#80c352" }}
+              >
+                <h2>Application</h2>
+              </div>
+              <div className="column-content-inner">
+                <h3>Drawing to the screen</h3>
+                <ul>
+                  <li> Building an exe</li>
+                  <li> Using OpenGL</li>
+                </ul>
+                <h3>Exploring Libraries</h3>
+                <ul>
+                  <li> ImGui</li>
+                  <li> Glad</li>
+                  <li> GLFW</li>
+                  <li> GLM</li>
+                </ul>
+                <p> Realtime Graphing, debugging and UI</p>
+                <p> Interactivity and control</p>
+              </div>
             </div>
-            <div className="column-content">
-              <h2>Meshes</h2>
-              <h3> Loading Mesh Files</h3>
-              <ul>
-                <li> Tetrahedral Meshes</li>
-                <li> Hexahedral Meshes</li>
-                <li> Quad/Tri Meshes</li>
-              </ul>
-              <h3> Processing Geometry</h3>
-              <ul>
-                <li> Correct edge winding</li>
-                <li> Extract external Polyhedron</li>
-                <li> Create edge networks for linked polyhedra</li>
-              </ul>
+            <div className="column-content-container">
+              <div
+                className="column-content-titlebar"
+                style={{ backgroundColor: "#a666e1" }}
+              >
+                <h2>Meshes</h2>
+              </div>
+              <div className="column-content-inner">
+                <h3> Loading Mesh Files</h3>
+                <ul>
+                  <li> Tetrahedral Meshes</li>
+                  <li> Hexahedral Meshes</li>
+                  <li> Quad/Tri Meshes</li>
+                </ul>
+                <h3> Processing Geometry</h3>
+                <ul>
+                  <li> Correct edge winding</li>
+                  <li> Extract external Polyhedron</li>
+                  <li> Create edge networks for linked polyhedra</li>
+                </ul>
+              </div>
             </div>
-            <div className="column-content">
-              <h2>Physics</h2>
-              <h3> Exploring solvers</h3>
-              <ul>
-                <li> PBDS</li>
-                <li> XPBDS</li>
-              </ul>
+            <div className="column-content-container">
+              <div
+                className="column-content-titlebar"
+                style={{ backgroundColor: "#30acec" }}
+              >
+                <h2>Physics</h2>
+              </div>
+              <div className="column-content-inner">
+                <h3> Exploring solvers</h3>
+                <ul>
+                  <li> PBDS</li>
+                  <li> XPBDS</li>
+                </ul>
 
-              <h3>"Regular" Constraints</h3>
-              <ul>
-                <li>Distance</li>
-                <li>Floor with Friction</li>
-                <li>Volume</li>
-              </ul>
-              <h3>Novel Constraints for volumetric meshes</h3>
-              <ul>
-                <li>Face Distance</li>
-                <li>Face Angle</li>
-              </ul>
+                <h3>"Regular" Constraints</h3>
+                <ul>
+                  <li>Distance</li>
+                  <li>Floor with Friction</li>
+                  <li>Volume</li>
+                </ul>
+                <h3>Novel Constraints for volumetric meshes</h3>
+                <ul>
+                  <li>Face Distance</li>
+                  <li>Face Angle</li>
+                </ul>
+              </div>
             </div>
-            <div className="column-content">
-              <h2>Cutting</h2>
-              <h3> Realtime slicing</h3>
-              <ul>
-                <li>Performant plane/Poly intersection testing</li>
-                <li>Sliced face generation</li>
-                <li>Integration with physics</li>
-              </ul>
+            <div className="column-content-container">
+              <div
+                className="column-content-titlebar"
+                style={{ backgroundColor: "#e29d3e" }}
+              >
+                <h2>Cutting</h2>
+              </div>
+              <div className="column-content-inner">
+                <h3> Realtime slicing</h3>
+                <ul>
+                  <li>Performant plane/Poly intersection testing</li>
+                  <li>Sliced face generation</li>
+                  <li>Integration with physics</li>
+                </ul>
+              </div>
             </div>
           </div>
         </Features.Section>

@@ -26,8 +26,8 @@ const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
       <div className="greetings-content">
         <h2 className="title">Let's make something amazing together!</h2>
         <p className="greetings-text">
-          I'm an experienced Data Analyst and Software Engineer with a strong
-          interest in systems programming and low-level development.{" "}
+          Senior Data Analyst and Software Engineer with a strong interest in
+          systems programming and low-level development.{" "}
         </p>
         <br />
 
