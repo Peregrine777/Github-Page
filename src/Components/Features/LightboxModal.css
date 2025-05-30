@@ -23,7 +23,7 @@
 }
 
 .lightbox-content.dark-mode {
-  background: #1e1e1e;
+  background: var(--color-bg-2);
   color: #f4f4f9;
 }
 

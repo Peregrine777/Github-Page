@@ -26,15 +26,10 @@ const Greetings = ({ darkMode, handleOpenLightbox, scrollToSection }) => {
       <div className="greetings-content">
         <h2 className="title">Let's make something amazing together!</h2>
         <p className="greetings-text">
-          I am a Data Analyst & Software Engineer with a passion for creating
-          innovative solutions.{" "}
+          Senior Data Analyst and Software Engineer with a strong interest in
+          systems programming and low-level development.{" "}
         </p>
-        <p className="greetings-text">
-          I have experience in various programming languages and frameworks.{" "}
-        </p>
-        <p className="greetings-text">
-          I enjoy collaborating with teams and solving complex problems.
-        </p>
+        <br />
 
         {/* Socials inside content for larger screens */}
         {!isMobile && (

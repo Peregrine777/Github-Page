@@ -9,9 +9,10 @@ const LightboxModal = ({ darkMode, isOpen, content, style, onClose }) => {
   console.log("LightboxModal darkMode:", darkMode);
 
   // Clone content and pass darkMode
-  const contentWithProps = isValidElement(content)
-    ? cloneElement(content, { darkMode })
-    : content;
+  const contentWithProps =
+    isValidElement(content) && typeof content.type !== "string"
+      ? cloneElement(content, { darkMode })
+      : content;
 
   return (
     <div className={`lightbox-overlay`} onClick={onClose}>

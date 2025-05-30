@@ -6,7 +6,7 @@ import { quadtree } from "./quadtree.js";
 import { LandShader } from "../Shaders/LandShader.js";
 import { GUI } from "dat.gui";
 
-const _NUM_WORKERS = 23;
+const _NUM_WORKERS = 7;
 
 let _IDs = 0;
 
@@ -101,7 +101,7 @@ export class TerrainBuilder_threaded {
     this.updateInProgress = false;
 
     // Flat quadtree parameters
-    this.FLAT_PLANE_SIZE = params.flat_plane_size || 10000; // Set the plane size
+    this.FLAT_PLANE_SIZE = params.flat_plane_size || 1000; // Set the plane size
     this.MIN_CELL_SIZE = params.min_cell_size || 16; // Minimum quadtree cell size
     // For each child, we will create with x segments
     this.CELL_RESOLUTION = params.cell_resolution || 256;
@@ -109,7 +109,7 @@ export class TerrainBuilder_threaded {
     this.noise = new ImprovedNoise();
     this.noiseZ = randFloat(0, 1000); // Randomize the noise function
     this.noiseParams = {
-      amplitude: 10,
+      amplitude: 1,
       octaves: 16,
       frequency: 1,
       persistence: 0.5,

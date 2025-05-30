@@ -34,36 +34,21 @@
   opacity: 0;
 }
 
-.section:nth-child(odd) {
-  background-color: #e0e7ff;
-}
-.section:nth-child(odd).light-mode {
-  color: #333;
-  background-color: #e8e8e8;
-}
-
 section.dark-mode h2 {
   color: #eae9e9;
 }
 
-.section:nth-child(odd).dark-mode {
-  color: #d6d6d6;
-  background-color: #1d212d;
+.section {
+  color: var(--color-primary-light);
+  background-color: var(--color-bg-light);
 }
-
-.section:nth-child(even) {
-  color: #333;
-  background-color: #d5e8de;
+.section.light-mode {
+  background-color: var(--color-bg-light);
 }
-.section:nth-child(even).light-mode {
-  background-color: #f0f0f0;
+.section.dark-mode {
+  color: var(--color-primary);
+  background-color: var(--color-bg-2);
 }
-.section:nth-child(even).dark-mode {
-  color: #e3e3e3;
-  background-color: #222424;
-}
-
-.section
 
 /* Children default hidden state (only if fade is enabled) */
 .child-hidden {

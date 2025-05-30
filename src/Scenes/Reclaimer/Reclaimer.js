@@ -222,24 +222,36 @@ export class sc_Reclaimer extends SceneBase {
     ////////////
     //   GUI  //
     ////////////
-
-    function redrawScene() {
+    const updateEnvironment = () => {
+      this.environment.updateSun(this.scene, this.renderer, envVals);
+      // environment.update();
+    };
+    const redrawScene = () => {
       land.clear();
       cityGenPoint.clear();
+
+      new Landscape(
+        this.sceneVals.size,
+        this.landVals,
+        sunDirection,
+        reclaimerProperties
+      ).ChunkManager(land);
 
       let bodies = physicsworld.bodies;
       bodies.forEach((element) => {
         physicsworld.removeBody(element);
         physicsworld.step();
       });
-    }
+    };
+
+    const updateFOV = () => {
+      this.camera.fov = this.cameraVals.FOV;
+      this.camera.updateProjectionMatrix();
+    };
 
     //Values for the GUI
     this.gui.add(this.sceneVals, "size", 10, 20, 2).onChange(redrawScene);
-    this.gui.add(this.cameraVals, "FOV", 20, 90, 1).onChange(function (value) {
-      this.camera.fov = value;
-      this.camera.updateProjectionMatrix();
-    });
+    this.gui.add(this.cameraVals, "FOV", 20, 90, 1).onChange(updateFOV);
 
     let folderLand = this.gui.addFolder("Landscape");
     let folderFBM = folderLand.addFolder("FBM");
@@ -262,83 +274,13 @@ export class sc_Reclaimer extends SceneBase {
     folderLand
       .add(this.landVals, "enableFog", "false", "true")
       .onChange(redrawScene);
-
-    let folderCity = this.gui.addFolder("City");
-    folderCity.add(redrawCity, "Generate_City");
-    folderCity.open();
-    let folderColorPalette = folderCity.addFolder("Color Palette");
-    //folderCity.add(cityVals, 'isSimulating', true, false);
-
-    let paletteSky = {
-      SkyScraper: skyscraperColor,
-    };
-
-    let paletteApart = {
-      Apartment: apartmentColor,
-    };
-
-    let paletteHouse = {
-      House: houseColor,
-    };
-
-    let paletteRoof = {
-      Roof: roofColor,
-    };
-
-    folderColorPalette
-      .addColor(paletteSky, "SkyScraper")
-      .onChange(function (value) {
-        skyScraperMaterial.uniforms.baseColor.value = new THREE.Color(
-          value.r / 255,
-          value.g / 255,
-          value.b / 255
-        );
-      });
-
-    folderColorPalette
-      .addColor(paletteApart, "Apartment")
-      .onChange(function (value) {
-        apartmentMaterial.uniforms.baseColor.value = new THREE.Color(
-          value.r / 255,
-          value.g / 255,
-          value.b / 255
-        );
-      });
-
-    folderColorPalette
-      .addColor(paletteHouse, "House")
-      .onChange(function (value) {
-        houseMaterial.uniforms.baseColor.value = new THREE.Color(
-          value.r / 255,
-          value.g / 255,
-          value.b / 255
-        );
-      });
-
-    folderColorPalette.addColor(paletteRoof, "Roof").onChange(function (value) {
-      houseMaterial.uniforms.roofColor.value = new THREE.Color(
-        value.r / 255,
-        value.g / 255,
-        value.b / 255
-      );
-    });
-
+    folderLand.close();
     const folderSky = this.gui.addFolder("Sky");
+
     folderSky.add(envVals, "elevation", 0, 90, 0.1).onChange(updateEnvironment);
     folderSky
       .add(envVals, "azimuth", -180, 180, 0.1)
       .onChange(updateEnvironment);
-
-    const folderUI = this.gui.addFolder("UI");
-    folderUI.add(this.uiVals, "HeightTexture").onChange(updateUI);
-
-    function updateUI() {
-      if (this.uiVals.HeightTexture == false) {
-        heightGradient.style.visibility = "hidden";
-      } else {
-        heightGradient.style.visibility = "visible";
-      }
-    }
 
     function startReclamation() {
       if (isReclaiming == false) {
@@ -381,11 +323,6 @@ export class sc_Reclaimer extends SceneBase {
         sunDirection,
         reclaimerProperties
       ).ChunkManager(land);
-    }
-
-    function updateEnvironment() {
-      this.environment.updateSun(this.scene, this.renderer, envVals);
-      // environment.update();
     }
 
     console.log("Reclaimer final:", this);

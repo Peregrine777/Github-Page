@@ -18,6 +18,8 @@
   .portfolioCard {
     width: unset;
     padding: 1rem; /* Optional: Padding for inner spacing */
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -35,4 +37,8 @@
 .portfolioCard.dark-mode {
   --background-color: white;
   --color: white;
+}
+
+.flavorText {
+  flex-grow: 1;
 }

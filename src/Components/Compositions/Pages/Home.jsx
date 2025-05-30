@@ -5,7 +5,21 @@ import { SettingsMenu, Contact, Socials } from "../";
 import * as Sections from "../Sections";
 
 const Home = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  // Initialize dark mode from localStorage
+  const [darkMode, setDarkMode] = useState(() => {
+    const stored = localStorage.getItem("darkMode");
+    return stored ? JSON.parse(stored) : true;
+  });
+
+  // Sync dark mode with localStorage
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
+
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);
@@ -20,6 +34,7 @@ const Home = () => {
 
   // Remove hash on component mount (for initial load)
   removeHash();
+  //
 
   async function loadScenes() {
     const scenes = [];
@@ -119,12 +134,6 @@ const Home = () => {
     };
   }, []);
 
-  const toggleDarkMode = () => {
-    setDarkMode((prevMode) => {
-      const newMode = !prevMode;
-      return newMode;
-    });
-  };
   return (
     <div className="app">
       <Features.LightboxModal
