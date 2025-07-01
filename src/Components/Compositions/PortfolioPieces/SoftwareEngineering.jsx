@@ -105,30 +105,29 @@ const SoftwareEngineering = ({ darkMode }) => {
   return (
     <div style={{ textAlign: "center", maxHeight: "100vh" }}>
       <h2>Showcase</h2>
-      <div style={{ padding: "10px" }}>
-        <div className="game-list">
-          <GameInfo
-            title="Gloria Armada"
-            img="assets/Images/Gloria_Armada.png"
-            link="/Github-Page/GloriaArmada"
-            description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
-            tags={["Game", "Unity", "C#", "Physics", "AI"]}
-          ></GameInfo>
-          <GameInfo
-            title="PolyEngine"
-            img="assets/Images/PolyEngine.jpg"
-            link="/Github-Page/GameEngine"
-            description="PolyEngine is a scratch-built game engine with minimal external library dependencies. Built to test computational geometry algorithms, PBDS, XPBDS and UI design"
-            tags={["Engine", "C++", "OpenGL", "PBDS", "Geometry", "UI"]}
-          ></GameInfo>
-          <GameInfo
-            title="Procedural Jones"
-            img="assets/Images/PJ_CaveGen.png"
-            link="https://github.com/Peregrine777/Procedural-Jones-CaveGen"
-            description="Procedural Jones is a tech demo that showcases procedural generation of walkable caves using rules-based box/corridor placement and marching-cubes terrain generation."
-            tags={["Tool", "UE5", "C++", "Procedural Generation"]}
-          ></GameInfo>
-        </div>
+
+      <div className="game-list">
+        <GameInfo
+          title="Gloria Armada"
+          img="assets/Images/Gloria_Armada.png"
+          link="/Github-Page/GloriaArmada"
+          description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
+          tags={["Game", "Unity", "C#", "Physics", "AI"]}
+        ></GameInfo>
+        <GameInfo
+          title="PolyEngine"
+          img="assets/Images/PolyEngine.jpg"
+          link="/Github-Page/GameEngine"
+          description="PolyEngine is a scratch-built game engine with minimal external library dependencies. Built to test computational geometry algorithms, PBDS, XPBDS and UI design"
+          tags={["Engine", "C++", "OpenGL", "PBDS", "Geometry", "UI"]}
+        ></GameInfo>
+        <GameInfo
+          title="Procedural Jones"
+          img="assets/Images/PJ_CaveGen.png"
+          link="/Github-Page/CaveGen"
+          description="Procedural Jones is a tech demo that showcases procedural generation of walkable caves using rules-based box/corridor placement and marching-cubes terrain generation."
+          tags={["Tool", "UE5", "C++", "Procedural Generation"]}
+        ></GameInfo>
       </div>
     </div>
   );

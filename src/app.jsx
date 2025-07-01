@@ -24,6 +24,10 @@ const App = () => {
       path: "/Github-Page/GameEngine",
       element: <Pages.GameEngine />,
     },
+    {
+      path: "/Github-Page/CaveGen",
+      element: <Pages.CaveGen />,
+    },
   ]);
 
   return <RouterProvider router={router} />;
