@@ -1,6 +1,7 @@
 import React from "react";
 import SettingsMenu from "../SettingsMenu";
 import { useNavigate } from "react-router-dom";
+
 const Header = ({ darkMode, toggleDarkMode }) => {
   // const navigate = useNavigate();
   // const handleClick = (link) => {

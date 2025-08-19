@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Compositions from "..";
 import "./SoftwareEngineering.css";
-import { Link } from "react-router-dom";
 
 const SoftwareEngineering = ({ darkMode }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -51,13 +50,13 @@ const SoftwareEngineering = ({ darkMode }) => {
   };
 
   const GameImage = ({ img, link }) => (
-    <Link className="game-icon" to={link}>
+    <a className="game-icon">
       <img className="game-icon-img" src={img} alt="Game Icon" />
-    </Link>
+    </a>
   );
 
   const GameDesc = ({ title, descr, img, link, children, tags }) => (
-    <Link to={link}>
+    <a className="game-icon" href={`#${link}`}>
       <div className="game-info">
         <GameTitle>{title}</GameTitle>
         <GameTags tags={tags} />
@@ -69,7 +68,7 @@ const SoftwareEngineering = ({ darkMode }) => {
         <GameFeatures>{children}</GameFeatures>
         <GameDescription>{descr}</GameDescription>
       </div>
-    </Link>
+    </a>
   );
   const GameTitle = ({ children }) => (
     <div className="game-title">{children}</div>
@@ -104,21 +103,21 @@ const SoftwareEngineering = ({ darkMode }) => {
         <GameInfo
           title="Gloria Armada"
           img="assets/Images/Gloria_Armada.png"
-          link="/Github-Page/GloriaArmada"
+          link="/GloriaArmada"
           description="Gloria Armada combines 2D shoot-'em-up genres but with physics-based controls and a perspective that changes between top-down, side-on, and rear aspect!"
           tags={["Game", "Unity", "C#", "Physics", "AI"]}
         ></GameInfo>
         <GameInfo
           title="PolyEngine"
           img="assets/Images/PolyEngine.jpg"
-          link="/Github-Page/GameEngine"
+          link="/GameEngine"
           description="PolyEngine is a scratch-built game engine with minimal external library dependencies. Built to test computational geometry algorithms, PBDS, XPBDS and UI design"
           tags={["Engine", "C++", "OpenGL", "PBDS", "Geometry", "UI"]}
         ></GameInfo>
         <GameInfo
           title="Procedural Jones"
           img="assets/Images/PJ_CaveGen.png"
-          link="/Github-Page/CaveGen"
+          link="/CaveGen"
           description="Procedural Jones is a tech demo that showcases procedural generation of walkable caves using rules-based box/corridor placement and marching-cubes terrain generation."
           tags={["Tool", "UE5", "C++", "Procedural Generation"]}
         ></GameInfo>
