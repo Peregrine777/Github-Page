@@ -3,14 +3,13 @@ import SettingsMenu from "../SettingsMenu";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({ darkMode, toggleDarkMode }) => {
-  // const navigate = useNavigate();
-  // const handleClick = (link) => {
-  //   navigate(link);
-  // };
   return (
     <header className={`header ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div>
-        <a href="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <a
+          href="/Github-Page/"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
           <img
             src={`assets/Images/Peregrine_${
               darkMode ? "dark.png" : "light.png"
