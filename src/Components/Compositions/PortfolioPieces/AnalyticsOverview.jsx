@@ -10,8 +10,9 @@ const AnalyticsOverview = ({ darkMode }) => {
         <h2 style={{ color: boldTextCol }}>Data Analytics Expertise</h2>
         <p>
           Leveraging data to uncover insights and drive business decisions.
-          Although I work on sensitive projects, I can offer a range of services
-          in statistical analysis, predictive modeling, and data visualization.
+          Although most of my work is confidential, I can offer a range of
+          services in statistical analysis, predictive modeling, and data
+          visualization.
         </p>
       </div>
 
@@ -32,16 +33,9 @@ const AnalyticsOverview = ({ darkMode }) => {
           In my past work, I've helped businesses improve decision-making with
           data-driven insights, built predictive models for revenue forecasting,
           and developed interactive dashboards to monitor key performance
-          metrics. My work directly contributes to operational efficiency and
-          informed strategic decisions.
+          metrics. I have been the lead on projects for AER (Australian Energy
+          Regulator) and TNB (Tenaga National Berhad).
         </p>
-      </div>
-
-      <div className="visuals">
-        <div className="sample-graph">
-          {/* This could be a placeholder or an animated graph */}
-          <img src="/path-to-placeholder-image.png" />
-        </div>
       </div>
     </section>
   );
