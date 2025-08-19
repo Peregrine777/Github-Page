@@ -206,7 +206,9 @@ const GameEnginePage = (props) => {
                 data-setup="{}"
               >
                 <source
-                  src="assets/Videos/Deformable_Volume.mp4"
+                  src={`${
+                    import.meta.env.BASE_URL
+                  }assets/Videos/Deformable_Volume.mp4`}
                   type="video/mp4"
                 />
                 <p className="vjs-no-js">

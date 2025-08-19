@@ -51,7 +51,11 @@ const Skills = ({ darkMode }) => {
               paddingTop: "1rem",
               paddingBottom: "1rem",
             }}
-            childStyle={{ flexGrow: "0", minWidth: "150px" }}
+            childStyle={{
+              flexGrow: "0",
+              minWidth: "150px",
+            }}
+            transitionDelay={0.25}
           >
             {category.skills.map((skill) => {
               const variantImage = getImageVariant(skill.image);

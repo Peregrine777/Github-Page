@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const Header = ({ darkMode, toggleDarkMode }) => {
   return (
-    <header className={`header ${darkMode ? "dark-mode" : "light-mode"}`}>
+    <header
+      style={{
+        borderBottom: `1px solid ${darkMode ? "#555" : "#ccc"}`,
+      }}
+      className={`header ${darkMode ? "dark-mode" : "light-mode"}`}
+    >
       <div>
         <a href="./" style={{ textDecoration: "none", color: "inherit" }}>
           <img

@@ -9,6 +9,8 @@ const FlexReveal = ({
   childStyle,
   revealMode,
   revealPercent,
+  transitionSpeed = 1.2,
+  transitionDelay = 0.5,
 }) => {
   const mode = revealMode ? revealMode : "rootMargin";
   mode === "threshold" ? (revealPercent ? revealPercent : 0.5) : "-50% 0px";
@@ -42,7 +44,7 @@ const FlexReveal = ({
         <div
           className="flex-child"
           style={{
-            transitionDelay: `${index * 0.5}s`, // Add delay based on index
+            transitionDelay: `${index * transitionDelay}s`, // Add delay based on index
             flex: "1", // Allow children to grow and shrink
             flexWrap: "wrap",
             ...childStyle, // Merge with child's existing styles

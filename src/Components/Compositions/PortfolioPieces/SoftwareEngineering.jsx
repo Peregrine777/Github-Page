@@ -48,27 +48,29 @@ const SoftwareEngineering = ({ darkMode }) => {
       </div>
     );
   };
-
   const GameImage = ({ img, link }) => (
-    <a className="game-icon">
+    <a
+      className="game-icon"
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <img className="game-icon-img" src={img} alt="Game Icon" />
     </a>
   );
 
   const GameDesc = ({ title, descr, img, link, children, tags }) => (
-    <a className="game-icon" href={`#${link}`}>
-      <div className="game-info">
-        <GameTitle>{title}</GameTitle>
-        <GameTags tags={tags} />
-        {isMobile && (
-          <div className="image-holder-small">
-            <GameImage img={img} link={link} />
-          </div>
-        )}
-        <GameFeatures>{children}</GameFeatures>
-        <GameDescription>{descr}</GameDescription>
-      </div>
-    </a>
+    <div className="game-info" href={`#${link}`}>
+      <GameTitle>{title}</GameTitle>
+      <GameTags tags={tags} />
+      {isMobile && (
+        <div className="image-holder-small">
+          <GameImage img={img} link={link} />
+        </div>
+      )}
+      <GameFeatures>{children}</GameFeatures>
+      <GameDescription>{descr}</GameDescription>
+    </div>
   );
   const GameTitle = ({ children }) => (
     <div className="game-title">{children}</div>
@@ -98,7 +100,6 @@ const SoftwareEngineering = ({ darkMode }) => {
   return (
     <div style={{ textAlign: "center", maxHeight: "100vh" }}>
       <h2>Showcase</h2>
-
       <div className="game-list">
         <GameInfo
           title="Gloria Armada"
