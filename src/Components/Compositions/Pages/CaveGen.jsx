@@ -74,19 +74,22 @@ const Test = (props) => {
                 className="column-content-titlebar"
                 style={{ backgroundColor: "#80c352" }}
               >
-                <h2>Physics</h2>
+                <h2>FBM Terrain</h2>
               </div>
               <div className="column-content-inner">
-                <h3>Full 3D Aerodynamics Model</h3>
+                <h3>Graph Based Marching Squares Cave System</h3>
                 <ul>
-                  <li> Modular component based airframe definition</li>
-                  <li> Serialized Plug/Play Airframes</li>
-                  <li> Global and Local paramaters (gravity/drag etc)</li>
-                  <li> Stall, COP change and thrust vectoring </li>
+                  <li> Random walk (ivy algo) path construction</li>
+                  <li> Modular configurable cave system generation</li>
                 </ul>
-                <h3>API</h3>
+                <h3>Organic Rooms with Noise</h3>
                 <ul>
-                  <li> Access for sensor output and control inputs</li>
+                  <li>
+                    {" "}
+                    Use cave graph as premise for a cube/rectangular prism cave
+                    system
+                  </li>
+                  <li> FBM-driven organic looking cave room shapes </li>
                 </ul>
                 <h3>Misc</h3>
                 <ul>
@@ -163,82 +166,8 @@ const Test = (props) => {
               <span class="hljs-keyword">exit</span>)
             </code>
           </pre>
-          <h4 id="pcg">PCG</h4>
-          <ul>
-            <li>FBM Terrain</li>
-            <li>
-              Cave System
-              <ul>
-                <li>
-                  Marching Squares Cave System
-                  <ul>
-                    <li>Blocked out rooms with pcg terrain</li>
-                    <li>Inner room details? </li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>++Hidey Holes</strong>{" "}
-                </li>
-              </ul>
-            </li>
-            <li>
-              PCG Pathfinding
-              <ul>
-                <li>Node differentiation by doorway/terrain/InCanve(x)</li>
-                <li>
-                  Jump Point Search (instead of A*)
-                  <ul>
-                    <li>
-                      <iframe
-                        width="560"
-                        height="315"
-                        src="https://www.youtube.com/embed/kSm-ADXH808?si=Lr-eFDDqkvvqzi3p"
-                        title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      ></iframe>
-                    </li>
-                  </ul>
-                </li>
-                <li></li>
-              </ul>
-            </li>
-          </ul>
-          <h4 id="ai">AI</h4>
-          <ul>
-            <li>
-              AI Hearing (head to doorway of rooms if heard elsewhere -&gt;{" "}
-              <em>investigate</em>)
-              <ul>
-                <li>Which side of room is player on? </li>
-              </ul>
-            </li>
-            <li>
-              Predict movement of player towards goal?
-              <ul>
-                <li>Traps?</li>
-              </ul>
-            </li>
-            <li>
-              Multiple AI
-              <ul>
-                <li>+Communicate position, route</li>
-              </ul>
-            </li>
-            <li>
-              ++Dynamic Lights (torches?)?
-              <ul>
-                <li>
-                  Player Placed/Pickup torches
-                  <ul>
-                    <li>Inventory?</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>Smokescreen (AI/Player?)</li>
-          </ul>
+
+          <li>Smokescreen (AI/Player?)</li>
           <h4 id="bonus">Bonus</h4>
           <ul>
             <li>
@@ -751,62 +680,14 @@ const Test = (props) => {
               alt="Pasted image 20231012170646"
             />
           </p>
-          <p>
-            I anticipate using Oct-Trees for this, but have not experimented
-            with it enough to see if switching out parts of a procedural mesh
-            will play nice with the player/enemy collisions or any physical
-            objects. Those may have to be cached and spawned when a player is
-            close enough to load in the LOD0 caves (best quality). I also aim to
-            investigate whether compute shaders can be used in Unreal Engine - I
-            am competent at writing shaders but unfortunately they weren&#39;t
-            implemented on the other software I&#39;m used to so I&#39;d like to
-            explore that area more.
-          </p>
           <h4 id="interactions">Interactions</h4>
           <p>
-            A core part of this will be having the player interact with parts of
-            the levels. We anticipate adding:{" "}
+            <strong>Interactive torches:</strong> Some rooms will spawn without
+            lights, they player should be able to light/snuff torches that are
+            on the walls and carry a torch with them. Lights are great for
+            seeing what you&#39;re doing, but a dark room prevents you from
+            getting caught!
           </p>
-          <ul>
-            <li>
-              <strong>Hiding Spots:</strong> Small alcoves covered by vines with
-              no AI navNodes inside. Players can hide in these to escape -&gt;
-              But if an enemy spots you going in to one they can brush aside the
-              vines and catch ya!{" "}
-            </li>
-            <li>
-              <strong>Doors &amp; Triggers:</strong> It&#39;s not Procedural
-              Jones unless he narrowly escapes under a Low-Poly Door. A basic
-              mesh in some rooms near the tunnel entrance that blocks progress
-              (or can be shut to seal out the enemy)
-            </li>
-            <li>
-              <strong>Artefacts/Keys:</strong> The last room is currently the
-              end of the map, it should be the trigger point for keys that are
-              found throughout the map - when the keys have been gathered the
-              final door opens leading to the golden altar!
-            </li>
-            <li>
-              <strong>Traps:</strong> It&#39;s easy to make holes in the mesh,
-              these pits will not have AI paths over them to stop them from
-              falling in. But you could be able to place wooden squares over the
-              top which makes the mesh appear to exist but with a trigger box
-              that gets rid of it (and a brushed dirt texture so players
-              don&#39;t fall into it themselves).{" "}
-            </li>
-            <li>
-              <strong>Interactive torches:</strong> Some rooms will spawn
-              without lights, they player should be able to light/snuff torches
-              that are on the walls and carry a torch with them. Lights are
-              great for seeing what you&#39;re doing, but a dark room prevents
-              you from getting caught!
-            </li>
-            <li>
-              <strong>AI Spawn points</strong> while setting these are easy (the
-              same logic as the PlayerStart Position) we need to think through
-              where we should place them
-            </li>
-          </ul>
         </Features.Section>
 
         <Features.Section
