@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Compositions from "..";
 import "./SoftwareEngineering.css";
+import { Link } from "react-router-dom";
 
 const SoftwareEngineering = ({ darkMode }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -50,33 +51,26 @@ const SoftwareEngineering = ({ darkMode }) => {
   };
 
   const GameImage = ({ img, link }) => (
-    <a
-      className="game-icon"
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <Link className="game-icon" to={link}>
       <img className="game-icon-img" src={img} alt="Game Icon" />
-    </a>
+    </Link>
   );
 
   const GameDesc = ({ title, descr, img, link, children, tags }) => (
-    <a href={link} target="_blank" rel="noopener noreferrer">
+    <Link to={link}>
       <div className="game-info">
         <GameTitle>{title}</GameTitle>
         <GameTags tags={tags} />
         {isMobile && (
           <div className="image-holder-small">
-            {" "}
-            <GameImage img={img} link={link} />{" "}
+            <GameImage img={img} link={link} />
           </div>
         )}
         <GameFeatures>{children}</GameFeatures>
         <GameDescription>{descr}</GameDescription>
       </div>
-    </a>
+    </Link>
   );
-
   const GameTitle = ({ children }) => (
     <div className="game-title">{children}</div>
   );
