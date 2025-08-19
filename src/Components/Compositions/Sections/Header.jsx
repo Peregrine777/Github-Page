@@ -6,10 +6,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
   return (
     <header className={`header ${darkMode ? "dark-mode" : "light-mode"}`}>
       <div>
-        <a
-          href="/Github-Page/"
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
+        <a href="./" style={{ textDecoration: "none", color: "inherit" }}>
           <img
             src={`assets/Images/Peregrine_${
               darkMode ? "dark.png" : "light.png"
