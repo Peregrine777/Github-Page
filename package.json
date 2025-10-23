@@ -7,6 +7,7 @@
     "dat.gui": "^0.7.9",
     "lil-gui": "^0.20.0",
     "nvm": "^0.0.4",
+    "p5": "^2.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intersection-observer": "^9.14.1",

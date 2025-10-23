@@ -122,6 +122,13 @@ const SoftwareEngineering = ({ darkMode }) => {
           description="Procedural Jones is a tech demo that showcases procedural generation of walkable caves using rules-based box/corridor placement and marching-cubes terrain generation."
           tags={["Tool", "UE5", "C++", "Procedural Generation"]}
         ></GameInfo>
+        <GameInfo
+          title="P5.js Interactive Projects"
+          img="assets/Images/GA_Dialogue.png"
+          link="/P5Projects"
+          description="A collection of interactive games and visualizations built with p5.js, featuring physics simulations, creative coding experiments, and engaging gameplay mechanics."
+          tags={["Interactive", "JavaScript", "P5.js", "Physics", "Game"]}
+        ></GameInfo>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ const App = () => {
         <Route path="/Interactives" element={<Pages.Interactives />} />
         <Route path="/GameEngine" element={<Pages.GameEngine />} />
         <Route path="/CaveGen" element={<Pages.CaveGen />} />
+        <Route path="/P5Projects" element={<Pages.P5Projects />} />
       </Routes>
     </HashRouter>
   );
