@@ -3,3 +3,4 @@ export { default as Home } from "./Home";
 export { default as GameEngine } from "./GameEngine";
 export { default as Interactives } from "./Interactives";
 export { default as CaveGen } from "./CaveGen";
+export { default as P5Projects } from "./P5Projects";
