@@ -205,12 +205,7 @@ const GameEnginePage = (props) => {
                 poster="assets/Videos/Deformable_Volume.jpg"
                 data-setup="{}"
               >
-                <source
-                  src={`${
-                    import.meta.env.BASE_URL
-                  }assets/Videos/Deformable_Volume.mp4`}
-                  type="video/mp4"
-                />
+                <source src={DeformableVolumeMp4} type="video/mp4" />
                 <p className="vjs-no-js">
                   To view this video please enable JavaScript, and consider
                   upgrading to a web browser that
