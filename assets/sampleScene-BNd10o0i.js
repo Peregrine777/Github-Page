@@ -1,2 +1,0 @@
-import{S as l,u,M as d,b as h,C as s,A as m,v as p}from"./index-CMGnZK3S.js";class g extends l{constructor(e){super(e);const t=new u,n=new d({color:65280}),a=new h(t,n);this.scene.add(a);let o=new s(.5,.72,1);const c=new m(o,.5);this.scene.add(c);let r=new s(1,.98,.8);const i=new p(r,1);this.scene.add(i)}update(e){super.update(e)}}export{g as sc_SampleScene};
-//# sourceMappingURL=sampleScene-BNd10o0i.js.map
