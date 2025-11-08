@@ -158,7 +158,9 @@ const P5Projects = () => {
                   ×
                 </button>
                 <iframe
-                  src="/Github-Page/public/p5BlobEscape/blob-escape.html"
+                  src={`${
+                    import.meta.env.BASE_URL
+                  }p5BlobEscape/blob-escape.html`}
                   title="Blob Escape Game"
                   width="100%"
                   height="100%"
