@@ -15,7 +15,7 @@ export class AlarmZone {
     // Alarm state
     this.isTriggered = false;
     this.triggerTime = 0;
-    this.triggerDuration = 300; // How long alarm stays active (frames)
+    this.triggerDuration = 30; // How long alarm stays active (frames)
     this.pulseSpeed = 0.1;
 
     // Trigger properties

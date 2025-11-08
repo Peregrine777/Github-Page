@@ -1,5 +1,7 @@
 // blob.js - Physics-based blob with WASD controls and food collection
 
+import { ParticleSystem } from "./particles.js";
+
 export class Blob {
   constructor(x, y, initialNodes = 3) {
     this.nodes = [];
@@ -45,6 +47,9 @@ export class Blob {
     this.evaporationTimer = 0;
     this.isDead = false;
     this.currentLightSource = null; // Store light source for smart evaporation
+
+    // Particle system for evaporation effects
+    this.particleSystem = new ParticleSystem();
   }
 
   // Create the initial blob structure in a circle
@@ -177,6 +182,9 @@ export class Blob {
 
     // Update light exposure
     this.updateLightExposure();
+
+    // Update particle system
+    this.particleSystem.update();
 
     // Check if blob is dead
     if (this.nodes.length <= 1) {
@@ -458,6 +466,9 @@ export class Blob {
       noStroke();
       ellipse(this.center.x, this.center.y, 40 + sin(frameCount * 0.2) * 10);
     }
+
+    // Draw particle effects
+    this.particleSystem.draw();
   }
 
   // Draw stats
@@ -523,6 +534,34 @@ export class Blob {
   updateLightExposure() {
     if (this.isInLight) {
       this.lightExposureTime++;
+
+      // Create mist particles while blob is evaporating
+      if (this.lightExposureTime > 5) {
+        // Start creating mist after some exposure
+        // Create mist trail from center and random nodes
+        this.particleSystem.createMistTrail(this.center.x, this.center.y, 1);
+
+        // Add some random mist from nodes
+        if (this.nodes.length > 0 && frameCount % 3 === 0) {
+          let randomNode =
+            this.nodes[Math.floor(Math.random() * this.nodes.length)];
+          this.particleSystem.createMistTrail(
+            randomNode.pos.x,
+            randomNode.pos.y,
+            1
+          );
+        }
+
+        // Create area mist around the center when heavily exposed
+        if (this.lightExposureTime > this.maxLightExposure * 0.7) {
+          this.particleSystem.createAreaMist(
+            this.center.x,
+            this.center.y,
+            30,
+            2
+          );
+        }
+      }
 
       // Evaporate a node if exposed too long
       if (this.lightExposureTime >= this.maxLightExposure) {
@@ -591,6 +630,12 @@ export class Blob {
     }
 
     if (nodeToRemove !== -1) {
+      // Get the position of the node before removing it for particle effect
+      let nodePosition = this.nodes[nodeToRemove].pos.copy();
+
+      // Create pop explosion particles at the node position
+      this.particleSystem.createPopExplosion(nodePosition.x, nodePosition.y, 4);
+
       // Remove node
       console.log(
         `Removing node ${nodeToRemove}, blob size: ${this.nodes.length - 1}`

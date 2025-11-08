@@ -167,6 +167,11 @@ function drawCombinedGame() {
 }
 
 function initializeGame() {
+  // Clear any existing particles from previous blob
+  if (blob && blob.particleSystem) {
+    blob.particleSystem.clear();
+  }
+
   // Create blob starting position
   blob = new Blob(100, 500, 3);
 

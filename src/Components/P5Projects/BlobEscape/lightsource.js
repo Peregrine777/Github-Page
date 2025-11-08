@@ -1,16 +1,19 @@
+/**
+ * @fileoverview Light source for blob escape game - handles light rendering and basic light properties
+ * Vision/detection logic is handled by the separate AiVision system
+ * @author Your Name
+ * @version 2.0.0 - Refactored to use modular AiVision system
+ */
+
+import { AiVision } from "../../../public/AI/Sensors/AiVision.js";
+
+/**
+ * Light source class - focuses on light rendering, color, boundaries, and beam width
+ * All vision/detection logic has been extracted to AiVision for better separation of concerns
+ */
 export class LightSource {
   constructor(x, y, lightColor) {
-    // Reaction time system
-    this.reactionTimer = 0;
-    this.reactionTimeNeeded = 0;
-    this.isReacting = false;
-    this.targetState = null; // State we're transitioning to
-    this.minReactionTime = 1; // Minimum frames when very close
-    this.maxReactionTime = 120; // Maximum frames when far away
-    this.maxReactionDistance = 400; // Distance at which max reaction time applies
-
-    // Alarm response system
-    this.isRespondingToAlarm = false; // Flag to prevent state overrides during alarmsstructor(x, y, lightColor) {
+    // Light position and properties
     this.x = x;
     this.y = y;
     this.lastX = x;
@@ -21,6 +24,9 @@ export class LightSource {
     this.range = 500; // Increased visible range for more aggressive hunting
     this.lightColor = lightColor; // Avoid naming conflict with p5.js color() function
     this.rays = 120; // Number of rays to cast for shadow detection
+
+    // Vision system (separate from light rendering)
+    this.vision = new AiVision();
 
     // Hunting behavior properties
     this.state = "searching"; // "searching", "hunting", "investigating"
@@ -42,6 +48,9 @@ export class LightSource {
     this.minReactionTime = 1; // Minimum frames when very close
     this.maxReactionTime = 30; // Maximum frames when far away
     this.maxReactionDistance = 600; // Distance at which max reaction time applies
+
+    // Alarm response system
+    this.isRespondingToAlarm = false; // Flag to prevent state overrides during alarms
   }
 
   // Update movement direction tracking
@@ -261,103 +270,21 @@ export class LightSource {
 
   // Check if blob is visible in light cone
   canSeeBlob(blob, blockers) {
-    if (!blob || blob.isDead || !blob.center) return false;
-
-    // Check if blob center is in light cone and not blocked
-    return this.isPointInLight(blob.center, blockers);
+    // Delegate to vision system
+    return this.vision.canSeeBlob(this, blob, blockers);
   }
 
   // Check if a point is within the light cone and not blocked
   isPointInLight(point, blockers) {
-    // Safety check
-    if (
-      !point ||
-      typeof point.x === "undefined" ||
-      typeof point.y === "undefined"
-    ) {
-      console.warn("LightSource.isPointInLight: Invalid point object", point);
-      return false;
-    }
-
-    // Calculate angle from light to point
-    let dx = point.x - this.x;
-    let dy = point.y - this.y;
-    let angleToPoint = (atan2(dy, dx) * 180) / PI;
-
-    // Normalize angles
-    let angleDiff = angleToPoint - this.bearing;
-
-    // Handle angle wrapping
-    while (angleDiff > 180) angleDiff -= 360;
-    while (angleDiff < -180) angleDiff += 360;
-
-    // Check if point is within light cone
-    let halfCone = this.cone / 2;
-    if (abs(angleDiff) > halfCone) return false;
-
-    // Check if point is within range
-    let distance = sqrt(dx * dx + dy * dy);
-    if (distance > this.range) return false;
-
-    // Check if light ray to point is blocked by obstacles
-    let rayStart = createVector(this.x, this.y);
-    let rayEnd = point.copy();
-
-    for (let blocker of blockers) {
-      if (this.lineIntersectsRect(rayStart, rayEnd, blocker)) {
-        return false; // Blocked by obstacle
-      }
-    }
-
-    return true; // Point is in light and not blocked
-  }
-
-  // Line-rectangle intersection for light blocking
-  lineIntersectsRect(start, end, rect) {
-    return this.lineRectangleIntersection(start, end, rect);
-  }
-
-  lineRectangleIntersection(start, end, rect) {
-    // Check if either endpoint is inside the rectangle
-    if (this.pointInRect(start, rect) || this.pointInRect(end, rect)) {
-      return true;
-    }
-
-    // Check intersection with each edge
-    let edges = [
-      {
-        start: createVector(rect.x, rect.y),
-        end: createVector(rect.x + rect.width, rect.y),
-      },
-      {
-        start: createVector(rect.x + rect.width, rect.y),
-        end: createVector(rect.x + rect.width, rect.y + rect.height),
-      },
-      {
-        start: createVector(rect.x + rect.width, rect.y + rect.height),
-        end: createVector(rect.x, rect.y + rect.height),
-      },
-      {
-        start: createVector(rect.x, rect.y + rect.height),
-        end: createVector(rect.x, rect.y),
-      },
-    ];
-
-    for (let edge of edges) {
-      if (this.lineIntersection(start, end, edge.start, edge.end)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  pointInRect(point, rect) {
-    return (
-      point.x >= rect.x &&
-      point.x <= rect.x + rect.width &&
-      point.y >= rect.y &&
-      point.y <= rect.y + rect.height
+    // Delegate to vision system
+    return this.vision.isPointInVision(
+      this.x,
+      this.y,
+      this.bearing,
+      this.cone,
+      this.range,
+      point,
+      blockers
     );
   }
 
@@ -467,77 +394,8 @@ export class LightSource {
     return closestHit;
   }
 
-  // Check if a ray intersects with a rectangle
+  // Check if a ray intersects with a rectangle (delegate to vision system)
   rayRectangleIntersection(rayStart, rayEnd, rect) {
-    let closestIntersection = null;
-    let closestDistance = Infinity;
-
-    // Get rectangle edges
-    let edges = [
-      // Top edge
-      {
-        start: createVector(rect.x, rect.y),
-        end: createVector(rect.x + rect.width, rect.y),
-      },
-      // Right edge
-      {
-        start: createVector(rect.x + rect.width, rect.y),
-        end: createVector(rect.x + rect.width, rect.y + rect.height),
-      },
-      // Bottom edge
-      {
-        start: createVector(rect.x + rect.width, rect.y + rect.height),
-        end: createVector(rect.x, rect.y + rect.height),
-      },
-      // Left edge
-      {
-        start: createVector(rect.x, rect.y + rect.height),
-        end: createVector(rect.x, rect.y),
-      },
-    ];
-
-    // Check intersection with each edge
-    for (let edge of edges) {
-      let intersection = this.lineIntersection(
-        rayStart,
-        rayEnd,
-        edge.start,
-        edge.end
-      );
-      if (intersection) {
-        let distance = p5.Vector.dist(rayStart, intersection);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIntersection = intersection;
-        }
-      }
-    }
-
-    return closestIntersection;
-  }
-
-  // Calculate intersection between two line segments
-  lineIntersection(p1, p2, p3, p4) {
-    let x1 = p1.x,
-      y1 = p1.y;
-    let x2 = p2.x,
-      y2 = p2.y;
-    let x3 = p3.x,
-      y3 = p3.y;
-    let x4 = p4.x,
-      y4 = p4.y;
-
-    let denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-    if (abs(denom) < 0.0001) return null; // Lines are parallel
-
-    let t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
-    let u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom;
-
-    // Check if intersection is within both line segments
-    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
-      return createVector(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
-    }
-
-    return null;
+    return this.vision.rayRectangleIntersection(rayStart, rayEnd, rect);
   }
 }

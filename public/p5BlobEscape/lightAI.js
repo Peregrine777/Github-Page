@@ -57,7 +57,7 @@ export class LightAI {
     this.hasReachedAlarmLocation = false; // Track if we've reached the alarm position    // Debug waypoint visualization
     this.allWaypoints = []; // Store all generated waypoints for debugging
     this.waypointConnections = []; // Store connections for debugging
-    this.showDebugText = false;
+    this.showDebugText = true;
 
     // State change tracking
     this.previousState = "searching"; // Track previous state to detect transitions
