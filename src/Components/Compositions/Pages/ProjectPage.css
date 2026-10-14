@@ -1,0 +1,256 @@
+/* Project page layout */
+.project-page {
+  --project-muted: rgba(128, 128, 128, 0.9);
+  --project-border: rgba(128, 128, 128, 0.4);
+  --project-code-bg: rgba(128, 128, 128, 0.12);
+  min-height: 100vh;
+}
+
+.project-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 1100px;
+  padding-top: 1rem;
+}
+
+.project-page .project-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  text-align: center;
+}
+
+.project-page .project-subtitle {
+  margin: 0;
+  max-width: 700px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--project-muted);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.project-tag {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--project-border);
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.project-hero-img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.project-link {
+  font: inherit;
+  padding: 0.5rem 1.2rem;
+  border-radius: 5px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.project-link:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+/* Written content */
+.project-article {
+  width: 100%;
+  max-width: 850px;
+  text-align: left;
+  line-height: 1.6;
+  padding-bottom: 1rem;
+}
+
+.project-page .project-article h2 {
+  text-align: left;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-page .project-article h3 {
+  margin-top: 1.75rem;
+  font-size: 1.3rem;
+}
+
+.project-page .project-article h4 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.project-page .project-article ul,
+.project-page .project-article ol {
+  padding-left: 1.5rem;
+}
+
+.project-page .project-article li {
+  margin-bottom: 0.25rem;
+}
+
+.project-page .project-article ol li {
+  list-style: decimal;
+}
+
+.project-page .project-article code {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--project-code-bg);
+}
+
+/* Figures */
+.project-figure {
+  margin: 1rem auto;
+  max-width: 100%;
+  text-align: center;
+}
+
+.project-figure img,
+.project-figure video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.project-video video {
+  width: 100%;
+  cursor: auto;
+  background: black;
+}
+
+.project-figure figcaption,
+.lightbox-figure figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--project-muted);
+  text-align: center;
+}
+
+.figure-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.figure-row .project-figure {
+  flex: 1 1 220px;
+  margin: 0.5rem 0;
+}
+
+.lightbox-figure {
+  margin: 0;
+  padding-top: 2rem;
+}
+
+.lightbox-figure img {
+  max-height: 75vh;
+  object-fit: contain;
+}
+
+/* Callouts */
+.callout {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #30acec;
+  border-radius: 4px;
+  background: var(--project-code-bg);
+}
+
+.callout-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.callout-warning {
+  border-left-color: #e2533e;
+}
+
+.callout-todo {
+  border-left-color: #e29d3e;
+}
+
+.callout-question {
+  border-left-color: #a666e1;
+}
+
+/* Overview cards */
+.flex-container {
+  flex-wrap: wrap;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+}
+
+.column-content-container {
+  display: block;
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 300px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 10px;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+a.column-content-container[href]:hover {
+  transform: translateY(-4px);
+}
+
+.column-content-titlebar {
+  background-color: rgba(128, 128, 128, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 5;
+  position: relative;
+}
+
+.project-page .column-content-titlebar h2 {
+  margin: 0;
+  color: black;
+}
+
+.column-content-inner {
+  padding: 10px;
+  padding-top: 20px;
+  background-color: #9d6e3a;
+  color: black;
+  margin-top: -10px;
+  border-radius: 0 0 10px 10px;
+  position: relative;
+  min-height: 80%;
+}
+
+.column-content-inner h3 {
+  margin-top: 0.5rem;
+}

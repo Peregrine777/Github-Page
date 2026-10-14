@@ -15,6 +15,8 @@ const App = () => {
         <Route path="/GameEngine" element={<Pages.GameEngine />} />
         <Route path="/CaveGen" element={<Pages.CaveGen />} />
         <Route path="/P5Projects" element={<Pages.P5Projects />} />
+        {/* Unknown hashes (e.g. a stale "#lightbox" entry) fall back to home */}
+        <Route path="*" element={<Pages.Home />} />
       </Routes>
     </HashRouter>
   );

@@ -201,3 +201,29 @@ header {
     transparent 100%
   );
 }
+
+/* Element defaults previously defined in the project page stylesheets.
+   Kept global because the home page layout relies on them. */
+h3 {
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+h4 {
+  text-align: left;
+}
+
+p {
+  text-align: left;
+}
+
+ul {
+  margin-top: 5px;
+}
+
+li {
+  list-style: outside;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}

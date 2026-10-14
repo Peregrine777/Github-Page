@@ -4,8 +4,11 @@ import { SettingsMenu, Contact, Socials } from "../";
 import setupThreeJS from "../../../three.js";
 import * as Sections from "../Sections";
 
-const Interactives = (_darkMode, _toggleDarkMode) => {
-  const [darkMode, setDarkMode] = useState(true);
+const Interactives = ({ darkMode: _darkMode }) => {
+  const [darkMode, setDarkMode] = useState(() => {
+    const stored = localStorage.getItem("darkMode");
+    return stored ? JSON.parse(stored) : true;
+  });
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState("Test");
   const [lightboxStyle, setLightboxStyle] = useState(null);

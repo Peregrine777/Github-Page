@@ -28,12 +28,17 @@ const SoftwareEngineering = ({ darkMode }) => {
 
   const GameInfo = ({ title, img, link, description, children, tags }) => {
     const handleClick = () => {
-      navigate(link);
+      // Replace the "#lightbox" history entry so Back returns to the home page
+      document.body.classList.remove("no-scroll");
+      navigate(link, { replace: true });
     };
     return (
       <div
         className={`game ${darkMode ? "dark-mode" : "light-mode"}`}
         onClick={handleClick}
+        role="link"
+        tabIndex="0"
+        onKeyDown={(e) => e.key === "Enter" && handleClick()}
       >
         {!isMobile && <GameImage img={img} link={link} />}
         <GameDesc
@@ -48,19 +53,15 @@ const SoftwareEngineering = ({ darkMode }) => {
       </div>
     );
   };
-  const GameImage = ({ img, link }) => (
-    <a
-      className="game-icon"
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+  // Navigation is handled by the parent card's click handler
+  const GameImage = ({ img }) => (
+    <div className="game-icon">
       <img className="game-icon-img" src={img} alt="Game Icon" />
-    </a>
+    </div>
   );
 
   const GameDesc = ({ title, descr, img, link, children, tags }) => (
-    <div className="game-info" href={`#${link}`}>
+    <div className="game-info">
       <GameTitle>{title}</GameTitle>
       <GameTags tags={tags} />
       {isMobile && (

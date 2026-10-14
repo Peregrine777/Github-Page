@@ -1,238 +1,172 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as Features from "../../Features";
-import { SettingsMenu, Contact, Socials } from "../";
-import * as Sections from "../Sections";
+import React from "react";
+import ProjectPage, {
+  ProjectSection,
+  FeatureCards,
+  Figure,
+  FigureRow,
+} from "./ProjectPage";
 
-import "./GloriaArmada.css";
+const ITCH_URL = "https://chanel-parfait.itch.io/gloria-armada";
 
-const Test = (props) => {
-  document.body.classList.remove("no-scroll");
-
-  const [localDarkMode, setLocalDarkMode] = useState(() => {
-    const stored = localStorage.getItem("darkMode");
-    return stored ? JSON.parse(stored) : true;
-  });
-  useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(localDarkMode));
-  }, [localDarkMode]);
-
-  const localToggleDarkMode = () => {
-    setLocalDarkMode((prevMode) => !prevMode);
-  };
-  const darkMode = props.darkMode ?? localDarkMode;
-  const toggleDarkMode = props.toggleDarkMode ?? localToggleDarkMode;
-
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [lightboxContent, setLightboxContent] = useState("Test");
-  const [lightboxStyle, setLightboxStyle] = useState(null);
-  const navigate = useNavigate();
-
-  const handleOpenLightbox = (content, style) => {
-    document.body.classList.add("no-scroll");
-
-    history.pushState({ lightboxOpen: true }, "", "#lightbox");
-    setLightboxContent(content);
-    setLightboxStyle(style);
-    setIsLightboxOpen(true);
-  };
-
-  const handleCloseLightbox = () => {
-    document.body.classList.remove("no-scroll");
-    setIsLightboxOpen(false);
-    if (history.state?.lightboxOpen) {
-      setTimeout(() => history.back(), 100);
-    }
-  };
-  return (
-    <div>
-      <Features.LightboxModal
-        darkMode={darkMode}
-        isOpen={isLightboxOpen}
-        content={lightboxContent}
-        style={lightboxStyle}
-        onClose={handleCloseLightbox}
-      />
-      <Sections.Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-      <main>
-        <Features.Section
-          title="about"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <div>
-            {" "}
-            <img
-              className="clickableImage"
-              src={`assets/Images/Gloria_Armada.png`}
-              alt="Gloria Armada"
-              style={{ height: "auto", width: "90vw" }}
-              onClick={() => {
-                handleOpenLightbox(
-                  <iframe
-                    src="https://itch.io/embed-upload/10600258?color=0484d1"
-                    style={{ width: "90vw", height: "80vh" }}
-                  >
-                    <a href="https://chanel-parfait.itch.io/gloria-armada">
-                      Play Gloria Armada on itch.io
-                    </a>
-                  </iframe>,
-                  { width: "95%", height: "80vh" }
-                );
-              }}
-            ></img>
-          </div>
-        </Features.Section>
-
-        <Features.Section
-          title="Overview"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <div className="flex-container" style={{ padding: "10px" }}>
-            <div className="column-content-container">
-              <div
-                className="column-content-titlebar"
-                style={{ backgroundColor: "#80c352" }}
-              >
-                <h2>Physics</h2>
-              </div>
-              <div className="column-content-inner">
-                <h3>Full 3D Aerodynamics Model</h3>
-                <ul>
-                  <li> Modular component based airframe definition</li>
-                  <li> Serialized Plug/Play Airframes</li>
-                  <li> Global and Local paramaters (gravity/drag etc)</li>
-                  <li> Stall, COP change and thrust vectoring </li>
-                </ul>
-                <h3>API</h3>
-                <ul>
-                  <li> Access for sensor output and control inputs</li>
-                </ul>
-                <h3>Misc</h3>
-                <ul>
-                  <li>
-                    Fracturing and breakup with preservation of angular and part
-                    momentum
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="column-content-container">
-              <div
-                className="column-content-titlebar"
-                style={{ backgroundColor: "#a666e1" }}
-              >
-                <h2>AI</h2>
-              </div>
-              <div className="column-content-inner">
-                <h3> State Machine AI</h3>
-                <ul>
-                  <li> Fly to Location</li>
-                  <li> Fly to Target</li>
-                  <li> Fly Heading</li>
-                  <li> Intercept</li>
-                  <li> Formation with </li>
-                  <li> Shoot At Target </li>
-                  <li> Evade </li>
-                </ul>
-                <h3> Features </h3>
-                <ul>
-                  <li> Targeting with 1st and 2nd order intercepts</li>
-                  <li> Target prioritization </li>
-                </ul>
-              </div>
-            </div>
-            <div className="column-content-container">
-              <div
-                className="column-content-titlebar"
-                style={{ backgroundColor: "#30acec" }}
-              >
-                <h2>Graphics</h2>
-              </div>
-              <div className="column-content-inner">
-                <h3> Particles </h3>
-                <ul>
-                  <li>
-                    {" "}
-                    Global Particle Manager with intelligent pooling and culling{" "}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </Features.Section>
-
-        <Features.Section
-          title="Physics"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <h3>Physics </h3>
-          <h4>Full Aerodynamic Model</h4>
-          <div
-            className="flex-container"
-            style={{ padding: "10px", maxWidth: "700px" }}
-          >
-            <p>
-              Customizable aircraft with calculated SO, LUT based lift model per
-              surface <br />
-              Includes calculation of Center of Pressure varying per surface,
-              lift shadow effects, angular drag, and thrust vectoring.
-            </p>
-            <img
-              src="assets/Images/GloriaArmada/Physics.png"
-              style={{ maxWidth: "300px", height: "auto" }}
-              alt="Physics Model"
-            />
-          </div>
-
-          <h4>Disintegration</h4>
-
-          <div className="flex-container" style={{ padding: "10px" }}>
-            <p>
-              Fracturing and breakup with preservation of angular and part
-              momentum.
-            </p>
-            <img
-              src="assets/Images/GloriaArmada/Fracture2.png"
-              style={{ maxWidth: "300px", height: "auto" }}
-              alt="Disintegration"
-            />
-            <img
-              src="assets/Images/GloriaArmada/Fracture.png"
-              style={{ maxWidth: "300px", height: "auto" }}
-              alt="Disintegration"
-            />
-          </div>
-        </Features.Section>
-
-        <Features.Section
-          title="AI"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <h3>AI</h3>
-        </Features.Section>
-
-        <Features.Section
-          title="Graphics"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <h3>Graphics</h3>
-        </Features.Section>
-
-        <Features.Section
-          title="Footer"
-          darkMode={darkMode}
-          revealPercent="50px 0px"
-        >
-          <Sections.Footer darkMode={darkMode} />
-        </Features.Section>
-      </main>
-    </div>
+const openGame = (openLightbox) =>
+  openLightbox(
+    <iframe
+      src="https://itch.io/embed-upload/10600258?color=0484d1"
+      title="Gloria Armada"
+      allowFullScreen
+      style={{ width: "90vw", height: "75vh", border: "none" }}
+    >
+      <a href={ITCH_URL}>Play Gloria Armada on itch.io</a>
+    </iframe>,
+    { width: "95%", height: "80vh" }
   );
-};
 
-export default Test;
+const overviewCards = [
+  {
+    title: "Physics",
+    color: "#80c352",
+    href: "physics",
+    groups: [
+      {
+        heading: "Full 3D aerodynamics model",
+        items: [
+          "Modular, component based airframe definition",
+          "Serialized plug and play airframes",
+          "Global and local parameters (gravity, drag etc.)",
+          "Stall, centre of pressure change and thrust vectoring",
+        ],
+      },
+      { heading: "API", items: ["Access to sensor output and control inputs"] },
+      {
+        heading: "Misc",
+        items: ["Fracturing and breakup that preserves angular and part momentum"],
+      },
+    ],
+  },
+  {
+    title: "AI",
+    color: "#a666e1",
+    href: "ai",
+    groups: [
+      {
+        heading: "State machine AI",
+        items: [
+          "Fly to location",
+          "Fly to target",
+          "Fly heading",
+          "Intercept",
+          "Formation with leader",
+          "Shoot at target",
+          "Evade",
+        ],
+      },
+      {
+        heading: "Features",
+        items: ["Targeting with 1st and 2nd order intercepts", "Target prioritization"],
+      },
+    ],
+  },
+  {
+    title: "Graphics",
+    color: "#30acec",
+    href: "graphics",
+    groups: [
+      {
+        heading: "Particles",
+        items: ["Global particle manager with intelligent pooling and culling"],
+      },
+    ],
+  },
+];
+
+const GloriaArmada = () => (
+  <ProjectPage
+    title="Gloria Armada"
+    subtitle="A shoot-'em-up with physics-based flight, where the perspective shifts between top-down, side-on and rear views."
+    hero="assets/Images/Gloria_Armada.png"
+    heroAlt="Gloria Armada"
+    onHeroClick={openGame}
+    tags={["Unity", "C#", "Physics", "AI", "Game"]}
+    links={[
+      { label: "Play in browser", onClick: openGame },
+      { label: "View on itch.io", href: ITCH_URL },
+    ]}
+  >
+    <FeatureCards cards={overviewCards} />
+
+    <ProjectSection title="Physics" id="physics">
+      <h3>Full aerodynamic model</h3>
+      <p>
+        Aircraft are fully customizable, and lift is calculated per surface
+        from lookup tables. The model includes a centre of pressure that varies
+        per surface, lift shadowing between surfaces, angular drag and thrust
+        vectoring.
+      </p>
+      <p>
+        Airframes are built from modular components and serialized, so new
+        aircraft can be plugged in without code changes. Physical parameters
+        such as gravity and drag can be set globally or per airframe. An API
+        exposes each aircraft&apos;s sensor outputs and control inputs.
+      </p>
+      <Figure src="assets/Images/GloriaArmada/Physics.png" caption="Per-surface aerodynamic model" maxWidth="400px" />
+      <h3>Disintegration</h3>
+      <p>
+        When an aircraft is destroyed it fractures and breaks apart. Each piece
+        keeps its share of the aircraft&apos;s linear and angular momentum, so
+        the debris carries on believably from the moment of impact.
+      </p>
+      <FigureRow>
+        <Figure src="assets/Images/GloriaArmada/Fracture2.png" caption="Aircraft breaking up" />
+        <Figure src="assets/Images/GloriaArmada/Fracture.png" caption="Debris keeping its momentum" />
+      </FigureRow>
+    </ProjectSection>
+
+    <ProjectSection title="AI" id="ai">
+      <p>
+        Enemy aircraft are controlled by a state machine built from small,
+        reusable behaviours. Each behaviour handles one manoeuvre, and the state
+        machine switches between them as the situation changes:
+      </p>
+      <ul>
+        <li><strong>Fly to location</strong>: navigate to a point in the world.</li>
+        <li><strong>Fly to target</strong>: close in on another aircraft.</li>
+        <li><strong>Fly heading</strong>: hold a given direction.</li>
+        <li><strong>Intercept</strong>: head for where the target will be, not where it is.</li>
+        <li><strong>Formation</strong>: hold position relative to a leader.</li>
+        <li><strong>Shoot at target</strong>: line up and fire.</li>
+        <li><strong>Evade</strong>: break away when under threat.</li>
+      </ul>
+      <h3>Targeting</h3>
+      <p>
+        Aiming uses <strong>first and second order intercepts</strong>. A first
+        order intercept predicts where the target will be based on its current
+        velocity. A second order intercept also accounts for its acceleration,
+        which keeps shots accurate against turning targets. When several
+        targets are available, the AI prioritizes which one to engage.
+      </p>
+    </ProjectSection>
+
+    <ProjectSection title="Dialogue" id="dialogue">
+      <p>
+        The tutorial is delivered by an instructor over the radio. Dialogue
+        sequences are authored in the Unity inspector as a list of lines. Each
+        line has a speaker and a type (dialogue, prompt or choice). Choices let the player answer in the flow of
+        the conversation, such as picking inverted or normal pitch controls.
+      </p>
+      <Figure src="assets/Images/GA_Dialogue.png" caption="Authoring the tutorial dialogue in the inspector" maxWidth="600px" />
+    </ProjectSection>
+
+    <ProjectSection title="Graphics" id="graphics">
+      <h3>Particles</h3>
+      <p>
+        Combat produces a large number of short lived effects. A global
+        particle manager pools particle systems and
+        reuses them instead of creating and destroying them, and culls effects
+        that aren&apos;t contributing to the frame. This keeps performance
+        steady during heavy combat.
+      </p>
+    </ProjectSection>
+  </ProjectPage>
+);
+
+export default GloriaArmada;
