@@ -20,7 +20,7 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
         onClick={() =>
           handleOpenLightbox(
             <PP.SoftwareEngineering />,
-            { height: "80vh" } // Fix: use vh instead of lvh
+            { height: "80vh" }, // Fix: use vh instead of lvh
           )
         }
       >
@@ -56,10 +56,10 @@ const Portfolio = ({ darkMode, handleOpenLightbox }) => {
       >
         <h2 style={{ color: boldTextCol }}>Data Analysis</h2>
         <p className="flavorText">
-          Senior Data Analyst with 8+ years of experience
+          Data Analyst
           <br />
-          Senior Data Analyst with 8+ years of experience, including work with
-          global enterprises across international markets
+          Data Analyst with 4 years of experience, including work with global
+          enterprises across international markets
         </p>
         <img
           src="assets/Images/tableau.webp"
